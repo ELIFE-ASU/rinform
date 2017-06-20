@@ -17,6 +17,9 @@
 # RStudio files
 .Rproj.user/
 
+# R documentation
+*.Rd
+
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
@@ -34,3 +37,12 @@ vignettes/*.pdf
 
 # Temporary files created by emacs
 *~
+*#*
+
+# Binary files
+*.o
+*.so
+*.a
+
+# Mac finder files
+.DS_Store
