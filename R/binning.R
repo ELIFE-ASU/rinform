@@ -76,13 +76,14 @@ series_range <- function(series) {
 #'
 #' @export
 #'
-## @useDynLib rinform r_bin_series_bin_
-## @useDynLib rinform r_bin_series_step_
-## @useDynLib rinform r_bin_series_bounds_
+#' @useDynLib rinform r_bin_series_bin_
+#' @useDynLib rinform r_bin_series_step_
+#' @useDynLib rinform r_bin_series_bounds_
 ################################################################################
 bin_series <- function(series, b = NA, step = NA, bounds = NA) {
   rval <- list(binned = 0.0, b = 0.0, spec = 0.0)
   err  <- 0
+  x    <- list()
 
   if (!is.numeric(series)) {
     stop("<series> is not numeric")
@@ -92,43 +93,55 @@ bin_series <- function(series, b = NA, step = NA, bounds = NA) {
     stop("<series> is a matrix")
   }
 
-  if (is.na(b) & is.na(step) & is.na(bounds)) {
+  if (is.na(b) & is.na(step) & anyNA(bounds)) {
     stop("must provide either number of bins, step size, or bin boundaries")
   } else if (!is.na(b) & !is.na(step)) {
     stop("cannot provide both number of bins and step size")
-  } else if (!is.na(b) & !is.na(bounds)) {
+  } else if (!is.na(b) & !anyNA(bounds)) {
     stop("cannot provide both number of bins and bin boundaries")
-  } else if (!is.na(step) & !is.na(bounds)) {
+  } else if (!is.na(step) & !anyNA(bounds)) {
     stop("cannot provide both step size and bin boundaries")
   }
 
-  if (is.na(b)) {
-    x <- .C("r_series_range_",
+  out  <- as.integer(rep(0, length(series)))
+  spec <- as.double(0)
+
+  if (!is.na(b)) {
+    x <- .C("r_bin_series_bin_",
              series  = as.double(series),
              n       = as.integer(length(series)),	   
              b       = as.integer(b),
+             out     = as.integer(out),
+	     spec    = spec,
+             err     = as.integer(err))	 	     
+  } else if (!is.na(step)) {
+    b    <- 0
+    spec <- as.double(step)
+    
+    x <- .C("r_bin_series_step_",
+             series  = as.double(series),
+             n       = as.integer(length(series)),	   
+             b       = as.integer(b),
+             out     = as.integer(out),
+	     spec    = spec,
              err     = as.integer(err))
-  } else if (is.na(step)) {
-
-#        spec = step
-#        b = _inform_bin_step(data, c_ulong(xs.size), c_double(step), out, byref(e))
-
-  } else if (is.na(bounds)) {
-
-
-#        boundaries = np.ascontiguousarray(bounds, dtype=np.float64)
-#        bnds = boundaries.ctypes.data_as(POINTER(c_double))
-#        spec = bounds
-#        b = _inform_bin_bounds(data, c_ulong(xs.size), bnds, c_ulong(boundaries.size), out, byref(e))
+  } else if (!anyNA(bounds)) {
+    b <- 0
+    x <- .C("r_bin_series_bounds_",
+             series  = as.double(series),
+             n       = as.integer(length(series)),
+             b       = as.integer(b),	     
+             bounds  = as.double(bounds),
+             m       = as.integer(length(bounds)),
+             out     = as.integer(out),
+             err     = as.integer(err))
   }
 
-#    return binned, b, spec
-  
-	    
   if (x$err == 0) {
-#    rval$srange <- x$srange
-#    rval$smin   <- x$smin
-#    rval$smax   <- x$smax
+    rval$binned <- x$out
+    rval$b      <- x$b
+    if (!anyNA(bounds)) { rval$spec <- bounds }
+    else                { rval$spec <- x$spec }
   } else {
     stop("inform lib error (", x$err, ")")
   }

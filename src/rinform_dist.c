@@ -17,7 +17,7 @@ void r_length_(int *histogram, int *size, int *counts, int *rval) {
     
   dist  = inform_dist_create((const uint32_t *) histogram, *size);
   *rval = inform_dist_size(dist);
-  // dealloc dist!!!
+  // dealloc dist!!! inform_dist_free
 }
 
 void r_get_item_(int *histogram, int *size, int *counts, int *event, int *rval) {
