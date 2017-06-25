@@ -41,18 +41,18 @@ Dist <- function(n) {
     if (sum(n >= 0 & n <= 1.0) == length(n) & isTRUE(all.equal(sum(n), 1.0))) {
       n    <- round(n, digits=9) * 1e9
       rval <- .C("r_dist_",
-                 histogram  = as.integer(n),
-	         size       = as.integer(length(n)),
-	         counts     = as.integer(0),
-	         err        = as.integer(err))
+                 histogram = as.integer(n),
+	         size      = as.integer(length(n)),
+	         counts    = as.integer(0),
+	         err       = as.integer(err))
 			  
     # Check if it is an array of integer values
     } else if (isTRUE(all(n == floor(n)))) {
       rval <- .C("r_dist_",
-                 histogram  = as.integer(n),
-	         size       = as.integer(length(n)),
-	         counts     = as.integer(0),
-	         err        = as.integer(err))			  
+                 histogram = as.integer(n),
+	         size      = as.integer(length(n)),
+	         counts    = as.integer(0),
+	         err       = as.integer(err))			  
     } else {
       stop("<n> is not a probability distribution nor a valid support")
     }
@@ -61,13 +61,13 @@ Dist <- function(n) {
     if (n <= 0) stop("<n> support is zero or negative")
 
     rval <- .C("r_dist_",
-               histogram  = as.integer(rep(0, n)),
-	       size       = as.integer(n),
-	       counts     = as.integer(0),
-	       err        = as.integer(err))
+               histogram = as.integer(rep(0, n)),
+	       size      = as.integer(n),
+	       counts    = as.integer(0),
+	       err       = as.integer(err))
   }
 
-  if (err) stop("infrom lib memory allocation error")
+  if (err) stop("inform lib memory allocation error")
   Dist        <- list(histogram = rval$histogram,
                       size      = rval$size,
 	              counts    = rval$counts)    
@@ -129,13 +129,16 @@ is_not_corrupted <- function(d) {
 ################################################################################
 length.Dist <- function(d) {
   rval <- NULL
+  err  <- 0
   
   if(is_not_corrupted(d)) {
     rval <- .C("r_length_",
-               histogram  = d$histogram,
-	       size       = d$size,
-	       counts     = d$counts,
-	       rval       = as.integer(0))
+               histogram = d$histogram,
+	       size      = d$size,
+	       counts    = d$counts,
+	       rval      = as.integer(0),
+	       err       = as.integer(err))
+    if (err) stop("inform lib memory allocation error")	       
   } else {
     stop("<d> object corrupted")
   }
@@ -164,15 +167,18 @@ get_item <- function(d, event) UseMethod("get_item")
 ################################################################################
 get_item.Dist <- function(d, event) {
   rval <- NULL
+  err  <- 0
   
   if(is_not_corrupted(d)) {
     if (event > 0 & event <= length(d)) {
       rval <- .C("r_get_item_",
-                 histogram  = d$histogram,
-	         size       = d$size,
-	         counts     = d$counts,
-	         event      = as.integer(event - 1),
-	         rval       = as.integer(0))
+                 histogram = d$histogram,
+	         size      = d$size,
+	         counts    = d$counts,
+	         event     = as.integer(event - 1),
+	         rval      = as.integer(0),
+		 err       =as.integer(err))
+      if (err) stop("inform lib memory allocation error")		  		 
     } else {
       stop("<event> out of bound")
     }
@@ -191,6 +197,8 @@ get_item.Dist <- function(d, event) {
 #' @param d Dist object representing the distribution.
 #' @param event Numeric representing the observed event.
 #' @param value Numeric representing the number of observations.
+#' 
+#' @return Dist giving the modified distribution.
 #'
 #' @example inst/examples/ex_dist_set_item.R
 #'
@@ -202,16 +210,20 @@ set_item <- function(d, event, value) UseMethod("set_item")
 #' @useDynLib rinform r_set_item_
 ################################################################################
 set_item.Dist <- function(d, event, value) {
+  err <- 0
   
   if(is_not_corrupted(d)) {
     if (event > 0 & event <= length(d)) {
       value <- max(0, value)
       rval  <- .C("r_set_item_",
-                  histogram  = d$histogram,
-	          size       = d$size,
-	          counts     = d$counts,
-	          event      = as.integer(event - 1),
-	          value      = as.integer(value))
+                  histogram = d$histogram,
+	          size      = d$size,
+	          counts    = d$counts,
+	          event     = as.integer(event - 1),
+	          value     = as.integer(value),
+		  err       = as.integer(err))
+		  
+      if (err) stop("inform lib memory allocation error")		  
       d$histogram <- rval$histogram
       d$counts    <- rval$counts
 
@@ -222,4 +234,314 @@ set_item.Dist <- function(d, event, value) {
     stop("<d> object corrupted")
   }
   d
+}
+
+################################################################################
+#' Resize
+#'
+#' Generic function to resize the support of the distribution in place. If the
+#' distribution shrinks, the last \code{lenght(Dist) - n} elements are lost,
+#' the rest are preserved. If it grows, the last \code{n - lenght(Dist)}
+#' elements are zeroed.
+#'
+#' @param d Dist object representing the distribution.
+#' @param n Numeric representing the desired size of the support.
+#'
+#' @return Dist giving the resized distribution.
+#'
+#' @example inst/examples/ex_dist_resize.R
+#'
+#' @export
+################################################################################
+resize <- function(d, n) UseMethod("resize")
+
+################################################################################
+#' @useDynLib rinform r_resize_
+################################################################################
+resize.Dist <- function(d, n) {
+  err <- 0
+  
+  if(is_not_corrupted(d)) {
+    if (n > 0) {
+      nhistogram <- rep(0, n)
+      rval <- .C("r_resize_",
+                 histogram  = d$histogram,
+	         size       = d$size,
+	         counts     = d$counts,
+                 nhistogram = as.integer(nhistogram),
+	         n          = as.integer(n),
+	         err        = as.integer(err))
+
+      if (err) stop("inform lib memory allocation error")
+
+      d$histogram <- rval$nhistogram
+      d$size      <- rval$size
+      d$counts    <- rval$counts
+
+    } else {
+      stop("support size is zero")
+    }
+  } else {
+    stop("<d> object corrupted")
+  }
+  d
+}
+
+################################################################################
+#' Copy
+#'
+#' Generic function to perform a deep copy of the distribution.
+#'
+#' @param d Dist object representing the distribution to be copied.
+#'
+#' @return Dist giving the copy of the distribution.
+#'
+#' @example inst/examples/ex_dist_copy.R
+#'
+#' @export
+################################################################################
+copy <- function(d) UseMethod("copy")
+
+################################################################################
+#' @useDynLib rinform r_copy_
+################################################################################
+copy.Dist <- function(d) {
+  err    <- 0
+  d_copy <- NULL
+  
+  if(is_not_corrupted(d)) {    
+    rval <- .C("r_copy_",
+                histogram  = d$histogram,
+	        size       = d$size,
+                chistogram = as.integer(rep(0, d$size)),
+	        csize      = as.integer(0),
+	        ccounts    = as.integer(0),
+	        err        = as.integer(err))
+
+    if (err) stop("inform lib memory allocation error")
+
+    d_copy$histogram <- rval$chistogram
+    d_copy$size      <- rval$csize
+    d_copy$counts    <- rval$ccounts
+
+  } else {
+    stop("<d> object corrupted")
+  }
+  d_copy
+}
+
+################################################################################
+#' Counts
+#'
+#' Generic function to return the number of observations made thus far.
+#'
+#' @param d Dist object representing the distribution.
+#'
+#' @return Numeric giving the number of observations.
+#'
+#' @example inst/examples/ex_dist_counts.R
+#'
+#' @export
+################################################################################
+counts <- function(d) UseMethod("counts")
+
+################################################################################
+#' @useDynLib rinform r_counts_
+################################################################################
+counts.Dist <- function(d) {
+  err     <- 0
+  rcounts <- 0
+  
+  if(is_not_corrupted(d)) {    
+    rval <- .C("r_counts_",
+                histogram = d$histogram,
+	        size      = d$size,
+	        rcounts   = as.integer(rcounts),
+	        err       = as.integer(err))
+
+    if (err) stop("inform lib memory allocation error")
+    rcounts <- rval$rcounts
+
+  } else {
+    stop("<d> object corrupted")
+  }
+  rcounts
+}
+
+################################################################################
+#' Valid
+#'
+#' Generic function to determine if the distribution is a valid probability
+#' distribution, i.e. if the support is not empty and at least one observation
+#' has been made.
+#'
+#' @param d Dist object representing the distribution.
+#'
+#' @return Logical representing the validity of the distribution.
+#'
+#' @example inst/examples/ex_dist_valid.R
+#'
+#' @export
+################################################################################
+valid <- function(d) UseMethod("valid")
+
+################################################################################
+#' @useDynLib rinform r_valid_
+################################################################################
+valid.Dist <- function(d) {
+  err     <- 0
+  isvalid <- FALSE
+  
+  if(is_not_corrupted(d)) {    
+    rval  <- .C("r_valid_",
+                 histogram = d$histogram,
+	         size      = d$size,
+	         isvalid   = as.integer(isvalid),
+	         err       = as.integer(err))
+
+    if (err) stop("inform lib memory allocation error")
+    if (rval$isvalid) isvalid <- TRUE
+    else              isvalid <- FALSE
+  } else {
+    stop("<d> object corrupted")
+  }
+  
+  isvalid
+}
+
+################################################################################
+#' Tick
+#'
+#' Generic function to make a single observation of \code{event}, and return
+#' the total number of observations of said \code{event}.
+#'
+#' @param d Dist object representing the distribution.
+#' @param event Numeric representing the observed event.
+#'
+#' @return Dist giving the updated distribution.
+#'
+#' @example inst/examples/ex_dist_tick.R
+#'
+#' @export
+################################################################################
+tick <- function(d, event) UseMethod("tick")
+
+################################################################################
+#' @useDynLib rinform r_tick_
+################################################################################
+tick.Dist <- function(d, event) {
+  err <- 0
+  
+  if(is_not_corrupted(d)) {
+    if (event > 0 & event <= length(d)) {  
+      rval  <- .C("r_tick_",
+                   histogram = d$histogram,
+	           size      = d$size,
+	           event     = as.integer(event - 1),
+	           err       = as.integer(err))
+
+      if (err) stop("inform lib memory allocation error")
+
+      d$histogram <- rval$histogram
+      d$size      <- rval$size
+      d$counts    <- rval$counts
+    } else {
+      stop("<event> out of bound")
+    }
+  } else {
+    stop("<d> object corrupted")
+  }
+  
+  d
+}
+
+################################################################################
+#' Probability
+#'
+#' Generic function to compute the empiricial probability of an \code{event}.
+#'
+#' @param d Dist object representing the distribution.
+#' @param event Numeric representing the observed event.
+#'
+#' @return Numerical giving the empirical probability of \code{event}.
+#'
+#' @example inst/examples/ex_dist_probability.R
+#'
+#' @export
+################################################################################
+probability <- function(d, event) UseMethod("probability")
+
+################################################################################
+#' @useDynLib rinform r_probability_
+################################################################################
+probability.Dist <- function(d, event) {
+  err  <- 0
+  prob <- 0
+  
+  if(is_not_corrupted(d)) {
+    if(!valid(d)) {
+      stop("invalid distribution")
+    }  
+    if (event > 0 & event <= length(d)) {  
+      rval <- .C("r_probability_",
+                  histogram = d$histogram,
+	          size      = d$size,
+	          event     = as.integer(event - 1),
+	          prob      = as.double(prob),
+	          err       = as.integer(err))
+
+      if (err) stop("inform lib memory allocation error")
+
+      prob <- rval$prob
+    } else {
+      stop("<event> out of bound")
+    }
+  } else {
+    stop("<d> object corrupted")
+  }
+  
+  prob
+}
+
+################################################################################
+#' Dump
+#'
+#' Generic function to compute the empirical probability of each observable
+#' event and return the result as an array.
+#'
+#' @param d Dist object representing the distribution.
+#'
+#' @return Vector giving the empirical probabilities of all events.
+#'
+#' @example inst/examples/ex_dist_dump.R
+#'
+#' @export
+################################################################################
+dump <- function(d) UseMethod("dump")
+
+################################################################################
+#' @useDynLib rinform r_probability_
+################################################################################
+dump.Dist <- function(d) {
+  err  <- 0
+  prob <- 0
+  
+  if(is_not_corrupted(d)) {
+    if(!valid(d)) {
+      stop("invalid distribution")
+    }  
+    prob <- rep(0.0, length(d))
+    rval <- .C("r_dump_",
+                histogram = d$histogram,
+	        size      = d$size,
+	        prob      = as.double(prob),
+	        err       = as.integer(err))
+
+    if (err) stop("inform lib memory allocation error")
+    prob <- rval$prob
+  } else {
+    stop("<d> object corrupted")
+  }
+  
+  prob
 }
