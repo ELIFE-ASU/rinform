@@ -1,0 +1,14 @@
+INFORM_PATH="inform-0.0.5"
+
+PKG_LIBS+=$(INFORM_PATH)/libinform.a
+PKG_CPPFLAGS+=-D_USE_KNETFILE -D_FILE_OFFSET_BITS=64 \
+	-D_LARGEFILE64_SOURCE -I$(INFORM_PATH)/include
+
+.PHONY: all inform
+
+all: $(SHLIB)
+
+$(SHLIB): inform
+
+inform: 
+	(cd $(INFORM_PATH); $(MAKE) -f Makevars)
