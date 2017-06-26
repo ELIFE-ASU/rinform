@@ -51,9 +51,9 @@ coalesce <- function(series) {
   # Convert to integer vector suitable for C
   xs <- as.integer(series)
 
-  coal <- rep(0,n)
+  coal <- rep(0, n)
   x    <- .C("r_coalesce_",
-             series  = as.integer(xs),
+             series  = xs,
 	     n       = as.integer(n),
 	     coal    = as.integer(coal),
 	     b       = as.integer(b),
