@@ -47,8 +47,8 @@ active_info <- function(series, k, b = 0, local = FALSE, mwindow = FALSE) {
     n <- 1
     m <- length(series)
   } else if (is.matrix(series)) {
-    n <- dim(series)[1]
-    m <- dim(series)[2]
+    n <- dim(series)[2]
+    m <- dim(series)[1]
   }
 
   # Convert to integer vector suitable for C
