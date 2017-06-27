@@ -7,12 +7,11 @@ void r_entropy_rate_(int *series, int *n, int *m, int *b, int *k, double *rval, 
   *err = ierr;
 }
 
-void r_local_entropy_rate_(int *series, int *n, int *m, int *b, int *k, int *mwindow,
-			  double *rval, int *err) {
+void r_local_entropy_rate_(int *series, int *n, int *m, int *b, int *k, double *rval,
+			   int *err) {
   inform_error ierr = INFORM_SUCCESS;
 
   inform_local_entropy_rate(series, *n, *m, *b, *k, rval, &ierr);
   *err = ierr;
 }
-
 

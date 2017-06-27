@@ -59,8 +59,8 @@ transfer_entropy <- function(ys, xs, k, b = 0, local = FALSE, mwindow = FALSE) {
     if (dim(xs)[1] != dim(ys)[1] | dim(xs)[2] != dim(ys)[2]) {
       stop("<xs> and <ys> have different dimensions")
     }
-    n <- dim(xs)[1]
-    m <- dim(xs)[2]
+    n <- dim(xs)[2]
+    m <- dim(xs)[1]
   }
 
   # Convert to integer vector suitable for C
@@ -103,7 +103,8 @@ transfer_entropy <- function(ys, xs, k, b = 0, local = FALSE, mwindow = FALSE) {
 	    err     = as.integer(err))
 	    
     if (x$err == 0) {
-      te <- matrix(x$rval, nrow = n, ncol = m - k, byrow = TRUE)
+      te      <- x$rval
+      dim(te) <- c(m - k, n)
     } else {
       stop("inform lib error (", x$err, ")")
     }
