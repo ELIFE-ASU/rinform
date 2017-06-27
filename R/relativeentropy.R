@@ -33,7 +33,7 @@
 #' @useDynLib rinform r_relative_entropy_
 #' @useDynLib rinform r_local_relative_entropy_
 ################################################################################
-relative_entropy <- function(xs, ys, k, b = 0, base = 2.0, local = FALSE) {
+relative_entropy <- function(xs, ys, b = 0, base = 2.0, local = FALSE) {
   n   <- 0
   m   <- 0  
   re  <- 0
@@ -52,14 +52,9 @@ relative_entropy <- function(xs, ys, k, b = 0, base = 2.0, local = FALSE) {
     if (length(xs) != length(ys)) {
       stop("<xs> and <ys> differ in length")
     }
-    n <- 1
-    m <- length(xs)
-  } else if (is.matrix(xs) & is.matrix(ys)) {
-    if (dim(xs)[1] != dim(ys)[1] | dim(xs)[2] != dim(ys)[2]) {
-      stop("<xs> and <ys> have different dimensions")
-    }
-    n <- dim(xs)[1]
-    m <- dim(xs)[2]
+    n <- length(xs)
+  } else {
+    stop("<xs> and/or <ys> are not vectors")
   }
 
   # Convert to integer vector suitable for C
@@ -81,7 +76,7 @@ relative_entropy <- function(xs, ys, k, b = 0, base = 2.0, local = FALSE) {
     x <- .C("r_relative_entropy_",
             ys      = as.integer(xs),
 	    xs      = as.integer(ys),
-	    n       = as.integer(n * m),
+	    n       = as.integer(n),
 	    b       = as.integer(b),
 	    base    = as.double(base),	    
 	    rval    = as.double(re),
@@ -94,18 +89,18 @@ relative_entropy <- function(xs, ys, k, b = 0, base = 2.0, local = FALSE) {
     }
     
   } else {
-    re <- rep(0, n * m)
+    re <- rep(0, b)
     x <- .C("r_local_relative_entropy_",
             ys      = as.integer(xs),
             xs      = as.integer(ys),
-	    n       = as.integer(n * m),
+	    n       = as.integer(n),
 	    b       = as.integer(b),
 	    base    = as.double(base),	    
 	    rval    = as.double(re),
 	    err     = as.integer(err))
 	    
     if (x$err == 0) {
-      re <- matrix(x$rval, nrow = n, ncol = m, byrow = TRUE)    
+      re <- x$rval
     } else {
       stop("inform lib error (", x$err, ")")
     }

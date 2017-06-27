@@ -44,8 +44,8 @@ entropy_rate <- function(series, k, b = 0, local = FALSE) {
     n <- 1
     m <- length(series)
   } else if (is.matrix(series)) {
-    n <- dim(series)[1]
-    m <- dim(series)[2]
+    n <- dim(series)[2]
+    m <- dim(series)[1]
   }
 
   # Convert to integer vector suitable for C
@@ -84,7 +84,8 @@ entropy_rate <- function(series, k, b = 0, local = FALSE) {
 	    err     = as.integer(err))
 	    
     if (x$err == 0) {
-      er <- matrix(x$rval, nrow = n, ncol = m - k, byrow = TRUE)
+      er      <- x$rval
+      dim(er) <- c(m - k, n)
     } else {
       stop("inform lib error (", x$err, ")")
     }

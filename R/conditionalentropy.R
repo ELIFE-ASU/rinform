@@ -16,9 +16,9 @@
 #' is 2. This function explicitly takes the logarithmic base \code{b} as an
 #' argument.
 #'
-#' @param xs Vector or matrix specifying one or more time series drawn from
+#' @param xs Vector specifying a time series drawn from
 #'        the conditional distribution.
-#' @param ys Vector or matrix specifying one or more time series drawn from
+#' @param ys Vector specifying a time series drawn from
 #'        the target distribution.
 #' @param bx Integer giving the base of the conditional time series.
 #' @param by Integer giving the base of the target time series.
@@ -36,7 +36,7 @@
 #' @useDynLib rinform r_conditional_entropy_
 #' @useDynLib rinform r_local_conditional_entropy_
 ################################################################################
-conditional_entropy <- function(xs, ys, k, bx = 0, by = 0, b = 2.0, local = FALSE) {
+conditional_entropy <- function(xs, ys, bx = 0, by = 0, b = 2.0, local = FALSE) {
   n   <- 0
   m   <- 0  
   ce  <- 0
@@ -55,14 +55,9 @@ conditional_entropy <- function(xs, ys, k, bx = 0, by = 0, b = 2.0, local = FALS
     if (length(xs) != length(ys)) {
       stop("<xs> and <ys> differ in length")
     }
-    n <- 1
-    m <- length(xs)
-  } else if (is.matrix(xs) & is.matrix(ys)) {
-    if (dim(xs)[1] != dim(ys)[1] | dim(xs)[2] != dim(ys)[2]) {
-      stop("<xs> and <ys> have different dimensions")
-    }
-    n <- dim(xs)[1]
-    m <- dim(xs)[2]
+    n <- length(xs)
+  } else {
+    stop("<xs> or/and <ys> are not vectors")  
   }
 
 
@@ -84,7 +79,7 @@ conditional_entropy <- function(xs, ys, k, bx = 0, by = 0, b = 2.0, local = FALS
     x <- .C("r_conditional_entropy_",
             ys      = as.integer(xs),
 	    xs      = as.integer(ys),
-	    n       = as.integer(n * m),
+	    n       = as.integer(n),
 	    bx      = as.integer(bx),
 	    by      = as.integer(by),
 	    b       = as.double(b),	    
@@ -98,20 +93,19 @@ conditional_entropy <- function(xs, ys, k, bx = 0, by = 0, b = 2.0, local = FALS
     }
     
   } else {
-    ce <- rep(0, n * m)
+    ce <- rep(0, m)
     x <- .C("r_local_conditional_entropy_",
             ys      = as.integer(xs),
             xs      = as.integer(ys),
-	    n       = as.integer(n * m),
+	    n       = as.integer(n),
 	    bx      = as.integer(bx),
 	    by      = as.integer(by),
 	    b       = as.double(b),	    
-	    rval    = as.double(te),
+	    rval    = as.double(ce),
 	    err     = as.integer(err))
 	    
     if (x$err == 0) {
-      ce <- x$rval
-      ce <- matrix(x$rval, nrow = n, ncol = m, byrow = TRUE)
+      ce      <- x$rval
     } else {
       stop("inform lib error (", x$err, ")")
     }

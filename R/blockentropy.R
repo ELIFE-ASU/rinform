@@ -44,8 +44,8 @@ block_entropy <- function(series, k, b = 0, local = FALSE) {
     n <- 1
     m <- length(series)
   } else if (is.matrix(series)) {
-    n <- dim(series)[1]
-    m <- dim(series)[2]
+    n <- dim(series)[2]
+    m <- dim(series)[1]
   }
 
   # Convert to integer vector suitable for C
@@ -73,7 +73,7 @@ block_entropy <- function(series, k, b = 0, local = FALSE) {
     }
     
   } else {
-    be <- rep(0, (m - k) * n)
+    be <- rep(0, (m - k + 1) * n)
     x <- .C("r_local_block_entropy_",
             series  = as.integer(xs),
 	    n       = as.integer(n),
@@ -84,7 +84,8 @@ block_entropy <- function(series, k, b = 0, local = FALSE) {
 	    err     = as.integer(err))
 	    
     if (x$err == 0) {
-      be <- matrix(x$rval, nrow = n, ncol = m - k, byrow = TRUE)
+      be      <- x$rval
+      dim(be) <- c(m - k + 1, n)
     } else {
       stop("inform lib error (", x$err, ")")
     }

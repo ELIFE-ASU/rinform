@@ -15,8 +15,8 @@
 #' is 2. This function explicitly takes the logarithmic base \code{b} as an
 #' argument.
 #'
-#' @param xs Vector or matrix specifying one or more time series.
-#' @param ys Vector or matrix specifying one or more time series.
+#' @param xs Vector specifying a time series.
+#' @param ys Vector specifying a time series.
 #' @param bx Integer giving the base of the \code{xs} time series.
 #' @param by Integer giving the base of the \code{ys} time series.
 #' @param b Double giving the base of the logarithm.
@@ -33,7 +33,7 @@
 #' @useDynLib rinform r_mutual_info_
 #' @useDynLib rinform r_local_mutual_info_
 ################################################################################
-mutual_info <- function(xs, ys, k, bx = 0, by = 0, b = 2.0, local = FALSE) {
+mutual_info <- function(xs, ys, bx = 0, by = 0, b = 2.0, local = FALSE) {
   n   <- 0
   m   <- 0  
   mi  <- 0
@@ -52,14 +52,9 @@ mutual_info <- function(xs, ys, k, bx = 0, by = 0, b = 2.0, local = FALSE) {
     if (length(xs) != length(ys)) {
       stop("<xs> and <ys> differ in length")
     }
-    n <- 1
-    m <- length(xs)
-  } else if (is.matrix(xs) & is.matrix(ys)) {
-    if (dim(xs)[1] != dim(ys)[1] | dim(xs)[2] != dim(ys)[2]) {
-      stop("<xs> and <ys> have different dimensions")
-    }
-    n <- dim(xs)[1]
-    m <- dim(xs)[2]
+    n <- length(xs)
+  } else {
+    stop("<xs> and/or <ys> are not vectors")
   }
 
   # Convert to integer vector suitable for C
@@ -80,7 +75,7 @@ mutual_info <- function(xs, ys, k, bx = 0, by = 0, b = 2.0, local = FALSE) {
     x <- .C("r_mutual_info_",
             ys      = as.integer(xs),
 	    xs      = as.integer(ys),
-	    n       = as.integer(n * m),
+	    n       = as.integer(n),
 	    bx      = as.integer(bx),
 	    by      = as.integer(by),
 	    b       = as.double(b),	    
@@ -94,11 +89,11 @@ mutual_info <- function(xs, ys, k, bx = 0, by = 0, b = 2.0, local = FALSE) {
     }
     
   } else {
-    mi <- rep(0, n * m)
+    mi <- rep(0, n)
     x <- .C("r_local_mutual_info_",
             ys      = as.integer(xs),
             xs      = as.integer(ys),
-	    n       = as.integer(n * m),
+	    n       = as.integer(n),
 	    bx      = as.integer(bx),
 	    by      = as.integer(by),
 	    b       = as.double(b),	    
@@ -106,7 +101,7 @@ mutual_info <- function(xs, ys, k, bx = 0, by = 0, b = 2.0, local = FALSE) {
 	    err     = as.integer(err))
 	    
     if (x$err == 0) {
-      mi <- matrix(x$rval, nrow = n, ncol = m, byrow = TRUE)    
+      mi <- x$rval
     } else {
       stop("inform lib error (", x$err, ")")
     }

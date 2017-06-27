@@ -88,7 +88,8 @@ active_info <- function(series, k, b = 0, local = FALSE, mwindow = FALSE) {
 	    err     = as.integer(err))
 	    
     if (x$err == 0) {
-      ai <- matrix(x$rval, nrow = n, ncol = m - k, byrow = TRUE)
+      ai      <- x$rval
+      dim(ai) <- c(m - k, n)
     } else {
       stop("inform lib error (", x$err, ")")
     }
