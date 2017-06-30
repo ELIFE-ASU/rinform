@@ -152,8 +152,6 @@ void r_probability_(int *histogram, int *size, int *event,
   }
 }
 
-#include "stdio.h"
-
 void r_dump_(int *histogram, int *size, double *prob, int *err) {
   inform_dist *dist;
     
