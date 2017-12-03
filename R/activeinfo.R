@@ -16,11 +16,9 @@
 #'
 #' @param series Vector or matrix specifying one or more time series.
 #' @param k Integer giving the history length.
-#' @param b Integer giving the base of the time series and logarithm.
+#' @param b Integer giving the base of the time series.
 #' @param local Boolean specifying whether to compute the local active
 #'        information.
-#' @param mwindow .oolean specifying whether to compute the local active
-#'        information using a moving window of size \code{k}.
 #'
 #' @return Numeric giving the average active information or a vector giving the
 #'         local active information.
@@ -32,15 +30,16 @@
 #' @useDynLib rinform r_active_info_
 #' @useDynLib rinform r_local_active_info_
 ################################################################################
-active_info <- function(series, k, b = 0, local = FALSE, mwindow = FALSE) {
+active_info <- function(series, k, b = 0, local = FALSE) {
   n   <- 0
   m   <- 0
   ai  <- 0
   err <- 0
 
-  if (!is.numeric(series)) {
-    stop("<series> is not numeric")
-  }
+  .check_series(series)
+  .check_history(k)
+  .check_base(b)
+  .check_local(local)
 
   # Extract number of series and length
   if (is.vector(series)) {
@@ -69,12 +68,9 @@ active_info <- function(series, k, b = 0, local = FALSE, mwindow = FALSE) {
 	    rval    = as.double(ai),
 	    err     = as.integer(err))
 	    
-    if (x$err == 0) {
+    if (.check_inform_error(x$err) == 0) {
       ai <- x$rval
-    } else {
-      stop("inform lib error (", x$err, ")")
     }
-    
   } else {
     ai <- rep(0, (m - k) * n)
     x <- .C("r_local_active_info_",
@@ -83,17 +79,13 @@ active_info <- function(series, k, b = 0, local = FALSE, mwindow = FALSE) {
 	    m       = as.integer(m),
 	    b       = as.integer(b),
 	    k       = as.integer(k),
-	    mwindow = as.integer(mwindow),
 	    rval    = as.double(ai),
 	    err     = as.integer(err))
-	    
-    if (x$err == 0) {
+
+    if (.check_inform_error(x$err) == 0) {
       ai      <- x$rval
       dim(ai) <- c(m - k, n)
-    } else {
-      stop("inform lib error (", x$err, ")")
     }
-    
   }
 
   ai

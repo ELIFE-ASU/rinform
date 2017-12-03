@@ -1,4 +1,4 @@
-inform_sources=$(wildcard src/*.c) $(wildcard src/utilities/*.c)
+inform_sources=$(wildcard src/*.c) $(wildcard src/utilities/*.c) $(wildcard src/ginger/*.c)
 inform_objects=$(inform_sources:%.c=%.o)
 
 CFLAGS+=-Iinclude -O3
