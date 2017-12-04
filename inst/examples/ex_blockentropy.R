@@ -8,11 +8,6 @@ block_entropy(xs, k = 2) # 1.811278
 # [ 1.415037, 3.0, 1.415037, 1.415037, 1.415037, 3.0, 1.415037, 1.415037]
 block_entropy(xs, k = 2, local = TRUE)
 
-# You can override the base so that the entropy is in the unit interval
-block_entropy(xs, k = 2, b = 4) # 0.9056391
-# [ 0.7075187, 1.5, 0.7075187, 0.7075187, 0.7075187, 1.5, 0.7075187, 0.7075187]
-block_entropy(xs, k = 2, b = 4, local = TRUE)
-
 # Multiple Initial Conditions
 xs      <- matrix(0, nrow = 9, ncol = 2)
 xs[, 1] <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)

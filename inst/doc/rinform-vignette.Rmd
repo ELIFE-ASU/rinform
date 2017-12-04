@@ -136,6 +136,51 @@ t(lai)
 
 ## Block Entropy
 
+Block entropy, also known as stem:`N`-gram entropy [[@Shannon1948]](#References),
+is the standard Shannon entropy of the `k`-histories of a time series:
+$$
+H(X^{(k)}) = -\sum_{x_i^{(k)}} p(x_i^{(k)}) \log_2{p(x_i^{(k)})}
+++++$$
+which reduces to the traditional Shannon entropy for `k = 1`.
+
+__Interface:__
+
+Compute the average or local block entropy of a time series with block size `k`.
+
+```r
+block_entropy(series, k, local = FALSE)
+```
+__Examples:__
+
+```{r}
+# One initial condition:
+# k = 1
+series <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
+block_entropy(series, k = 1)
+
+# k = 2
+block_entropy(series, k = 2)
+
+# ..and local variant:
+# k = 1
+be <- block_entropy(series, k = 1, local = T)
+t(be)
+
+# k = 2
+be <- block_entropy(series, k = 2, local = T)
+t(be)
+
+# Two initial conditions:
+series      <- matrix(nrow = 9, ncol = 2)
+series[, 1] <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
+series[, 2] <- c(1, 0, 0, 1, 0, 0, 1, 0, 0)
+block_entropy(series, k = 2)
+
+# ..and local variant:
+be <- block_entropy(series, k = 2, local = T)
+t(be)
+```
+
 ## Conditional Entropy
 
 ## Cross Entropy
