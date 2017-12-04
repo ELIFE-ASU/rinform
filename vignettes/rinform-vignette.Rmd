@@ -136,12 +136,12 @@ t(lai)
 
 ## Block Entropy
 
-Block entropy, also known as stem:`N`-gram entropy [[@Shannon1948]](#References),
-is the standard Shannon entropy of the `k`-histories of a time series:
+Block entropy, also known as stem:$N$-gram entropy [[@Shannon1948]](#References),
+is the standard Shannon entropy of the $k$-histories of a time series:
 $$
 H(X^{(k)}) = -\sum_{x_i^{(k)}} p(x_i^{(k)}) \log_2{p(x_i^{(k)})}
-++++$$
-which reduces to the traditional Shannon entropy for `k = 1`.
+$$
+which reduces to the traditional Shannon entropy for $k = 1$.
 
 __Interface:__
 
@@ -182,6 +182,50 @@ t(be)
 ```
 
 ## Conditional Entropy
+
+[Conditional entropy](https://en.wikipedia.org/wiki/Conditional_entropy) is a measure of the
+amount of information required to describe a random variable $Y$ given knowledge of
+another random variable $X$. When applied to time series, two time series are used to
+construct the empirical distributions and the conditional entropy is given 
+$$
+H(Y|X) = - \sum_{x_i,y_i} p(x_i,y_i) \log_2{p(y_i|x_i)}.
+$$
+
+This can be viewed as the time-average of the local conditional entropy
+$$
+h_i(Y|X) = -\log_2{p(y_i|x_i)}.
+$$
+See [[@Cover1991]](#References) for more information.
+
+__Interface:__
+
+Compute the average and local conditional entropy between two time series.
+
+This function expects the *condition* to be the first argument, `xs`. It is expected that
+each time series be the same length `n`, but may have different bases.
+
+```r
+conditional_entropy(xs, ys, local = FALSE)
+```
+
+__Examples:__
+
+```{r}
+xs <- c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1)
+ys <- c(0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+# Conditional entropy:
+conditional_entropy(xs, ys)
+
+conditional_entropy(ys, xs)
+
+# ..and local variant:
+ce <- conditional_entropy(xs, ys, local = T)
+t(ce)
+
+ce <- conditional_entropy(ys, xs, local = T)
+t(ce)
+```
 
 ## Cross Entropy
 

@@ -50,7 +50,7 @@ active_info <- function(series, k, local = FALSE) {
   xs <- as.integer(series)
 
   # Compute the value of <b>
-  b <- max(xs) + 1
+  b <- max(2, max(xs) + 1)
 
   if (!local) {
     x <- .C("r_active_info_",
