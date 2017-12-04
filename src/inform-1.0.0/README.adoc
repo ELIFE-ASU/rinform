@@ -1,0 +1,127 @@
+= Inform: A cross-platform C library for information analysis of dynamical systems
+Douglas G. Moore <douglas.g.moore@asu.edu>
+v1.0.0, November 2017
+:source-highlighter: pretty
+:stem: latexmath
+
+*Inform* is a C libary designed to provide "easy" information analysis of complex systems.
+The primary use case for Inform is to wrap it in a higher-level language such as
+https://github.com/elife-asu/pyinform[Python] or https://github.com/elife-asu/rinform[R].
+That said, *Inform* is definitely useful.
+
+If you are interested in wrapping or using *Inform* itself, you'll definitely be interested
+in the documentation - https://elife-asu.github.io/Inform.
+
+image:https://travis-ci.org/ELIFE-ASU/Inform.svg?branch=master[Build Status (Travis CI),
+link=https://travis-ci.org/ELIFE-ASU/Inform]
+image:https://ci.appveyor.com/api/projects/status/7y015h6p7n0q7097/branch/master?svg=true[Build
+Status (Appveyor), link=https://ci.appveyor.com/project/dglmoore/inform-vx977]
+
+== Installation from Source
+To build *Inform*, you will need to have https://cmake.org/[CMake]. Most of you can use your
+package manager, e.g. `apt-get`, `pacman` or `yum` on Linux or `homebrew`, `macports` or
+`fink` on OS X.
+
+=== Linux, OS X, and Windows (Bash, MinGW and Cygwin)
+Once CMake is installed, building, testing and installing the library is a snap
+[source]
+----
+λ cmake . -DCMAKE_BUILD_TYPE=Release -DEXAMPLES=Yes
+λ make all tests
+λ sudo make install
+----
+
+=== Windows with MSVC
+Building with MSVC is a bit more involved. Open the Visual C++ MSBuild command prompt
+(should be in your start menu). You can then run cmake build and test from the prompt:
+[source]
+----
+λ cmake -DCMAKE_BUILD_TYPE=Release -DEXAMPLES=Yes -G"Visual Studio 14 2015"
+λ msbuild /p:Configuration=Release ALL_BUILD.vcxproj
+λ test\Release\inform_unittest.exe
+----
+Installation requires the user to manually copy the headers and libraries to wherever the
+user would like. This project-by-project approach is standard for Windows development, as
+you probably know.
+
+== Binary Installation
+Precompiled binaries can be found at https://github.com/elife-asu/inform/releases.
+
+== Getting Help
+*Inform* is developed to help anyone interested in applying information-theoretic techniques
+get things done quickly and painlessly. We cannot do that without your feedback. We host the
+project's source code and issue tracker on https://github.com/elife-asu/inform[Github].
+Please create an issue if you find a bug, an error in this documentation, or have a feature
+you'd like to request. Your contribution will make *Inform* a better tool for everyone.
+
+If you are interested in contributing to *Inform*, please contact the developers, and we'll
+get you up and running!
+
+Inform Source Repository::
+    https://github.com/elife-asu/inform
+
+Issue Tracker::
+    https://github.com/elife-asu/inform/issues
+
+== Related Projects
+
+=== Inform Community
+While *Inform* is a great tool to use directly in C or C\+\+, significant effort has gone
+into making it easy to wrap higher level languages. Here are a few of the wrappers that are
+under active developed:
+
+.Inform Wrappers
+|===
+| Package Name | Language | Repository | Website
+
+| PyInform
+| Python
+| https://github.com/elife-asu/pyinform[elife-asu/pyinform]
+| https://elife-asu.github.io/PyInform
+
+| rinform
+| R
+| https://github.com/elife-asu/rinform[elife-asu/rinform]
+| _forthcoming_
+
+| Inform.jl
+| Julia
+| https://github.com/elife-asu/inform.jl[elife-asu/inform.jl]
+| _forthcoming_
+
+| InformWolfram
+| Mathematica/Wolfram Language
+| https://github.com/elife-asu/informwolfram[elife-asu/informwolfram]
+| _forthcoming_
+|===
+
+
+=== Intellectual Relatives
+*Inform* was not created in an intellectual vacuum. Many similar projects have preceded it
+and are under active development. All of those projects have advantages and disadvantages
+compared to *Inform*. If *Inform* doesn't meet your needs, I hope you will let us know, and
+try one of these:
+
+* https://jlizier.github.il/jidt[JIDT]: Java Information Dynamics Toolkit (Java)
+* https://trentool.github.io/TRENTOOL3[TRENTOOL]: TRansfer ENtropy TOOLbox (Matlab)
+* https://docs.dit.io[dit]: discrete information theory (Python)
+* https://mutetoolbox.guru[MuTE]: MuTE Toolbox- The Dynamic DIrected Links Detector (Matlab)
+* https://users.sussex.ac.uk/~lionelb/MVGC[MVGC]: Multivariate Granger Causality Toolbox
+    (Matlab)
+* https://cran.r-project.org/web/packages/acss[ACSS]: Algorithmic Complexity for Short
+    Strings (R)
+* https://complexitycalculator.com[OACC]: Online Algorithmic Complexity
+    Calculator (web-based, R)
+
+== Copyright and Licensing
+Copyright © 2016-2017 ELIFE, Arizona State University. Free use of this software is granted
+under the terms of the MIT License.
+
+See the https://github.com/elife-asu/inform/blob/master/LICENSE[LICENSE] file for details.
+
+
+== Support
+This project was supported in part by a grant provided by the Templeton World Charity
+Foundation as part of the
+link:http://www.templetonworldcharity.org/what-we-fund/themes-of-interest/power-of-information[Power
+of Information Inititive].

@@ -1,0 +1,225 @@
+---
+title: "The rinform Wrapper"
+author: "Gabriele Valentini"
+date: "`r Sys.Date()`"
+output:
+#  rmarkdown::html_vignette
+  html_document:
+    toc: true # table of content true
+    toc_depth: 2  # upto three depths of headings (specified by #, ## and ###)
+    toc_float: true    
+    number_sections: true  ## if you want number sections at each table header
+    theme: yeti  # many options for theme, this one is my favorite.
+    highlight: tango  # specifies the syntax highlighting style
+  pdf_document:
+    highlight: null
+    number_sections: yes    
+bibliography: vignette.bibtex
+vignette: >
+  %\VignetteIndexEntry{The rinform Wrapper}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+An R wrapper of the [Inform v1.0.0](https://elife-asu.github.io/Inform/) C library for performing information analysis of complex system. As for the Inform library, _rinform_ is structured around the concepts of:
+
+* discrete emperical probability distributions which form the basis for
+  all of the information-theoretic measures,
+  
+* classic information-theoretic measures built upon empirical distributions,
+
+* measures of information dynamics for time series.
+
+In addition to the core components, rinform also provides a small collection of utilities to deal with time series. 
+
+
+# Getting Started
+
+# Error Handling
+
+# Empirical Distributions
+
+## Distribution Type
+
+## Allocation/Deallocation
+
+## Accessors/Mutators
+
+## Probabilities
+
+# Shannon Information Measures
+
+## Entropy
+
+## Mutual Information
+
+## Conditional Entropy
+
+## Conditional Mutual Information
+
+## Relative Entropy
+
+## Cross Entropy
+
+# Time Series Measures
+
+## Notation
+
+## Implementation Details
+
+## Active Information
+
+Active information (AI) was introduced in [[@Lizier2012]](#References) to quantify information
+storage in distributed computations. Active information is defined in terms of a
+temporally local variant
+
+$$
+a_{X,i}(k) = \log_2{\frac{p(x_i^{(k)}, x_{i+1})}{p(x_i^{(k)})p(x_{i+1})}},
+$$
+
+where the probabilities are constructed empirically from the _entire_ time series.
+From the local variant, the temporally global active information is defined as
+
+$$
+A_X(k) = \langle a_{X,i}(k) \rangle_i
+       = \sum_{x_i^{(k)},x_{i+1}} p(x_i^{(k)},x_{i+1}) \log_2{\frac{p(x_i^{(k)}, x_{i+1})}{p(x_i^{(k)})p(x_{i+1})}}.
+$$
+
+Strictly speaking, the local and average active information are defined as
+
+$$
+a_{X,i} = \lim_{k\rightarrow \infty}a_{X,i}(k)
+\qquad \textrm{and} \qquad
+A_X = \lim_{k\rightarrow \infty}A_X(k),
+$$
+
+but we do not provide yet limiting functionality in this library
+([GitHub issues](https://github.com/elife-asu/Inform/issues/24)).
+
+__Interface:__
+
+Compute the average or local active information with a history length `k`.
+
+```r
+active_info(series, k, local = FALSE)
+```
+
+__Examples:__
+
+```{r}
+# One initial condition:
+series <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
+active_info(series, k = 2)
+
+# ..and local variant:
+lai <- active_info(series, k = 2, local = T)
+t(lai)
+
+# Two initial conditions:
+series      <- matrix(nrow = 9, ncol = 2)
+series[, 1] <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
+series[, 2] <- c(1, 0, 0, 1, 0, 0, 1, 0, 0)
+active_info(series, k = 2)
+
+# ..and local variant:
+lai <- active_info(series, k = 2, local = T)
+t(lai)
+
+```
+
+## Block Entropy
+
+## Conditional Entropy
+
+## Cross Entropy
+
+## Effective Information
+
+## Entropy Rate
+
+## Excess Entropy
+
+## Information Flow
+
+## Evidence of Integration
+
+## Mutual Information
+
+## Partial Information Decomposition
+
+## Predictive Information
+
+## Relative Entropy
+
+## Separable Information
+
+## Transfer Entropy
+
+# Utilities
+
+## Binning Time Series
+
+## Black-Boxing Time Series
+
+## Coalescing Time Series
+
+## Encoding/Decoding States
+
+## Partitioning Time Series
+
+## Random Time Series
+
+## Time Series to TPM
+
+# References
+
+## Vignette Info
+
+Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
+
+## Styles
+
+The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+
+    output: 
+      rmarkdown::html_vignette:
+        css: mystyles.css
+
+## Figures
+
+The figure sizes have been customised so that you can easily put two images side-by-side. 
+
+```{r, fig.show='hold'}
+plot(1:10)
+plot(10:1)
+```
+
+You can enable figure captions by `fig_caption: yes` in YAML:
+
+    output:
+      rmarkdown::html_vignette:
+        fig_caption: yes
+
+Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+
+## More Examples
+
+You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(mtcars, 10))
+```
+
+Also a quote using `>`:
+
+> "He who gives up [code] safety for [code] speed deserves neither."
+([via](https://twitter.com/hadleywickham/status/504368538874703872))
+
+# References {#References}
