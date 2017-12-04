@@ -4,6 +4,12 @@
   }
 }
 
+.check_series_vector <- function (x) {
+  if (!is.vector(x)) {
+    stop("<", deparse(substitute(x)), "> is not a vector!", call. = !T)
+  }
+}
+
 .check_history <- function (k) {
   if (!is.numeric(k)) {
     stop("<", deparse(substitute(k)), "> is not numeric!", call. = !T)

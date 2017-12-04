@@ -134,7 +134,7 @@ t(lai)
 
 ```
 
-## Block Entropy
+## Block Entropy {#BlockEntropy}
 
 Block entropy, also known as stem:$N$-gram entropy [[@Shannon1948]](#References),
 is the standard Shannon entropy of the $k$-histories of a time series:
@@ -228,6 +228,38 @@ t(ce)
 ```
 
 ## Cross Entropy
+
+[Cross entropy](https://en.wikipedia.org/wiki/Cross_entropy) between two distributions
+$p_X$ and $q_X$ measures the amount of information needed to identify events
+using a coding scheme optimized for $q_X$ when $p_X$ is the "real" distribution
+over $X$.
+$$
+H(p,q) = -\sum_{x} p(x) \log_2{q(x)}
+$$
+Cross entropy's local variant is equivalent to the self-information of $q_X$ and as
+such is implemented by the [local block entropy](#BlockEntropy).
+
+See [[@Cover1991]](#References) for more details.
+
+__Interface:__
+
+Compute the cross entropy between the "true" and "unnatural" distributions $p_X$ and
+$q_X$ from associated time series `ps` and `qs`, respectively.
+
+```r
+cross_entropy(ps, qs)
+```
+
+__Examples:__
+
+```{r}
+ps <- c(0, 1, 1, 0, 1, 0, 0, 1, 0, 0)
+qs <- c(0, 0, 0, 0, 0, 1, 1, 0, 0, 1)
+
+cross_entropy(ps, qs)
+
+cross_entropy(qs, ps)
+```
 
 ## Effective Information
 
