@@ -100,7 +100,7 @@ a_{X,i} = \lim_{k\rightarrow \infty}a_{X,i}(k)
 A_X = \lim_{k\rightarrow \infty}A_X(k),
 $$
 
-but we do not provide limiting functionality in this library
+but we do not provide yet limiting functionality in this library
 ([GitHub issues](https://github.com/elife-asu/Inform/issues/24)).
 
 __Interface:__
@@ -108,7 +108,7 @@ __Interface:__
 Compute the average or local active information with a history length `k`.
 
 ```r
-active_info(series, k, b = 0, local = FALSE)
+active_info(series, k, local = FALSE)
 ```
 
 __Examples:__
@@ -116,20 +116,20 @@ __Examples:__
 ```{r}
 # One initial condition:
 series <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
-active_info(series, k = 2, b = 2)
+active_info(series, k = 2)
 
 # ..and local variant:
-lai <- active_info(series, k = 2, b = 2, local = T)
+lai <- active_info(series, k = 2, local = T)
 t(lai)
 
 # Two initial conditions:
 series      <- matrix(nrow = 9, ncol = 2)
 series[, 1] <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
 series[, 2] <- c(1, 0, 0, 1, 0, 0, 1, 0, 0)
-active_info(series, k = 2, b = 2)
+active_info(series, k = 2)
 
 # ..and local variant:
-lai <- active_info(series, k = 2, b = 2, local = T)
+lai <- active_info(series, k = 2, local = T)
 t(lai)
 
 ```
