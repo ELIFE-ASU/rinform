@@ -4,12 +4,6 @@ entropy_rate(xs, k = 2) #0.6792696
 # [1] 1.0, 0.0, 0.5849625, 0.5849625, 1.5849625, 0.0, 1.0
 entropy_rate(xs, k = 2, local = TRUE)
 
-# You can always override the base, but be careful.
-xs <- c(0, 0, 1, 1, 1, 1, 2, 2, 2)
-entropy_rate(xs, k = 2)         # 0.2483058
-entropy_rate(xs, k = 2, b = 4)  # 0.1967777
-entropy_rate(xs, k = 2, b = 2)  # Error, unexpected state in timeseries
-
 # Multiple Initial Conditions
 xs      <- matrix(0, nrow = 9, ncol = 2)
 xs[, 1] <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)

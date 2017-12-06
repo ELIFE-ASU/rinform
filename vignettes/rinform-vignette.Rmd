@@ -74,7 +74,7 @@ In addition to the core components, rinform also provides a small collection of 
 
 ## Implementation Details
 
-## Active Information
+## Active Information {#ActiveInformation}
 
 Active information (AI) was introduced in [[@Lizier2012]](#References) to quantify information
 storage in distributed computations. Active information is defined in terms of a
@@ -264,6 +264,62 @@ cross_entropy(qs, ps)
 ## Effective Information
 
 ## Entropy Rate
+
+[Entropy rate](https://en.wikipedia.org/wiki/Entropy_rate) quantifies the amount of
+information needed to describe the next state of $X$ given observations of
+$X^{(k)}.$  In other wrods, it is the entropy of the time series conditioned on the
+$k$-histories.  The local entropy rate
+$$
+h_{X,i}(k) = \log_2{\frac{p(x_i^{(k)}, x_{i+1})}{p(x_i^{(k)})}}.
+$$
+can be averaged to obtain the global entropy rate
+$$
+H_X(k) = \langle h_{X,i}(k) \rangle_i
+       = \sum_{x_i^{(k)},x_{i+1}} p(x_i^{(k)},x_{i+1}) \log_2{\frac{p(x_i^{(k)}, x_{i+1})}{p(x_i^{(k)})}}.
+$$
+
+Much as with [active information](#ActiveInformation), the local and average entropy rates are
+formally obtained in the limit
+$$
+h_{X,i} = \lim_{k\rightarrow \infty}h_{X,i}(k)
+\qquad \textrm{and} \qquad
+H_X = \lim_{k\rightarrow \infty}H_X(k),
+$$
+
+but we do not provide yet limiting functionality in this library
+([GitHub issues](https://github.com/elife-asu/Inform/issues/24)).
+
+See [[@Cover1991]](#References) for more details.
+
+__Interface:__
+
+Compute the average or local entropy rate with a history length `k`.
+
+```r
+entropy_rate(series, k, local = FALSE)
+```
+
+__Examples:__
+
+```{r}
+# One initial condition:
+series <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
+entropy_rate(series, k = 2)
+
+# ..and local variant:
+er <- entropy_rate(series, k = 2, local = T)
+t(er)
+
+# Two initial conditions:
+series      <- matrix(nrow = 9, ncol = 2)
+series[, 1] <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
+series[, 2] <- c(1, 0, 0, 1, 0, 0, 1, 0, 0)
+entropy_rate(series, k = 2)
+
+# ..and local variant:
+er <- entropy_rate(series, k = 2, local = T)
+t(er)
+```
 
 ## Excess Entropy
 
