@@ -52,6 +52,22 @@ block_entropy(series, k = 2)
 be <- block_entropy(series, k = 2, local = T)
 t(be)
 
+## ------------------------------------------------------------------------
+xs <- c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1)
+ys <- c(0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+# Conditional entropy:
+conditional_entropy(xs, ys)
+
+conditional_entropy(ys, xs)
+
+# ..and local variant:
+ce <- conditional_entropy(xs, ys, local = T)
+t(ce)
+
+ce <- conditional_entropy(ys, xs, local = T)
+t(ce)
+
 ## ---- fig.show='hold'----------------------------------------------------
 plot(1:10)
 plot(10:1)

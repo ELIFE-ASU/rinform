@@ -49,7 +49,7 @@ block_entropy <- function(series, k, local = FALSE) {
   xs <- as.integer(series)
 
   # Compute the value of <b>
-  b <- max(xs) + 1
+  b <- max(max(xs) + 1)
 
   if (!local) {
     x <- .C("r_block_entropy_",
