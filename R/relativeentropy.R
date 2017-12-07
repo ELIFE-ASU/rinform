@@ -10,16 +10,10 @@
 #' Relative Entropy
 #'
 #' Compute the average or local relative entropy between two time series
-#' treating each as observations from a distribution. The base \code{b} is
-#' inferred from the time series if it is not provided (or is 0). The minimum
-#' value is 2. This function explicitly takes the logarithmic base \code{base}
-#' as an argument.
+#' treating each as observations from a distribution. 
 #'
 #' @param xs Vector or matrix specifying one or more time series.
 #' @param ys Vector or matrix specifying one or more time series.
-#' @param bx Integer giving the base of the \code{xs} time series.
-#' @param by Integer giving the base of the \code{ys} time series.
-#' @param b Double giving the base of the logarithm.
 #' @param local Boolean specifying whether to compute the local relative
 #'        entropy.
 #'
@@ -33,28 +27,24 @@
 #' @useDynLib rinform r_relative_entropy_
 #' @useDynLib rinform r_local_relative_entropy_
 ################################################################################
-relative_entropy <- function(xs, ys, b = 0, base = 2.0, local = FALSE) {
+relative_entropy <- function(xs, ys, local = FALSE) {
   n   <- 0
   m   <- 0  
   re  <- 0
   err <- 0
-  
-  if (!is.numeric(xs)) {
-    stop("<xs> is not numeric")
-  }
 
-  if (!is.numeric(ys)) {
-    stop("<ys> is not numeric")
-  }
+  .check_series(xs)
+  .check_series(ys)
+  .check_local(local)
 
   # Extract number of series and length
   if (is.vector(xs) & is.vector(ys)) {
     if (length(xs) != length(ys)) {
-      stop("<xs> and <ys> differ in length")
+      stop("<", deparse(substitute(xs)), "> and <", deparse(substitute(ys)), "> differ in length")
     }
     n <- length(xs)
   } else {
-    stop("<xs> and/or <ys> are not vectors")
+    stop("<", deparse(substitute(xs)), "> or/and <", deparse(substitute(ys)), "> are not vectors")
   }
 
   # Convert to integer vector suitable for C
@@ -62,15 +52,7 @@ relative_entropy <- function(xs, ys, b = 0, base = 2.0, local = FALSE) {
   ys <- as.integer(ys)
 
   # Compute the value of <bx>
-  if (b == 0) {
-    bx <- max(2, max(xs) + 1)
-    by <- max(2, max(xs) + 1)
-
-    if (bx != by) {
-      stop("<xs> and <ys> have different bases")
-    }
-    b <- bx
-  }
+  b <- max(2, max(xs) + 1, max(ys) + 1)
 
   if (!local) {
     x <- .C("r_relative_entropy_",
@@ -78,16 +60,12 @@ relative_entropy <- function(xs, ys, b = 0, base = 2.0, local = FALSE) {
 	    xs      = as.integer(ys),
 	    n       = as.integer(n),
 	    b       = as.integer(b),
-	    base    = as.double(base),	    
 	    rval    = as.double(re),
 	    err     = as.integer(err))
-	    
-    if (x$err == 0) {
+
+    if (.check_inform_error(x$err) == 0) {
       re <- x$rval
-    } else {
-      stop("inform lib error (", x$err, ")")
     }
-    
   } else {
     re <- rep(0, b)
     x <- .C("r_local_relative_entropy_",
@@ -95,16 +73,12 @@ relative_entropy <- function(xs, ys, b = 0, base = 2.0, local = FALSE) {
             xs      = as.integer(ys),
 	    n       = as.integer(n),
 	    b       = as.integer(b),
-	    base    = as.double(base),	    
 	    rval    = as.double(re),
 	    err     = as.integer(err))
 	    
-    if (x$err == 0) {
+    if (.check_inform_error(x$err) == 0) {
       re <- x$rval
-    } else {
-      stop("inform lib error (", x$err, ")")
-    }
-    
+    }	    
   }
 
   re

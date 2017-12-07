@@ -1650,7 +1650,7 @@ A_X = \lim_{k\rightarrow \infty}A_X(k),
 </section>
 <section id="BlockEntropy" class="level2">
 <h2><span class="header-section-number">5.4</span> Block Entropy</h2>
-<p>Block entropy, also known as stem:<span class="math inline">\(N\)</span>-gram entropy <a href="#References"><span class="citation" data-cites="Shannon1948">(Shannon 1948)</span></a>, is the standard Shannon entropy of the <span class="math inline">\(k\)</span>-histories of a time series: <span class="math display">\[
+<p>Block entropy, also known as <span class="math inline">\(N\)</span>-gram entropy <a href="#References"><span class="citation" data-cites="Shannon1948">(Shannon 1948)</span></a>, is the standard Shannon entropy of the <span class="math inline">\(k\)</span>-histories of a time series: <span class="math display">\[
 H(X^{(k)}) = -\sum_{x_i^{(k)}} p(x_i^{(k)}) \log_2{p(x_i^{(k)})}
 \]</span> which reduces to the traditional Shannon entropy for <span class="math inline">\(k = 1\)</span>.</p>
 <p><strong>Interface:</strong></p>
@@ -1874,6 +1874,36 @@ I(X_1,\ldots,X_l) =
 </section>
 <section id="relative-entropy-1" class="level2">
 <h2><span class="header-section-number">5.15</span> Relative Entropy</h2>
+<p><a href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence">Relative entropy</a>, also known as the Kullback-Leibler divergence, measures the amount of information gained in switching from a prior distribution <span class="math inline">\(q_X\)</span> to a posterior distribution <span class="math inline">\(p_X\)</span> over <em>the same support</em>: <span class="math display">\[
+D_{KL}(p||q) = \sum_{x_i} p(x_i) \log_2{\frac{p(x_i)}{q(x_i)}}.
+\]</span> The local counterpart is <span class="math display">\[
+d_{KL,i}(p||q) = log_2{\frac{p(x_i)}{q(x_i)}}.
+\]</span> Note that the average in moving from the local to the non-local relative entropy is taken over the posterior distribution.</p>
+<p>See <a href="#References"><span class="citation" data-cites="Kullback1951">(Kullback and Leibler 1951)</span></a> and <a href="#References"><span class="citation" data-cites="Cover1991">(Cover and Thomas 1991)</span></a> for more information.</p>
+<p><strong>Interface:</strong></p>
+<p>Compute the average and local relative entropy between time series drawn from posterior and prior distributions, here <code>xs</code> and <code>ys</code> respectively.</p>
+<pre class="sourceCode r" id="cb9"><code class="sourceCode r"><div class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">relative_entropy</span>(xs, ys, <span class="dt">local =</span> <span class="ot">FALSE</span>)</div></code></pre>
+<p><strong>Examples:</strong></p>
+<pre class="sourceCode r" id="cb10"><code class="sourceCode r"><div class="sourceLine" id="cb10-1" data-line-number="1">xs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>)</div>
+<div class="sourceLine" id="cb10-2" data-line-number="2">ys &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>)</div>
+<div class="sourceLine" id="cb10-3" data-line-number="3"></div>
+<div class="sourceLine" id="cb10-4" data-line-number="4"><span class="co"># Average relative entropy:</span></div>
+<div class="sourceLine" id="cb10-5" data-line-number="5"><span class="kw">relative_entropy</span>(xs, ys)</div>
+<div class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; [1] 0.2780719</span></div>
+<div class="sourceLine" id="cb10-7" data-line-number="7"></div>
+<div class="sourceLine" id="cb10-8" data-line-number="8"><span class="kw">relative_entropy</span>(ys, xs)</div>
+<div class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt; [1] 0.3219281</span></div>
+<div class="sourceLine" id="cb10-10" data-line-number="10"></div>
+<div class="sourceLine" id="cb10-11" data-line-number="11"><span class="co"># ..and local variant:</span></div>
+<div class="sourceLine" id="cb10-12" data-line-number="12">re &lt;-<span class="st"> </span><span class="kw">relative_entropy</span>(xs, ys, <span class="dt">local =</span> T)</div>
+<div class="sourceLine" id="cb10-13" data-line-number="13"><span class="kw">t</span>(re)</div>
+<div class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt;           [,1]      [,2]</span></div>
+<div class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; [1,] 0.6780719 -1.321928</span></div>
+<div class="sourceLine" id="cb10-16" data-line-number="16"></div>
+<div class="sourceLine" id="cb10-17" data-line-number="17">re &lt;-<span class="st"> </span><span class="kw">relative_entropy</span>(ys, xs, <span class="dt">local =</span> T)</div>
+<div class="sourceLine" id="cb10-18" data-line-number="18"><span class="kw">t</span>(re)</div>
+<div class="sourceLine" id="cb10-19" data-line-number="19"><span class="co">#&gt;            [,1]     [,2]</span></div>
+<div class="sourceLine" id="cb10-20" data-line-number="20"><span class="co">#&gt; [1,] -0.6780719 1.321928</span></div></code></pre>
 </section>
 <section id="separable-information" class="level2">
 <h2><span class="header-section-number">5.16</span> Separable Information</h2>
@@ -1906,6 +1936,7 @@ I(X_1,\ldots,X_l) =
 <h2><span class="header-section-number">6.7</span> Time Series to TPM</h2>
 </section>
 </section>
+<<<<<<< HEAD
 <section id="references" class="level1">
 <h1><span class="header-section-number">7</span> References</h1>
 <section id="vignette-info" class="level2">
@@ -2100,11 +2131,16 @@ I(X_1,\ldots,X_l) =
 </blockquote>
 </section>
 </section>
+=======
+>>>>>>> Implemented relative entropy. Still to check its behavior with Doug.
 <section id="References" class="level1 unnumbered">
 <h1>References</h1>
 <div id="refs" class="references">
 <div id="ref-Cover1991">
 <p>Cover, T. M., and J. A. Thomas. 1991. <em>Elements of Information Theory</em>. New York: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-Kullback1951">
+<p>Kullback, S., and R. A. Leibler. 1951. “On Information and Sufficiency.” <em>The Annals of Mathematical Statistics</em> 22 (1):79–86. <a href="https://doi.org/10.1214/aoms/1177729694" class="uri">https://doi.org/10.1214/aoms/1177729694</a>.</p>
 </div>
 <div id="ref-Lizier2012">
 <p>Lizier, J. T., M. Prokopenko, and A. Y. Zomaya. 2012. “Local Measures of Information Storage in Complex Distributed Computation.” <em>Information Sciences</em> 208 (Supplement C):39–54. <a href="https://doi.org/10.1016/j.ins.2012.04.016" class="uri">https://doi.org/10.1016/j.ins.2012.04.016</a>.</p>
@@ -2113,12 +2149,6 @@ I(X_1,\ldots,X_l) =
 <p>Shannon, C. E. 1948. “A Mathematical Theory of Communication.” <em>The Bell System Technical Journal</em> 27 (3):379–423. <a href="https://doi.org/10.1002/j.1538-7305.1948.tb01338.x" class="uri">https://doi.org/10.1002/j.1538-7305.1948.tb01338.x</a>.</p>
 </div>
 </div>
-</section>
-<section class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>A footnote here.<a href="#fnref1" class="footnote-back">↩</a></p></li>
-</ol>
 </section>
 
 
