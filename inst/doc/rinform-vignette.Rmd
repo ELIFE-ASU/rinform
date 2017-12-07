@@ -345,6 +345,7 @@ See [[@Cover1991]](#References) for more details.
 
 __Interface:__
 
+<<<<<<< HEAD
 Compute the mutual information or its local variant between two or more time series.
 Each variable can have a different base.
 

@@ -4,12 +4,9 @@ export(active_info)
 export(block_entropy)
 export(conditional_entropy)
 export(cross_entropy)
-<<<<<<< HEAD
 export(entropy_rate)
 export(mutual_info)
-=======
 export(relative_entropy)
->>>>>>> Implemented relative entropy. Still to check its behavior with Doug.
 useDynLib(rinform,r_active_info_)
 useDynLib(rinform,r_block_entropy_)
 useDynLib(rinform,r_conditional_entropy_)
@@ -18,11 +15,8 @@ useDynLib(rinform,r_entropy_rate_)
 useDynLib(rinform,r_local_active_info_)
 useDynLib(rinform,r_local_block_entropy_)
 useDynLib(rinform,r_local_conditional_entropy_)
-<<<<<<< HEAD
 useDynLib(rinform,r_local_entropy_rate_)
 useDynLib(rinform,r_local_mutual_info_)
-useDynLib(rinform,r_mutual_info_)
-=======
 useDynLib(rinform,r_local_relative_entropy_)
+useDynLib(rinform,r_mutual_info_)
 useDynLib(rinform,r_relative_entropy_)
->>>>>>> Implemented relative entropy. Still to check its behavior with Doug.
