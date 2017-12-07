@@ -164,6 +164,7 @@ get_item <- function(d, event) UseMethod("get_item")
  
 ################################################################################
 #' @useDynLib rinform r_get_item_
+#' @export 
 ################################################################################
 get_item.Dist <- function(d, event) {
   rval <- NULL
@@ -208,6 +209,7 @@ set_item <- function(d, event, value) UseMethod("set_item")
 
 ################################################################################
 #' @useDynLib rinform r_set_item_
+#' @export 
 ################################################################################
 set_item.Dist <- function(d, event, value) {
   err <- 0
@@ -257,6 +259,7 @@ resize <- function(d, n) UseMethod("resize")
 
 ################################################################################
 #' @useDynLib rinform r_resize_
+#' @export 
 ################################################################################
 resize.Dist <- function(d, n) {
   err <- 0
@@ -304,6 +307,7 @@ copy <- function(d) UseMethod("copy")
 
 ################################################################################
 #' @useDynLib rinform r_copy_
+#' @export 
 ################################################################################
 copy.Dist <- function(d) {
   err    <- 0
@@ -347,6 +351,7 @@ counts <- function(d) UseMethod("counts")
 
 ################################################################################
 #' @useDynLib rinform r_counts_
+#' @export 
 ################################################################################
 counts.Dist <- function(d) {
   err     <- 0
@@ -387,6 +392,7 @@ valid <- function(d) UseMethod("valid")
 
 ################################################################################
 #' @useDynLib rinform r_valid_
+#' @export 
 ################################################################################
 valid.Dist <- function(d) {
   err     <- 0
@@ -428,6 +434,7 @@ tick <- function(d, event) UseMethod("tick")
 
 ################################################################################
 #' @useDynLib rinform r_tick_
+#' @export 
 ################################################################################
 tick.Dist <- function(d, event) {
   err <- 0
@@ -473,6 +480,7 @@ probability <- function(d, event) UseMethod("probability")
 
 ################################################################################
 #' @useDynLib rinform r_probability_
+#' @export 
 ################################################################################
 probability.Dist <- function(d, event) {
   err  <- 0
@@ -521,6 +529,7 @@ dump <- function(d) UseMethod("dump")
 
 ################################################################################
 #' @useDynLib rinform r_probability_
+#' @export 
 ################################################################################
 dump.Dist <- function(d) {
   err  <- 0
