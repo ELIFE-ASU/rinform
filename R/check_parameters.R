@@ -4,6 +4,12 @@
   }
 }
 
+.check_series_num_variables <- function (x) {
+  if (dim(x)[2] < 2) {
+    stop("<", deparse(substitute(x)), "> has not enough variables!", call. = !T)
+  }
+}
+
 .check_series_vector <- function (x) {
   if (!is.vector(x)) {
     stop("<", deparse(substitute(x)), "> is not a vector!", call. = !T)

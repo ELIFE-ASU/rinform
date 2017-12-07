@@ -95,6 +95,28 @@ entropy_rate(series, k = 2)
 er <- entropy_rate(series, k = 2, local = T)
 t(er)
 
+## ------------------------------------------------------------------------
+# Two variables:
+xs <- matrix(c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+               0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1), ncol = 2)
+
+mutual_info(xs)
+
+# ..and local variant:
+mi <- mutual_info(xs, local = T)
+t(mi)
+
+# Three variables:
+xs <- matrix(c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+               0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1,
+               1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1), ncol = 3)
+
+mutual_info(xs)
+
+# ..and local variant:
+mi <- mutual_info(xs, local = T)
+t(mi)
+
 ## ---- fig.show='hold'----------------------------------------------------
 plot(1:10)
 plot(10:1)
