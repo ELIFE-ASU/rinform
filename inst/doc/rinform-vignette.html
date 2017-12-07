@@ -1590,11 +1590,24 @@ div.tocify {
 </section>
 <section id="time-series-measures" class="level1">
 <h1><span class="header-section-number">5</span> Time Series Measures</h1>
+<p>The original purpose of <a href="https://github.com/elife-asu/inform/"><em>Inform</em></a> was to analyze time series data. This explains why most of <em>Inform</em>’s functionality resides in functions specifically optimized for analyzing time series. Many information measures have “local” variants which compute a time series of point-wise values. These feature is directly inherited by the <em>rinform</em> wrapper.</p>
+<p>We have been meticulous in ensuring that function and parameter names are consistent across measures. If you notice some inconsistency, please <a href="https://github.com/elife-asu/rinform/issue">report it as an issue</a>.</p>
 <section id="notation" class="level2">
 <h2><span class="header-section-number">5.1</span> Notation</h2>
+<p>Throughout the discussion of time series measures, we will try to use a consistent notation. We will denote random variables as <span class="math inline">\(X,Y,\ldots\)</span>, and let <span class="math inline">\(x_i,y_i,\ldots\)</span> represent the <span class="math inline">\(i\)</span>-th time step of a time series drawn from the associated random variable. Many of the measures consider <span class="math inline">\(k\)</span>-histories (a.k.a <span class="math inline">\(k\)</span>-blocks) of the time series, e.g. <span class="math display">\[x_i^{(k)} = \left\{x_{i-k+1}, x_{i-k+2},\ldots,x_i\right\}\]</span>.</p>
+<p>When denoting probability distributions, we will only make the random variable explicit in situations where the notation is ambiguous. We will typically write <span class="math inline">\(p(x_i)\)</span>, <span class="math inline">\(p(x_i^{(k)})\)</span>, and <span class="math inline">\(p(x_i^{(k)}, x_{i+1})\)</span> to denote the empirical probability of observing the <span class="math inline">\(x_i\)</span> state, the <span class="math inline">\(x_i^{(k)}\)</span> <span class="math inline">\(k\)</span>-history, and the joint probability of observing <span class="math inline">\(\left(x_i^{(k)}, x_{i+1}\right)\)</span>.</p>
 </section>
 <section id="implementation-details" class="level2">
 <h2><span class="header-section-number">5.2</span> Implementation Details</h2>
+<section id="the-base-states-and-logarithms" class="level3">
+<h3><span class="header-section-number">5.2.1</span> The Base: States and Logarithms</h3>
+<p>The word “base” has two different meanings in the context of information measures on time series. It could refer to the base of the time series itself, that is the number of unique states in the time series. For example, the time series <span class="math inline">\(\{0,2,1,0,0\}\)</span> is a base-3 time series. On the other hand, it could refer to the base of the logarithm used in computing the information content of the inferred probability distributions. The problem is that these two meanings clash. The base of the time series affects the range of values the measure can produce, and the base of the logarithm represents a rescaling of those values.</p>
+<p>In the <em>rinform</em> wrapper we deal with this by <em>always</em> using base-2 logarithms and automatically computing the base of each time series internally to the wrapper. All of this ensures that the library is a simple as reasonably possible.</p>
+</section>
+<section id="multiple-initial-conditions" class="level3">
+<h3><span class="header-section-number">5.2.2</span> Multiple Initial Conditions</h3>
+<p>You generally need <em>a lot</em> of data to infer a probability distribution. An experimentalist or simulator might then collect data over multiple trials or initial conditions. Most of <em>rinform</em>’s time series measures allow the user to pass in a two-dimensional matrix with each column representing a time series from a different initial condition. From this the probability distributions are inferred, and the desired value is calculated. This has the downside of requiring that the user store all of the data in memory, but it has the advantage of being fast and simple.</p>
+</section>
 </section>
 <section id="ActiveInformation" class="level2">
 <h2><span class="header-section-number">5.3</span> Active Information</h2>
