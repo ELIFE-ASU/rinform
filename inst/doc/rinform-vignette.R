@@ -117,10 +117,19 @@ mutual_info(xs)
 mi <- mutual_info(xs, local = T)
 t(mi)
 
-## ---- fig.show='hold'----------------------------------------------------
-plot(1:10)
-plot(10:1)
+## ------------------------------------------------------------------------
+xs <- c(0, 1, 0, 0, 0, 0, 0, 0, 0, 1)
+ys <- c(0, 1, 1, 1, 1, 0, 0, 1, 0, 0)
 
-## ---- echo=FALSE, results='asis'-----------------------------------------
-knitr::kable(head(mtcars, 10))
+# Average relative entropy:
+relative_entropy(xs, ys)
+
+relative_entropy(ys, xs)
+
+# ..and local variant:
+re <- relative_entropy(xs, ys, local = T)
+t(re)
+
+re <- relative_entropy(ys, xs, local = T)
+t(re)
 

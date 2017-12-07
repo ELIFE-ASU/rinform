@@ -136,7 +136,7 @@ t(lai)
 
 ## Block Entropy {#BlockEntropy}
 
-Block entropy, also known as stem:$N$-gram entropy [[@Shannon1948]](#References),
+Block entropy, also known as $N$-gram entropy [[@Shannon1948]](#References),
 is the standard Shannon entropy of the $k$-histories of a time series:
 $$
 H(X^{(k)}) = -\sum_{x_i^{(k)}} p(x_i^{(k)}) \log_2{p(x_i^{(k)})}
@@ -345,6 +345,7 @@ See [[@Cover1991]](#References) for more details.
 
 __Interface:__
 
+<<<<<<< HEAD
 Compute the mutual information or its local variant between two or more time series.
 Each variable can have a different base.
 
@@ -383,6 +384,50 @@ t(mi)
 
 ## Relative Entropy
 
+[Relative entropy](https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence), also
+known as the Kullback-Leibler divergence, measures the amount of information gained in
+switching from a prior distribution $q_X$ to a posterior distribution $p_X$ over
+_the same support_:
+$$
+D_{KL}(p||q) = \sum_{x_i} p(x_i) \log_2{\frac{p(x_i)}{q(x_i)}}.
+$$
+The local counterpart is
+$$
+d_{KL,i}(p||q) = log_2{\frac{p(x_i)}{q(x_i)}}.
+$$
+Note that the average in moving from the local to the non-local relative entropy is taken
+over the posterior distribution.
+
+See [[@Kullback1951]](#References) and [[@Cover1991]](#References) for more information.
+
+__Interface:__
+
+Compute the average and local relative entropy between time series drawn from posterior and prior
+distributions, here `xs` and `ys` respectively.
+
+```r
+relative_entropy(xs, ys, local = FALSE)
+```
+
+__Examples:__
+
+```{r}
+xs <- c(0, 1, 0, 0, 0, 0, 0, 0, 0, 1)
+ys <- c(0, 1, 1, 1, 1, 0, 0, 1, 0, 0)
+
+# Average relative entropy:
+relative_entropy(xs, ys)
+
+relative_entropy(ys, xs)
+
+# ..and local variant:
+re <- relative_entropy(xs, ys, local = T)
+t(re)
+
+re <- relative_entropy(ys, xs, local = T)
+t(re)
+```
+
 ## Separable Information
 
 ## Transfer Entropy
@@ -402,49 +447,5 @@ t(mi)
 ## Random Time Series
 
 ## Time Series to TPM
-
-# References
-
-## Vignette Info
-
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
-
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
-```
-
-You can enable figure captions by `fig_caption: yes` in YAML:
-
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
-```
-
-Also a quote using `>`:
-
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
 
 # References {#References}
