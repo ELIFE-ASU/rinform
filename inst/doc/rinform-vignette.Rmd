@@ -329,6 +329,54 @@ t(er)
 
 ## Mutual Information
 
+[Mutual information](https://en.wikipedia.org/wiki/Mutual_information) (MI) is a measure of
+the amount of mutual dependence between at least two random variables. Locally, MI is
+defined as
+$$
+i_i(X_1,\ldots,X_l) = \frac{p(x_{1,i},\ldots,x_{l,i})}{p(x_{1,i})\ldots p(x_{l,i})}.
+$$
+The mutual information is then just the time average of $i_i(X_1, \ldots, X_l)$:
+$$
+I(X_1,\ldots,X_l) =
+    \sum_{x_{1,i},\ldots,x_{l,i}} p(x_{1,i},\ldots,x_{l,i}) \frac{p(x_{1,i},\ldots,x_{l,i})}{p(x_{1,i})\ldots p(x_{l,i})}.
+$$
+
+See [[@Cover1991]](#References) for more details.
+
+__Interface:__
+
+Compute the mutual information or its local variant between two or more time series.
+Each variable can have a different base.
+
+```r
+mutual_info(series, local = FALSE)
+```
+
+__Examples:__
+
+```{r}
+# Two variables:
+xs <- matrix(c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+               0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1), ncol = 2)
+
+mutual_info(xs)
+
+# ..and local variant:
+mi <- mutual_info(xs, local = T)
+t(mi)
+
+# Three variables:
+xs <- matrix(c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+               0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1,
+               1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1), ncol = 3)
+
+mutual_info(xs)
+
+# ..and local variant:
+mi <- mutual_info(xs, local = T)
+t(mi)
+```
+
 ## Partial Information Decomposition
 
 ## Predictive Information
