@@ -46,13 +46,214 @@ In addition to the core components, rinform also provides a small collection of 
 
 # Empirical Distributions
 
-## Distribution Type
 
-## Allocation/Deallocation
+The [`Dist`](#DistClass) class provides an _empirical_ distribution,
+i.e. a histogram, representing the observed frequencies of some fixed-sized set of events.
+This class is the basis for all of the fundamental information measures provided on
+discrete probability distributions.
+
+The purpose of the [`Dist`](#DistClass) class is to make writing custom
+implementations of information-theoretic measures possible. Most of the measures implemented
+in _rinform_ use this structure at their core.
+
+| Type | Functions |
+|:------|:-----|
+| Class | [`Dist`](#DistClass) |
+| Allocation | [`resize`](#Resize), [`copy`](#Copy), [`infer`](#Infer), [`approximate`](#Approximate), [`uniform`](#Uniform) |
+| Accessors/Mutators | [`length`](#length), [`counts`](#Counts), [`valid`](#Valid), [`get_item`](#GetItem), [`set_item`](#SetItem), [`tick`](#Tick), [`accumulate`](#Accumulate) |
+| Probabilities  | [`probability`](#Probability), [`dump`](#Dump) |
+
+
+## Distribution Class {#DistClass}
+
+This class is the basis for almost all of the calculations performed via the library. It
+provides a means of managing observations and converting the observed event frequencies to
+probabilities.
+
+The distribution is, roughly, a histogram with finite support. The events are assumed to be
+mapped to the dense set of integers $\{0,1,\ldots,N-1\}$ where $N$ is the number
+of observable events. The number of observable events can be extracted with
+[`length`](#length).
+
+Whenever the size of the support or the number of observed events is zero, the distribution
+is considered invalid meaning that you can't trust any probabilities extracted from it.
+
+__Interface:__
+
+A distribution of observed event frequencies. If the parameter `n` is an integer,
+the distribution is constructed with a zeroed support of size $n$. If `n` is a vector
+of integer values, the sequence is treated as the underlying support. On the other hand,
+if `n` is a vector of floating point values, it is treated as a probability distribution
+and must sum to unity. Note, if a probability distribution is given as the underlying
+support, it will first be converted to a histogram with a precision of 9 significant figures.
+
+```r
+Dist(n)
+```
+
+__Examples:__
+
+```{r}
+# Create an empty distribution with support size 3
+Dist(3)
+
+# Create a distribution with 2 events, the first observed 5 times, the second
+# observed 3 times
+Dist(c(5, 3))
+```
+
+## Allocation
+
+### Resize {#Resize}
+
+If the distribution is `NULL`, a new distribution of the requested size is created.
+
+If the distribution already has the requested size, then the original distribution is
+returned. If the requested size is greater than the current size, then the newly observable
+events are assigned zero frequency. If the requested size is less than the current size,
+then the discarded events are lost and the observation count is adjusted accordingly.
+
+Note that the distribution cannot be reduced to size `0`. In that case the distribution is
+left unmodified.
+
+__Interface:__
+
+Resize the distribution `d` to have new support of size `n`.
+
+```r
+resize(d, n)
+```
+__Examples:__
+
+```{r}
+# Create a distribution with size 2
+d <- Dist(c(2, 13))
+d
+
+# Increase the size of the support to 5
+d <- resize(d, 5)
+d
+
+# Decrease the size of the support to 3
+d <- resize(d, 3)
+d
+```
+
+### Copy {#Copy}
+
+If the source distribution is `NULL`, then `NULL` is returned.
+
+__Interface:__
+
+Return a copy of the distribution `d`.
+
+```r
+copy(d)
+```
+
+__Examples:__
+
+```{r}
+# Create base distribution
+d <- Dist(c(1:5))
+d
+
+# Copy distribution
+p <- copy(d)
+p
+```
+
+### Infer {#Infer}
+
+### Approximate {#Approximate}
+
+### Uniform {#Uniform}
 
 ## Accessors/Mutators
 
+### Length {#length}
+
+__Interface:__
+
+Get the size of the distribution's support. If the distribution is `NULL`, then a support
+of 0 is returned.
+
+```r
+length(d)
+```
+
+__Examples:__
+
+```{r}
+# NULL distribution
+d <- NULL
+length(d)
+
+# Distribution with size 5
+d <- Dist(5)
+length(d)
+```
+
+### Counts {#Counts}
+
+### Valid {#Valid}
+
+### Get Item {#GetItem}
+
+__Interface:__
+
+Get the number of occurrences of a given `event`.
+
+```r
+get_item(d, event)
+```
+
+__Examples:__
+
+```{r}
+# Get item from a valid distribution
+dist <- Dist(c(3,2,1,0))
+get_item(dist, 1)
+get_item(dist, 2)
+get_item(dist, 3)
+get_item(dist, 4)
+```
+
+### Set Item {#SetItem}
+
+__Interface:__
+
+Set the number of occurrences of a given `event`. This function manually sets the number
+of occurrences of a given `event`.  Note that the only
+restriction is that the value be positive. This means that this function can be used to
+invalidate the distribution by changing all of the event frequencies to zero.
+
+```r
+set_item(d, event, value)
+```
+
+__Examples:__
+
+```{r}
+# Initialize empty distribution
+dist <- Dist(2)
+dist
+
+# Set item into a valid distribution
+dist <- set_item(dist, 1, 3)
+dist <- set_item(dist, 2, 8)
+dist
+```
+
+### Tick {#Tick}
+
+### Accumulate {#Accumulate}
+
 ## Probabilities
+
+### Probability {#Probability}
+
+### Dump {#Dump}
 
 # Shannon Information Measures
 

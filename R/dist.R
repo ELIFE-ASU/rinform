@@ -67,7 +67,7 @@ Dist <- function(n) {
 	       err       = as.integer(err))
   }
 
-  if (err) stop("inform lib memory allocation error")
+  if (err) stop("inform error - memory allocation error")
   Dist        <- list(histogram = rval$histogram,
                       size      = rval$size,
 	              counts    = rval$counts)    
@@ -94,19 +94,19 @@ is_not_corrupted <- function(d) {
 
   if (!is(d, "Dist")) {
     rval <- FALSE
-    warning("<d> is not of class Dist")
+    message("<d> is not of class Dist")
   } else if (!is.integer(d$histogram)) {
     rval <- FALSE  
-    warning("<d> object corrupted, histogram field is not integer")
+    message("<d> object corrupted, histogram field is not integer")
   } else if (!is.integer(d$size)) {
     rval <- FALSE
-    warning("<d> object corrupted, size field is not integer")
+    message("<d> object corrupted, size field is not integer")
   } else if (!is.integer(d$counts)) {
     rval <- FALSE
-    warning("<d> object corrupted, counts field is not integer")
+    message("<d> object corrupted, counts field is not integer")
   } else if (d$size != length(d$histogram)){
     rval <- FALSE
-    warning("<d> object corrupted, histogram lenght is different from support size")
+    message("<d> object corrupted, histogram lenght is different from support size")
   }
 
   rval
@@ -130,8 +130,8 @@ is_not_corrupted <- function(d) {
 length.Dist <- function(d) {
   rval <- NULL
   err  <- 0
-  
-  if(is_not_corrupted(d)) {
+
+  if(.check_is_not_corrupted(d)) {
     rval <- .C("r_length_",
                histogram = d$histogram,
 	       size      = d$size,
@@ -139,8 +139,6 @@ length.Dist <- function(d) {
 	       rval      = as.integer(0),
 	       err       = as.integer(err))
     if (err) stop("inform lib memory allocation error")	       
-  } else {
-    stop("<d> object corrupted")
   }
 
   rval$rval
@@ -164,27 +162,23 @@ get_item <- function(d, event) UseMethod("get_item")
  
 ################################################################################
 #' @useDynLib rinform r_get_item_
+#' @export
 ################################################################################
 get_item.Dist <- function(d, event) {
   rval <- NULL
   err  <- 0
+
+  .check_is_not_corrupted(d)
+  .check_event(event, length(d))
   
-  if(is_not_corrupted(d)) {
-    if (event > 0 & event <= length(d)) {
-      rval <- .C("r_get_item_",
-                 histogram = d$histogram,
-	         size      = d$size,
-	         counts    = d$counts,
-	         event     = as.integer(event - 1),
-	         rval      = as.integer(0),
-		 err       =as.integer(err))
-      if (err) stop("inform lib memory allocation error")		  		 
-    } else {
-      stop("<event> out of bound")
-    }
-  } else {
-    stop("<d> object corrupted")
-  }
+  rval <- .C("r_get_item_",
+             histogram = d$histogram,
+             size      = d$size,
+             counts    = d$counts,
+             event     = as.integer(event - 1),
+             rval      = as.integer(0),
+             err       =as.integer(err))
+  if (err) stop("inform lib memory allocation error")		  		 
 
   rval$rval
 }
@@ -208,31 +202,27 @@ set_item <- function(d, event, value) UseMethod("set_item")
 
 ################################################################################
 #' @useDynLib rinform r_set_item_
+#' @export
 ################################################################################
 set_item.Dist <- function(d, event, value) {
   err <- 0
-  
-  if(is_not_corrupted(d)) {
-    if (event > 0 & event <= length(d)) {
-      value <- max(0, value)
-      rval  <- .C("r_set_item_",
-                  histogram = d$histogram,
-	          size      = d$size,
-	          counts    = d$counts,
-	          event     = as.integer(event - 1),
-	          value     = as.integer(value),
-		  err       = as.integer(err))
-		  
-      if (err) stop("inform lib memory allocation error")		  
-      d$histogram <- rval$histogram
-      d$counts    <- rval$counts
 
-    } else {
-      stop("<event> out of bound")
-    }
-  } else {
-    stop("<d> object corrupted")
-  }
+  .check_is_not_corrupted(d)
+  .check_event(event, length(d))
+  
+  value <- max(0, value)
+  rval  <- .C("r_set_item_",
+               histogram = d$histogram,
+               size      = d$size,
+	       counts    = d$counts,
+	       event     = as.integer(event - 1),
+	       value     = as.integer(value),
+	       err       = as.integer(err))
+		  
+  if (err) stop("inform lib memory allocation error")
+  
+  d$histogram <- rval$histogram
+  d$counts    <- rval$counts
   d
 }
 
@@ -257,12 +247,13 @@ resize <- function(d, n) UseMethod("resize")
 
 ################################################################################
 #' @useDynLib rinform r_resize_
+#' @export
 ################################################################################
 resize.Dist <- function(d, n) {
   err <- 0
   
-  if(is_not_corrupted(d)) {
-    if (n > 0) {
+  if(.check_is_not_corrupted(d)) {
+    if (is.numeric(n) & n > 0) {
       nhistogram <- rep(0, n)
       rval <- .C("r_resize_",
                  histogram  = d$histogram,
@@ -279,10 +270,8 @@ resize.Dist <- function(d, n) {
       d$counts    <- rval$counts
 
     } else {
-      stop("support size is zero")
+      stop("specified support size is not valid")
     }
-  } else {
-    stop("<d> object corrupted")
   }
   d
 }
@@ -304,12 +293,13 @@ copy <- function(d) UseMethod("copy")
 
 ################################################################################
 #' @useDynLib rinform r_copy_
+#' @export
 ################################################################################
 copy.Dist <- function(d) {
   err    <- 0
   d_copy <- NULL
   
-  if(is_not_corrupted(d)) {    
+  if(.check_is_not_corrupted(d)) {
     rval <- .C("r_copy_",
                 histogram  = d$histogram,
 	        size       = d$size,
@@ -323,9 +313,8 @@ copy.Dist <- function(d) {
     d_copy$histogram <- rval$chistogram
     d_copy$size      <- rval$csize
     d_copy$counts    <- rval$ccounts
+    class(d_copy)    <- "Dist"
 
-  } else {
-    stop("<d> object corrupted")
   }
   d_copy
 }

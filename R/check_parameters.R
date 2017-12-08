@@ -40,6 +40,28 @@
   }
 }
 
+.check_is_not_corrupted <- function(d) {
+  if(!is_not_corrupted(d)) {
+    stop("<", deparse(substitute(d)), "> object is corrupted!", call. = !T)  
+  }
+  TRUE
+}
+
+.check_event <- function(event, n) {
+  if (!is.numeric(event)) {
+    stop("<", deparse(substitute(event)), "> is not numeric!", call. = !T)
+  }
+  if (!is.vector(event)) {
+    stop("<", deparse(substitute(event)), "> is multidimensional!", call. = !T)
+  }
+  if (length(event) > 1) {
+    stop("<", deparse(substitute(event)), "> is a vector!", call. = !T)
+  }
+  if (event <= 0 | event > n) {
+    stop("<", deparse(substitute(event)), "> out of bound!", call. = !T)
+  }
+}
+
 .check_inform_error <- function(code) {
   INFORM_SUCCESS      <- 0      # no error occurred
   INFORM_FAILURE      <- -1     # an unspecified error occurred

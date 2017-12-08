@@ -5,6 +5,63 @@ knitr::opts_chunk$set(
 )
 
 ## ------------------------------------------------------------------------
+# Create an empty distribution with support size 3
+Dist(3)
+
+# Create a distribution with 2 events, the first observed 5 times, the second
+# observed 3 times
+Dist(c(5, 3))
+
+## ------------------------------------------------------------------------
+# Create a distribution with size 2
+d <- Dist(c(2, 13))
+d
+
+# Increase the size of the support to 5
+d <- resize(d, 5)
+d
+
+# Decrease the size of the support to 3
+d <- resize(d, 3)
+d
+
+## ------------------------------------------------------------------------
+# Create base distribution
+d <- Dist(c(1:5))
+d
+
+# Copy distribution
+p <- copy(d)
+p
+
+## ------------------------------------------------------------------------
+# NULL distribution
+d <- NULL
+length(d)
+
+# Distribution with size 5
+d <- Dist(5)
+length(d)
+
+## ------------------------------------------------------------------------
+# Get item from a valid distribution
+dist <- Dist(c(3,2,1,0))
+get_item(dist, 1)
+get_item(dist, 2)
+get_item(dist, 3)
+get_item(dist, 4)
+
+## ------------------------------------------------------------------------
+# Initialize empty distribution
+dist <- Dist(2)
+dist
+
+# Set item into a valid distribution
+dist <- set_item(dist, 1, 3)
+dist <- set_item(dist, 2, 8)
+dist
+
+## ------------------------------------------------------------------------
 # One initial condition:
 series <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
 active_info(series, k = 2)
