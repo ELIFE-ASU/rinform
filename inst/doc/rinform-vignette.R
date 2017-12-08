@@ -44,12 +44,33 @@ d <- Dist(5)
 length(d)
 
 ## ------------------------------------------------------------------------
+# Counts of valid distribution
+dist <- Dist(c(5, 10))
+counts(dist) == 15
+
+dist <- set_item(dist, 2, 5)
+counts(dist) == 10
+
+## ------------------------------------------------------------------------
+# Distribution with 0 observations
+dist <- Dist(3)
+valid(dist)
+
+# Valid distribution
+dist <- Dist(c(1:5))
+valid(dist)
+
+# Invalid distribution with 0 support
+dist$size <- as.integer(0)
+valid(dist)
+
+## ------------------------------------------------------------------------
 # Get item from a valid distribution
-dist <- Dist(c(3,2,1,0))
-get_item(dist, 1)
-get_item(dist, 2)
-get_item(dist, 3)
-get_item(dist, 4)
+dist <- Dist(c(3, 2, 1, 0))
+get_item(dist, 1) == 3
+get_item(dist, 2) == 2
+get_item(dist, 3) == 1
+get_item(dist, 4) == 0
 
 ## ------------------------------------------------------------------------
 # Initialize empty distribution
@@ -60,6 +81,17 @@ dist
 dist <- set_item(dist, 1, 3)
 dist <- set_item(dist, 2, 8)
 dist
+
+## ------------------------------------------------------------------------
+# Initial distribution
+dist <- Dist(c(2, 4))
+
+# Adding an observation for each event
+dist <- tick(dist, 1)
+get_item(dist, 1) == 3
+
+dist <- tick(dist, 2)
+get_item(dist, 2) == 5
 
 ## ------------------------------------------------------------------------
 # One initial condition:

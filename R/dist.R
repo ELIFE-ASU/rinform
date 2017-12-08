@@ -336,24 +336,23 @@ counts <- function(d) UseMethod("counts")
 
 ################################################################################
 #' @useDynLib rinform r_counts_
+#' @export
 ################################################################################
 counts.Dist <- function(d) {
   err     <- 0
   rcounts <- 0
   
-  if(is_not_corrupted(d)) {    
-    rval <- .C("r_counts_",
-                histogram = d$histogram,
-	        size      = d$size,
-	        rcounts   = as.integer(rcounts),
-	        err       = as.integer(err))
+  .check_is_not_corrupted(d)
+  
+  rval <- .C("r_counts_",
+             histogram = d$histogram,
+             size      = d$size,
+             rcounts   = as.integer(rcounts),
+             err       = as.integer(err))
 
-    if (err) stop("inform lib memory allocation error")
-    rcounts <- rval$rcounts
-
-  } else {
-    stop("<d> object corrupted")
-  }
+  if (err) stop("inform lib memory allocation error")
+  
+  rcounts <- rval$rcounts
   rcounts
 }
 
@@ -376,25 +375,25 @@ valid <- function(d) UseMethod("valid")
 
 ################################################################################
 #' @useDynLib rinform r_valid_
+#' @export
 ################################################################################
 valid.Dist <- function(d) {
   err     <- 0
   isvalid <- FALSE
   
-  if(is_not_corrupted(d)) {    
+  if (.check_is_not_corrupted(d, only_warning = T)) {
     rval  <- .C("r_valid_",
-                 histogram = d$histogram,
-	         size      = d$size,
-	         isvalid   = as.integer(isvalid),
-	         err       = as.integer(err))
-
+                histogram = d$histogram,
+                size      = d$size,
+                isvalid   = as.integer(isvalid),
+                err       = as.integer(err))
+		
     if (err) stop("inform lib memory allocation error")
-    if (rval$isvalid) isvalid <- TRUE
-    else              isvalid <- FALSE
-  } else {
-    stop("<d> object corrupted")
-  }
   
+    if (rval$isvalid) isvalid <- TRUE
+    else              isvalid <- FALSE  		
+  }
+
   isvalid
 }
 
@@ -402,7 +401,8 @@ valid.Dist <- function(d) {
 #' Tick
 #'
 #' Generic function to make a single observation of \code{event}, and return
-#' the total number of observations of said \code{event}.
+#' the a modified distribution with the updated number of observations of said
+#' \code{event}.
 #'
 #' @param d Dist object representing the distribution.
 #' @param event Numeric representing the observed event.
@@ -417,29 +417,26 @@ tick <- function(d, event) UseMethod("tick")
 
 ################################################################################
 #' @useDynLib rinform r_tick_
+#' @export
 ################################################################################
 tick.Dist <- function(d, event) {
   err <- 0
+
+  .check_is_not_corrupted(d)
+  .check_event(event, length(d))
   
-  if(is_not_corrupted(d)) {
-    if (event > 0 & event <= length(d)) {  
-      rval  <- .C("r_tick_",
-                   histogram = d$histogram,
-	           size      = d$size,
-	           event     = as.integer(event - 1),
-	           err       = as.integer(err))
+  rval  <- .C("r_tick_",
+              histogram = d$histogram,
+	      size      = d$size,
+	      counts    = d$counts,
+	      event     = as.integer(event - 1),
+	      err       = as.integer(err))
 
-      if (err) stop("inform lib memory allocation error")
+  if (err) stop("inform lib memory allocation error")
 
-      d$histogram <- rval$histogram
-      d$size      <- rval$size
-      d$counts    <- rval$counts
-    } else {
-      stop("<event> out of bound")
-    }
-  } else {
-    stop("<d> object corrupted")
-  }
+  d$histogram <- rval$histogram
+  d$size      <- rval$size
+  d$counts    <- rval$counts
   
   d
 }
@@ -462,6 +459,7 @@ probability <- function(d, event) UseMethod("probability")
 
 ################################################################################
 #' @useDynLib rinform r_probability_
+#' @export
 ################################################################################
 probability.Dist <- function(d, event) {
   err  <- 0

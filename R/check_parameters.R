@@ -40,11 +40,17 @@
   }
 }
 
-.check_is_not_corrupted <- function(d) {
+.check_is_not_corrupted <- function(d, only_warning = !T) {
+  rval <- T
+  
   if(!is_not_corrupted(d)) {
-    stop("<", deparse(substitute(d)), "> object is corrupted!", call. = !T)  
+    if (only_warning) {
+      rval <- !T
+    } else {
+      stop("<", deparse(substitute(d)), "> object is corrupted!", call. = !T)
+    }
   }
-  TRUE
+  rval
 }
 
 .check_event <- function(event, n) {

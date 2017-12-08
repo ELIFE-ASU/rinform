@@ -125,7 +125,7 @@ void r_valid_(int *histogram, int *size, int *isvalid, int *err) {
   }
 }
 
-void r_tick_(int *histogram, int *size, int *event, int *err) {
+void r_tick_(int *histogram, int *size, int *counts, int *event, int *err) {
   inform_dist *dist;
   int new_occurencies;
     
@@ -133,6 +133,7 @@ void r_tick_(int *histogram, int *size, int *event, int *err) {
   if (dist != NULL) {
     new_occurencies = inform_dist_tick(dist, *event);
     histogram[*event] = new_occurencies;
+    *counts = inform_dist_counts(dist);
     inform_dist_free(dist);
   } else {
     *err = 1;
