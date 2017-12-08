@@ -40,6 +40,18 @@ test_that("copy checks parameters", {
   expect_equal(counts(copy(d)), 101)
 })
 
+test_that("uniform checks parameters", {
+  expect_error(uniform(NULL))
+  expect_error(uniform(NA))
+  expect_error(uniform(0))
+  expect_error(uniform(-1))
+  expect_error(uniform("dist"))
+
+  expect_equal(probability(uniform(3), 1), 1.0 / 3)
+  expect_equal(probability(uniform(3), 2), 1.0 / 3)
+  expect_equal(probability(uniform(3), 3), 1.0 / 3)
+})
+
 test_that("length checks parameters", {
   d <- Dist(c(13, 56, 32))
 

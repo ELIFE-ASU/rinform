@@ -101,6 +101,23 @@ void r_copy_(int *histogram, int *size, int *chistogram,
   }
 }
 
+void r_uniform_(int*n, int *histogram, int *size, int *counts, int *err) {
+  inform_dist *dist;
+    
+  dist = inform_dist_uniform(*n);
+  
+  if (dist != NULL) {
+    *size = dist->size;
+    *counts = dist->counts;      
+    for (int i = 0; i < *size; i++)      
+      histogram[i] = (int) dist->histogram[i];
+    inform_dist_free(dist);      
+  } else {
+    *err = 1;
+  }
+}
+
+
 void r_counts_(int *histogram, int *size, int *rcounts, int *err) {
   inform_dist *dist;
     

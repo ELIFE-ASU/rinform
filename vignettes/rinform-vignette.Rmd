@@ -165,9 +165,32 @@ p
 
 ### Infer {#Infer}
 
+__Interface:__
+
+
 ### Approximate {#Approximate}
 
+__Interface:__
+
 ### Uniform {#Uniform}
+
+__Interface:__
+
+Create a uniform distribution of a given size `n`. The support size `n` must
+define a valid support (i.e., `n` must be greater than 0).
+
+```r
+uniform(n)
+```
+__Examples:__
+
+```{r}
+# Uniform distribution of size 3
+dist <- uniform(3)
+dist
+
+dump(dist)
+```
 
 ## Accessors/Mutators
 

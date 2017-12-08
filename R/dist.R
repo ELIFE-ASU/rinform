@@ -320,6 +320,43 @@ copy.Dist <- function(d) {
 }
 
 ################################################################################
+#' Uniform
+#'
+#' Create a uniform distribution of a given size \code{n}.
+#'
+#' @param n Numeric giving the size of the support of the distribution.
+#'
+#' @return Dist object with support size \code{n}.
+#'
+#' @example inst/examples/ex_dist_uniform.R
+#'
+#' @export
+################################################################################
+uniform <- function(n) {
+  err <- 0
+  d   <- Dist(n)
+  
+  if(n > 0) {
+    rval <- .C("r_uniform_",
+                n          = as.integer(n),
+                histogram  = d$histogram,
+	        size       = d$size,
+	        counts    = as.integer(0),
+	        err        = as.integer(err))
+
+    if (err) stop("inform lib memory allocation error")
+
+    d$histogram <- rval$histogram
+    d$size      <- rval$size
+    d$counts    <- rval$counts
+    class(d)    <- "Dist"
+  } else {
+    stop("Invalid support size")
+  }
+  d
+}
+
+################################################################################
 #' Counts
 #'
 #' Generic function to return the number of observations made thus far.

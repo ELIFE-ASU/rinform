@@ -35,6 +35,13 @@ p <- copy(d)
 p
 
 ## ------------------------------------------------------------------------
+# Uniform distribution of size 3
+dist <- uniform(3)
+dist
+
+dump(dist)
+
+## ------------------------------------------------------------------------
 # NULL distribution
 d <- NULL
 length(d)
