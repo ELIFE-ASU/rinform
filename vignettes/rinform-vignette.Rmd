@@ -323,7 +323,49 @@ get_item(dist, 2) == 5
 
 ### Probability {#Probability}
 
+__Interface:__
+
+Extract the probability of an `event` from a distribution `d`. This function simply computes the
+probability of a given `event` and returns that value. 
+
+```r
+probability(d, event)
+```
+
+__Example:__
+
+```{r}
+# Initialize distribution
+dist <- Dist(c(2, 2, 4))
+
+# Compute probabilities
+probability(dist, 1) == 0.25
+probability(dist, 2) == 0.25
+probability(dist, 3) == 0.50
+```
+
 ### Dump {#Dump}
+
+__Interface:__
+
+Dump the probabilities of all events to an array. This function computes the
+probabilities of all of the events in the support and return them as an array.
+
+```r
+dump(d)
+```
+
+__Example:__
+
+```{r}
+# Initialize distribution and dump probabilities
+dist <- Dist(c(2, 2, 4))
+dump(dist)
+
+# Modify and dump again
+dist <- set_item(dist, 1, 12)
+dump(dist)
+```
 
 # Shannon Information Measures
 

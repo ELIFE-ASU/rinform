@@ -94,6 +94,24 @@ dist <- tick(dist, 2)
 get_item(dist, 2) == 5
 
 ## ------------------------------------------------------------------------
+# Initialize distribution
+dist <- Dist(c(2, 2, 4))
+
+# Compute probabilities
+probability(dist, 1) == 0.25
+probability(dist, 2) == 0.25
+probability(dist, 3) == 0.50
+
+## ------------------------------------------------------------------------
+# Initialize distribution and dump probabilities
+dist <- Dist(c(2, 2, 4))
+dump(dist)
+
+# Modify and dump again
+dist <- set_item(dist, 1, 12)
+dump(dist)
+
+## ------------------------------------------------------------------------
 # One initial condition:
 series <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
 active_info(series, k = 2)

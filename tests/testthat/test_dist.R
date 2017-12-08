@@ -174,3 +174,51 @@ test_that("tick checks parameters", {
   expect_equal(counts(tick(d, 2)), 102)
   expect_equal(counts(tick(d, 3)), 102)
 })
+
+test_that("probability checks parameters", {
+  d <- Dist(c(13, 56, 32))
+
+  dc      <- d
+  dc$size <- 0
+  expect_error(probability(dc, 1))
+
+  dc           <- d
+  dc$histogram <- "two"
+  expect_error(probability(dc, 1))
+
+  dc           <- d
+  dc$counts <- "two"
+  expect_error(probability(dc, 1))
+
+  dc        <- d
+  class(dc) <- "two"
+  expect_error(probability(dc, 1))
+
+  expect_equal(probability(d, 1), 13 / 101.0)
+  expect_equal(probability(d, 2), 56 / 101.0)
+  expect_equal(probability(d, 3), 32 / 101.0)
+})
+
+test_that("dump checks parameters", {
+  d <- Dist(c(13, 56, 32))
+
+  dc      <- d
+  dc$size <- 0
+  expect_error(dump(dc))
+
+  dc           <- d
+  dc$histogram <- "two"
+  expect_error(dump(dc))
+
+  dc           <- d
+  dc$counts <- "two"
+  expect_error(dump(dc))
+
+  dc        <- d
+  class(dc) <- "two"
+  expect_error(dump(dc))
+
+  expect_equal(dump(d)[1], 13 / 101.0)
+  expect_equal(dump(d)[2], 56 / 101.0)
+  expect_equal(dump(d)[3], 32 / 101.0)
+})

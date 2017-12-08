@@ -2,8 +2,10 @@
 
 S3method(copy,Dist)
 S3method(counts,Dist)
+S3method(dump,Dist)
 S3method(get_item,Dist)
 S3method(length,Dist)
+S3method(probability,Dist)
 S3method(resize,Dist)
 S3method(set_item,Dist)
 S3method(tick,Dist)

@@ -464,29 +464,24 @@ probability <- function(d, event) UseMethod("probability")
 probability.Dist <- function(d, event) {
   err  <- 0
   prob <- 0
+
+  .check_is_not_corrupted(d)
+  .check_event(event, length(d))
   
-  if(is_not_corrupted(d)) {
-    if(!valid(d)) {
-      stop("invalid distribution")
-    }  
-    if (event > 0 & event <= length(d)) {  
-      rval <- .C("r_probability_",
-                  histogram = d$histogram,
-	          size      = d$size,
-	          event     = as.integer(event - 1),
-	          prob      = as.double(prob),
-	          err       = as.integer(err))
-
-      if (err) stop("inform lib memory allocation error")
-
-      prob <- rval$prob
-    } else {
-      stop("<event> out of bound")
-    }
-  } else {
-    stop("<d> object corrupted")
+  if(!valid(d)) {
+    stop("invalid distribution")
   }
   
+  rval <- .C("r_probability_",
+             histogram = d$histogram,
+             size      = d$size,
+             event     = as.integer(event - 1),
+             prob      = as.double(prob),
+             err       = as.integer(err))
+
+  if (err) stop("inform lib memory allocation error")
+
+  prob <- rval$prob
   prob
 }
 
@@ -508,27 +503,25 @@ dump <- function(d) UseMethod("dump")
 
 ################################################################################
 #' @useDynLib rinform r_probability_
+#' @export
 ################################################################################
 dump.Dist <- function(d) {
   err  <- 0
   prob <- 0
   
-  if(is_not_corrupted(d)) {
-    if(!valid(d)) {
-      stop("invalid distribution")
-    }  
-    prob <- rep(0.0, length(d))
-    rval <- .C("r_dump_",
-                histogram = d$histogram,
-	        size      = d$size,
-	        prob      = as.double(prob),
-	        err       = as.integer(err))
+  .check_is_not_corrupted(d)
+  if(!valid(d)) {
+    stop("invalid distribution")
+  }  
+  prob <- rep(0.0, length(d))
+  rval <- .C("r_dump_",
+              histogram = d$histogram,
+              size      = d$size,
+	      prob      = as.double(prob),
+	      err       = as.integer(err))
 
-    if (err) stop("inform lib memory allocation error")
-    prob <- rval$prob
-  } else {
-    stop("<d> object corrupted")
-  }
+  if (err) stop("inform lib memory allocation error")
   
+  prob <- rval$prob
   prob
 }
