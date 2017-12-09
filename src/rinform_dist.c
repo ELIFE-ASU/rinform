@@ -101,6 +101,34 @@ void r_copy_(int *histogram, int *size, int *chistogram,
   }
 }
 
+void r_infer_(int *n, int *events, int *histogram, int *err) {
+  inform_dist *dist;
+    
+  dist = inform_dist_infer(events, *n);
+  
+  if (dist != NULL) {
+    for (int i = 0; i < dist->size; i++)      
+      histogram[i] = (int) dist->histogram[i];
+    inform_dist_free(dist);      
+  } else {
+    *err = 1;
+  }
+}
+
+void r_approximate_(double *probs, int *n, double *tol, int *histogram, int *err) {
+  inform_dist *dist;
+    
+  dist = inform_dist_approximate(probs, *n, *tol);
+  
+  if (dist != NULL) {
+    for (int i = 0; i < dist->size; i++)      
+      histogram[i] = (int) dist->histogram[i];
+    inform_dist_free(dist);      
+  } else {
+    *err = 1;
+  }
+}
+
 void r_uniform_(int*n, int *histogram, int *size, int *counts, int *err) {
   inform_dist *dist;
     

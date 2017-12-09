@@ -16,6 +16,22 @@
   }
 }
 
+.check_probability_vector <- function (p) {
+  if (!is.numeric(p)) {
+    stop("<", deparse(substitute(p)), "> is not numeric!", call. = !T)
+  }
+  if (!is.vector(p)) {
+    stop("<", deparse(substitute(p)), "> is not a vector!", call. = !T)
+  }
+  if (sum(p) != 1.0) {
+    stop("<", deparse(substitute(p)), "> does not sum up to 1!", call. = !T)
+  }
+  if (sum(p>0) != length(p)) {
+    stop("<", deparse(substitute(p)), "> contains negative values!", call. = !T)
+  }
+
+}
+
 .check_history <- function (k) {
   if (!is.numeric(k)) {
     stop("<", deparse(substitute(k)), "> is not numeric!", call. = !T)

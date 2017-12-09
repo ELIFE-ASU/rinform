@@ -40,6 +40,33 @@ test_that("copy checks parameters", {
   expect_equal(counts(copy(d)), 101)
 })
 
+test_that("infer checks parameters", {
+  expect_error(infer(NULL))
+  expect_error(infer(NA))
+  expect_error(infer("series"))
+
+  xs <- c(0, 0, 0, 0, 0, 1, 1, 1, 1, 1)
+  expect_equal(probability(infer(xs), 1), 0.5)
+  expect_equal(probability(infer(xs), 2), 0.5)
+})
+
+test_that("approximate checks parameters", {
+  p <- c(0.1234, 1.0 - 0.1234)
+  
+  expect_error(approximate(NULL, 0.1))
+  expect_error(approximate(NA, 0.1))
+  expect_error(approximate("probs", 0.1))
+  expect_error(approximate(-1, 0.1))
+  expect_error(approximate(1.2, 0.1))
+  expect_error(approximate(p, NULL))
+  expect_error(approximate(p, NA))
+  expect_error(approximate(p, "tol"))
+
+  expect_equal(probability(approximate(p, 0.1), 1), 1.0 / 9.0)
+  expect_equal(probability(approximate(p, 0.1), 2), 8.0 / 9.0)
+})
+
+
 test_that("uniform checks parameters", {
   expect_error(uniform(NULL))
   expect_error(uniform(NA))

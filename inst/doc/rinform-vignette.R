@@ -35,6 +35,25 @@ p <- copy(d)
 p
 
 ## ------------------------------------------------------------------------
+# Create a distribution ~ {3/5, 2/5}
+dist <- infer(c(0, 0, 1, 0, 1))
+dump(dist)
+
+# Create a distribution ~ {3/8, 3/8, 2/8}
+dist <- infer(c(0, 0, 1, 0, 1, 2, 2, 1))
+dump(dist)
+
+## ------------------------------------------------------------------------
+# Approximate a distribution with tolerance 1e-3
+probs <- c(0.5, 0.2, 0.3)
+dist <- approximate(probs, 1e-3)
+dist$histogram
+
+probs <- c(1./3, 2./3)
+dist <- approximate(probs, 1e-3)
+dist$histogram
+
+## ------------------------------------------------------------------------
 # Uniform distribution of size 3
 dist <- uniform(3)
 dist

@@ -320,6 +320,83 @@ copy.Dist <- function(d) {
 }
 
 ################################################################################
+#' Infer
+#'
+#' Infer a distribution from a collection of observed events.
+#'
+#' @param events Numeric giving a collection of observed events.
+#'
+#' @return Dist object inferred from \code{events}.
+#'
+#' @example inst/examples/ex_dist_infer.R
+#'
+#' @export
+################################################################################
+infer <- function(events) {
+  err <- 0
+
+  .check_series(events)
+
+  events    <- as.integer(events)
+  n         <- as.integer(length(events))
+  histogram <- rep(0, max(max(events) + 1, 2))
+  
+  rval <- .C("r_infer_",
+              n         = n,
+	      events    = events,
+	      histogram = as.integer(histogram),
+	      err       = as.integer(err))
+
+  if (err) stop("inform lib memory allocation error")
+
+  d <- Dist(rval$histogram)
+  d
+}
+
+################################################################################
+#' Approximate
+#'
+#' Approximate a given probability distribution \code{probs} to a given
+#' tolerance \code{tol}.
+#'
+#' @param probs Numeric vector giving a probability distribution.
+#' @param tol Numeric giving the tolerance. 
+#'
+#' @return Dist object approximate from \code{probs} with tolerance \code{tol}.
+#'
+#' @example inst/examples/ex_dist_approximate.R
+#'
+#' @export
+################################################################################
+approximate <- function(probs, tol) {
+  err <- 0
+
+  .check_probability_vector(probs)
+
+  if (!is.numeric(tol) | tol <= 0.0) {
+    stop("parameter <tol> is invalid!")
+  }
+
+  probs <- as.double(probs)
+  n     <- as.integer(length(probs))
+  tol   <- as.double(tol)
+  histogram <- rep(0, n)
+  
+  rval <- .C("r_approximate_",
+             probs     = probs,
+             n         = n,
+	     tol       = tol,
+	     histogram = as.integer(histogram),
+	     err       = as.integer(err))
+
+  if (err) stop("inform lib memory allocation error")
+
+  d <- Dist(rval$histogram)
+  d
+}
+
+
+################################################################################
 #' Uniform
 #'
 #' Create a uniform distribution of a given size \code{n}.
