@@ -120,6 +120,20 @@ dist <- tick(dist, 2)
 get_item(dist, 2) == 5
 
 ## ------------------------------------------------------------------------
+# Create a valid distribution
+d <- Dist(c(1, 2, 3))
+dump(d)
+
+# Accumulate events
+d <- accumulate(d, events)
+dump(d)
+
+# Accumulate invalid events
+events <- c(0, 1, 1, 3, 1)
+d <- accumulate(d, events)
+dump(d)
+
+## ------------------------------------------------------------------------
 # Initialize distribution
 dist <- Dist(c(2, 2, 4))
 

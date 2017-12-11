@@ -185,6 +185,24 @@ void r_tick_(int *histogram, int *size, int *counts, int *event, int *err) {
   }
 }
 
+void r_accumulate_(int *histogram, int *size, int *counts, int *n, int *events, int *err) {
+  inform_dist *dist;
+  int new_occurencies;
+    
+  dist  = inform_dist_create((const uint32_t *) histogram, *size);  
+  if (dist != NULL) {
+    new_occurencies = inform_dist_accumulate(dist, events, *n);
+    *counts   = dist->counts;
+    *size     = dist->size;
+    *n        = new_occurencies;    
+    for (int i = 0; i < *size; i++)      
+      histogram[i] = (int) dist->histogram[i];
+    inform_dist_free(dist);
+  } else {
+    *err = 1;
+  }
+}
+
 void r_probability_(int *histogram, int *size, int *event,
 		    double *prob, int *err) {
   inform_dist *dist;

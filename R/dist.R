@@ -555,6 +555,56 @@ tick.Dist <- function(d, event) {
   d
 }
 
+
+################################################################################
+#' Accumulate
+#'
+#' Generic function to make accumulate observations from a series. If an invalid
+#' distribution is provided, no events will be observed. If an invalid event is
+#' provided, then the number of valid events to that point will be added to the
+#' distribution and a warning will be raised.
+#'
+#' @param d Dist object representing the distribution.
+#' @param events Numeric representing the observed events.
+#'
+#' @return Dist giving the updated distribution.
+#'
+#' @example inst/examples/ex_dist_accumulate.R
+#'
+#' @export
+################################################################################
+accumulate <- function(d, events) UseMethod("accumulate")
+
+################################################################################
+#' @useDynLib rinform r_accumulate_
+#' @export
+################################################################################
+accumulate.Dist <- function(d, events) {
+  err <- 0
+
+  .check_is_not_corrupted(d)
+
+  events <- as.integer(events)
+  n      <- as.integer(length(events))
+  
+  rval  <- .C("r_accumulate_",
+              histogram = d$histogram,
+	      size      = d$size,
+	      counts    = d$counts,
+	      n         = n,
+	      events    = events,
+	      err       = as.integer(err))
+
+  if (err) stop("inform lib memory allocation error")
+
+  d$histogram <- rval$histogram
+  d$size      <- rval$size
+  d$counts    <- rval$counts
+
+  if (rval$n < n) { warning(rval$n, " events added!\n") }
+  d
+}
+
 ################################################################################
 #' Probability
 #'

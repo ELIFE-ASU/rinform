@@ -56,13 +56,17 @@ The purpose of the [`Dist`](#DistClass) class is to make writing custom
 implementations of information-theoretic measures possible. Most of the measures implemented
 in _rinform_ use this structure at their core.
 
-| Type | Functions |
-|:------|:-----|
-| Class | [`Dist`](#DistClass) |
-| Allocation | [`resize`](#Resize), [`copy`](#Copy), [`infer`](#Infer), [`approximate`](#Approximate), [`uniform`](#Uniform) |
++--------------------+----------------------------------------------------------+
+| Type               | Functions                                                |
++====================+==========================================================+
+| Class              |[`Dist`](#DistClass)                                      |
++--------------------+----------------------------------------------------------+
+| Allocation         | [`resize`](#Resize), [`copy`](#Copy), [`infer`](#Infer), [`approximate`](#Approximate), [`uniform`](#Uniform) |
++--------------------+---------------------------------------------------------------+
 | Accessors/Mutators | [`length`](#length), [`counts`](#Counts), [`valid`](#Valid), [`get_item`](#GetItem), [`set_item`](#SetItem), [`tick`](#Tick), [`accumulate`](#Accumulate) |
-| Probabilities  | [`probability`](#Probability), [`dump`](#Dump) |
-
++--------------------+----------------------------------------------------------+
+| Probabilities      |[`probability`](#Probability), [`dump`](#Dump)            |
++--------------------+----------------------------------------------------------+
 
 ## Distribution Class {#DistClass}
 
@@ -377,6 +381,34 @@ get_item(dist, 2) == 5
 ```
 
 ### Accumulate {#Accumulate}
+
+__Interface:__
+
+Accumulate observations from a series. If an invalid distribution is provided, no
+events will be observed and an error will be raised. If an invalid event is
+provided, then the number of valid events to that point will be added and a
+warning will be raised.
+
+```r
+accumulate(d, events)
+```
+
+__Examples:__
+
+```{r}
+# Create a valid distribution
+d <- Dist(c(1, 2, 3))
+dump(d)
+
+# Accumulate events
+d <- accumulate(d, events)
+dump(d)
+
+# Accumulate invalid events
+events <- c(0, 1, 1, 3, 1)
+d <- accumulate(d, events)
+dump(d)
+```
 
 ## Probabilities
 

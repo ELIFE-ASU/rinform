@@ -214,6 +214,30 @@ test_that("tick checks parameters", {
   expect_equal(counts(tick(d, 3)), 102)
 })
 
+test_that("accumulate checks parameters", {
+  d      <- Dist(c(13, 56, 32))
+  events <- sample(0:2, 100, T)
+
+  dc      <- d
+  dc$size <- 5
+  expect_error(accumulate(dc, events))
+
+  dc           <- d
+  dc$histogram <- "two"
+  expect_error(accumulate(dc, events))
+
+  dc           <- d
+  dc$counts <- "two"
+  expect_error(accumulate(dc, events))
+
+  dc        <- d
+  class(dc) <- "two"
+  expect_error(accumulate(dc, events))
+  expect_error(accumulate(d, NA))
+  
+  expect_equal(counts(accumulate(d, events)), 201)
+})
+
 test_that("probability checks parameters", {
   d <- Dist(c(13, 56, 32))
 
