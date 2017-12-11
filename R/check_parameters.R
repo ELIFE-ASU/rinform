@@ -29,7 +29,6 @@
   if (sum(p>0) != length(p)) {
     stop("<", deparse(substitute(p)), "> contains negative values!", call. = !T)
   }
-
 }
 
 .check_history <- function (k) {
@@ -38,15 +37,6 @@
   }
   if (k < 1) {
     stop("<", deparse(substitute(k)), "> is less then 1!", call. = !T)
-  }
-}
-
-.check_base <- function (b) {
-  if (!is.numeric(b)) {
-    stop("<", deparse(substitute(b)), "> is not numeric!", call. = !T)
-  }
-  if (b < 0) {
-    stop("<", deparse(substitute(b)), "> is negative!", call. = !T)
   }
 }
 

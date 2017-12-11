@@ -884,18 +884,131 @@ t(re)
 
 # Utilities
 
++--------------------+----------------------------------------------------------+
+| Type               | Functions                                                |
++====================+==========================================================+
+| Binning            |[`series_range`](#SeriesRange), [`bin_series`](#BinSeries)|
++--------------------+----------------------------------------------------------+
+| Black-Boxing       |  |
++--------------------+---------------------------------------------------------------+
+| Coalescing         |  |
++--------------------+----------------------------------------------------------+
+| Encoding/Decoding  |            |
++--------------------+----------------------------------------------------------+
+| Random Time Series |            |
++--------------------+----------------------------------------------------------+
+| Time Series to TPM |            |
++--------------------+----------------------------------------------------------+
+
+
 ## Binning Time Series
+
+### Series Range {#SeriesRange}
+
+__Interface:__
+
+Compute the range, minimum and maximum values in a floating-point time series
+and return them as a list.
+
+```r
+series_range(series)
+```
+
+__Examples:__
+
+```{r}
+# Valid time series
+xs <- c(0.2, 0.5, -3.2, 1.8, 0.6, 2.3)
+series_range(xs)
+```
+
+### Bin Series {#BinSeries}
+
+__Interface:__
+
+Bin a floating-point time series following one of three different modalities:
+
+* Bin a floating-point time series into a finite-state time series with `b` uniform sized
+bins, and return the size of the bins. If the size of each bin is too small, less than
+$10 \epsilon$, then all entries are placed in the same bin and an error is set.
+($\epsilon$ is the double-precision machine epsilon.)
+
+* Bin a floating-point time series into bins of a specified size `step`, and return
+the number of bins. If the bin size is too small, less than $10 \epsilon$, then an error
+is set.
+
+* Bin a floating-point time series into bins defined by an array of `bounds`, and
+return the bounds of bins. 
+
+Return a list giving the binned sequence, the number of bins and either the
+bin sizes or bin bounds.
+     
+```r
+bin_series(series, b = NA, step = NA, bounds = NA)
+```
+
+__Examples:__
+
+```{r}
+# First method: number of bins
+series <- c(1, 2, 3, 4, 5, 6)
+bin_series(series, b = 2)
+
+# Second method: bin size
+bin_series(series, step = 2.0)
+
+# Third method: bins bounds
+bin_series(series, bounds = c(3,7))
+```
 
 ## Black-Boxing Time Series
 
+### Black-Box {#BlackBox}
+
+__Interface:__
+
+__Examples:__
+
+### Black-Box Parts {#BlackBoxParts}
+
+__Interface:__
+
+__Examples:__
+
+### {#}
+
+__Interface:__
+
+__Examples:__
+
 ## Coalescing Time Series
+
+__Interface:__
+
+__Examples:__
 
 ## Encoding/Decoding States
 
+__Interface:__
+
+__Examples:__
+
 ## Partitioning Time Series
+
+__Interface:__
+
+__Examples:__
 
 ## Random Time Series
 
+__Interface:__
+
+__Examples:__
+
 ## Time Series to TPM
+
+__Interface:__
+
+__Examples:__
 
 # References {#References}

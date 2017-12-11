@@ -280,3 +280,19 @@ t(re)
 re <- relative_entropy(ys, xs, local = T)
 t(re)
 
+## ------------------------------------------------------------------------
+# Valid time series
+xs <- c(0.2, 0.5, -3.2, 1.8, 0.6, 2.3)
+series_range(xs)
+
+## ------------------------------------------------------------------------
+# First method: number of bins
+series <- c(1, 2, 3, 4, 5, 6)
+bin_series(series, b = 2)
+
+# Second method: bin size
+bin_series(series, step = 2.0)
+
+# Third method: bins bounds
+bin_series(series, bounds = c(3,7))
+

@@ -9,9 +9,10 @@
 ################################################################################
 #' Series Range
 #'
-#' Compute the range of a continuously-valued time series.
+#' Compute the range, minimum and maximum values in a floating-point time
+#' series \code{series}.
 #'
-#' @param series Vector of the time series to bin.
+#' @param series Vector giving the time series.
 #'
 #' @return List giving the range, the minimum and the maximum value of the
 #'         series.
@@ -26,14 +27,9 @@ series_range <- function(series) {
   rval <- list(srange = 0.0, smin = 0.0, smax = 0.0)
   err  <- 0
 
-  if (!is.numeric(series)) {
-    stop("<series> is not numeric")
-  }
-
-  if (is.matrix(series)) {
-    stop("<series> is a matrix")
-  }
-
+  .check_series(series)
+  .check_series_vector(series)
+  
   x <- .C("r_series_range_",
            series  = as.double(series),
 	   n       = as.integer(length(series)),	   
@@ -41,15 +37,13 @@ series_range <- function(series) {
 	   smin    = as.double(rval$smin),
 	   smax    = as.double(rval$smax),
 	   err     = as.integer(err))
-	    
-  if (x$err == 0) {
+
+  if (.check_inform_error(x$err) == 0) {
     rval$srange <- x$srange
     rval$smin   <- x$smin
     rval$smax   <- x$smax
-  } else {
-    stop("inform lib error (", x$err, ")")
   }
-        
+  
   rval
 }
 
@@ -59,7 +53,7 @@ series_range <- function(series) {
 #' Bin a continously-valued times series. The binning can be performed in any
 #' one of three ways. The first is binning the time series into \code{b}
 #' uniform bins (with \code{b} an integer). The second type of binning produces
-#' bins of a specific size \code{step}. The third type of binning is breaks the
+#' bins of a specific size \code{step}. The third type of binning breaks the
 #' real number line into segments with specified boundaries or thresholds, and
 #' the time series is binned according to this partitioning. The bounds are
 #' expected to be provided in ascending order.
@@ -85,13 +79,8 @@ bin_series <- function(series, b = NA, step = NA, bounds = NA) {
   err  <- 0
   x    <- list()
 
-  if (!is.numeric(series)) {
-    stop("<series> is not numeric")
-  }
-
-  if (is.matrix(series)) {
-    stop("<series> is a matrix")
-  }
+  .check_series(series)
+  .check_series_vector(series)
 
   if (is.na(b) & is.na(step) & anyNA(bounds)) {
     stop("must provide either number of bins, step size, or bin boundaries")
@@ -137,14 +126,12 @@ bin_series <- function(series, b = NA, step = NA, bounds = NA) {
              err     = as.integer(err))
   }
 
-  if (x$err == 0) {
+  if (.check_inform_error(x$err) == 0) {
     rval$binned <- x$out
     rval$b      <- x$b
     if (!anyNA(bounds)) { rval$spec <- bounds }
     else                { rval$spec <- x$spec }
-  } else {
-    stop("inform lib error (", x$err, ")")
   }
-        
+  
   rval
 }
