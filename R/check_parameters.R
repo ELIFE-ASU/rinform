@@ -16,6 +16,21 @@
   }
 }
 
+.check_probability_vector <- function (p) {
+  if (!is.numeric(p)) {
+    stop("<", deparse(substitute(p)), "> is not numeric!", call. = !T)
+  }
+  if (!is.vector(p)) {
+    stop("<", deparse(substitute(p)), "> is not a vector!", call. = !T)
+  }
+  if (sum(p) != 1.0) {
+    stop("<", deparse(substitute(p)), "> does not sum up to 1!", call. = !T)
+  }
+  if (sum(p>0) != length(p)) {
+    stop("<", deparse(substitute(p)), "> contains negative values!", call. = !T)
+  }
+}
+
 .check_history <- function (k) {
   if (!is.numeric(k)) {
     stop("<", deparse(substitute(k)), "> is not numeric!", call. = !T)
@@ -25,18 +40,37 @@
   }
 }
 
-.check_base <- function (b) {
-  if (!is.numeric(b)) {
-    stop("<", deparse(substitute(b)), "> is not numeric!", call. = !T)
-  }
-  if (b < 0) {
-    stop("<", deparse(substitute(b)), "> is negative!", call. = !T)
-  }
-}
-
 .check_local <- function (local) {
   if (!is.logical(local)) {
     stop("<", deparse(substitute(local)), "> is not logical!", call. = !T)
+  }
+}
+
+.check_is_not_corrupted <- function(d, only_warning = !T) {
+  rval <- T
+  
+  if(!is_not_corrupted(d)) {
+    if (only_warning) {
+      rval <- !T
+    } else {
+      stop("<", deparse(substitute(d)), "> object is corrupted!", call. = !T)
+    }
+  }
+  rval
+}
+
+.check_event <- function(event, n) {
+  if (!is.numeric(event)) {
+    stop("<", deparse(substitute(event)), "> is not numeric!", call. = !T)
+  }
+  if (!is.vector(event)) {
+    stop("<", deparse(substitute(event)), "> is multidimensional!", call. = !T)
+  }
+  if (length(event) > 1) {
+    stop("<", deparse(substitute(event)), "> is a vector!", call. = !T)
+  }
+  if (event <= 0 | event > n) {
+    stop("<", deparse(substitute(event)), "> out of bound!", call. = !T)
   }
 }
 

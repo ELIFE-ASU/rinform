@@ -101,6 +101,51 @@ void r_copy_(int *histogram, int *size, int *chistogram,
   }
 }
 
+void r_infer_(int *n, int *events, int *histogram, int *err) {
+  inform_dist *dist;
+    
+  dist = inform_dist_infer(events, *n);
+  
+  if (dist != NULL) {
+    for (int i = 0; i < dist->size; i++)      
+      histogram[i] = (int) dist->histogram[i];
+    inform_dist_free(dist);      
+  } else {
+    *err = 1;
+  }
+}
+
+void r_approximate_(double *probs, int *n, double *tol, int *histogram, int *err) {
+  inform_dist *dist;
+    
+  dist = inform_dist_approximate(probs, *n, *tol);
+  
+  if (dist != NULL) {
+    for (int i = 0; i < dist->size; i++)      
+      histogram[i] = (int) dist->histogram[i];
+    inform_dist_free(dist);      
+  } else {
+    *err = 1;
+  }
+}
+
+void r_uniform_(int*n, int *histogram, int *size, int *counts, int *err) {
+  inform_dist *dist;
+    
+  dist = inform_dist_uniform(*n);
+  
+  if (dist != NULL) {
+    *size = dist->size;
+    *counts = dist->counts;      
+    for (int i = 0; i < *size; i++)      
+      histogram[i] = (int) dist->histogram[i];
+    inform_dist_free(dist);      
+  } else {
+    *err = 1;
+  }
+}
+
+
 void r_counts_(int *histogram, int *size, int *rcounts, int *err) {
   inform_dist *dist;
     
@@ -125,7 +170,7 @@ void r_valid_(int *histogram, int *size, int *isvalid, int *err) {
   }
 }
 
-void r_tick_(int *histogram, int *size, int *event, int *err) {
+void r_tick_(int *histogram, int *size, int *counts, int *event, int *err) {
   inform_dist *dist;
   int new_occurencies;
     
@@ -133,6 +178,25 @@ void r_tick_(int *histogram, int *size, int *event, int *err) {
   if (dist != NULL) {
     new_occurencies = inform_dist_tick(dist, *event);
     histogram[*event] = new_occurencies;
+    *counts = inform_dist_counts(dist);
+    inform_dist_free(dist);
+  } else {
+    *err = 1;
+  }
+}
+
+void r_accumulate_(int *histogram, int *size, int *counts, int *n, int *events, int *err) {
+  inform_dist *dist;
+  int new_occurencies;
+    
+  dist  = inform_dist_create((const uint32_t *) histogram, *size);  
+  if (dist != NULL) {
+    new_occurencies = inform_dist_accumulate(dist, events, *n);
+    *counts   = dist->counts;
+    *size     = dist->size;
+    *n        = new_occurencies;    
+    for (int i = 0; i < *size; i++)      
+      histogram[i] = (int) dist->histogram[i];
     inform_dist_free(dist);
   } else {
     *err = 1;
