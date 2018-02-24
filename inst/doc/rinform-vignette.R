@@ -125,6 +125,7 @@ d <- Dist(c(1, 2, 3))
 dump(d)
 
 # Accumulate events
+events <- c(0, 0, 1, 0, 1)
 d <- accumulate(d, events)
 dump(d)
 
@@ -281,6 +282,51 @@ re <- relative_entropy(ys, xs, local = T)
 t(re)
 
 ## ------------------------------------------------------------------------
+# One initial condition, no background:
+xs <- c(0, 1, 1, 1, 1, 0, 0, 0, 0)
+ys <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
+transfer_entropy(xs, ys, ws = NULL, k = 2)
+
+# .. and local variant:
+te <- transfer_entropy(xs, ys, ws = NULL, k = 2, local = T)
+t(te)
+
+# Two initial conditions, no background:
+xs <- matrix(0, nrow = 9, ncol = 2)
+xs[, 1] <- c(1, 0, 0, 0, 0, 1, 1, 1, 1)
+xs[, 2] <- c(1, 1, 1, 1, 0, 0, 0, 1, 1)
+ys <- matrix(0, nrow = 9, ncol = 2)
+ys[, 1] <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
+ys[, 2] <- c(1, 0, 0, 0, 0, 1, 1, 1, 0)
+transfer_entropy(xs, ys, ws = NULL, k = 2)
+
+# .. and local variant:
+te <- transfer_entropy(xs, ys, ws = NULL, k = 2, local = T)
+t(te)
+
+# One initial condition, one background process:
+xs <- c(0, 1, 1, 1, 1, 0, 0, 0, 0)
+ys <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
+ws <- array(c(0, 1, 1, 1, 1, 0, 1, 1, 1), dim = c(1, 9, 1))
+transfer_entropy(xs, ys, ws, k = 2)
+
+# .. and local variant:
+te <- transfer_entropy(xs, ys, ws, k = 2, local = T)
+t(te)
+
+## ------------------------------------------------------------------------
+# One initial condition, two background processes:
+xs <- c(0, 1, 1, 1, 1, 0, 0, 0, 0)
+ys <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
+ws <- array(c(1, 0, 1, 0, 1, 1, 1, 1, 1,
+              1, 1, 0, 1, 0, 1, 1, 1, 1), dim = c(2, 9, 1))
+transfer_entropy(xs, ys, ws, k = 2)
+
+# .. and local variant:
+te <- transfer_entropy(xs, ys, ws, k = 2, local = T)
+t(te)
+
+## ------------------------------------------------------------------------
 # Valid time series
 xs <- c(0.2, 0.5, -3.2, 1.8, 0.6, 2.3)
 series_range(xs)
@@ -293,6 +339,6 @@ bin_series(series, b = 2)
 # Second method: bin size
 bin_series(series, step = 2.0)
 
-# Third method: bins bounds
+# Third method: bin bounds
 bin_series(series, bounds = c(3,7))
 

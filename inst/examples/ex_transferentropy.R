@@ -5,7 +5,7 @@ ys <- c(0, 1, 1, 1, 1, 0, 0, 0, 1)
 transfer_entropy(ys, xs, k = 1)       # 0.8112781
 transfer_entropy(ys, xs, k = 2)       # 0.6792696
 transfer_entropy(xs, ys, k = 1)       # 0.2169172
-transfer_entropy(xs, ys, k = 2)       # -2.220446e-16
+transfer_entropy(xs, ys, k = 2)       # 0
 
 # [1] 0.4150375, 2.0, 0.4150375, 0.4150375, 0.4150375, 2.0, 0.4150375,
 #     0.4150375
@@ -57,10 +57,13 @@ transfer_entropy(xs, ys, k = 1, local = TRUE)
 #       -2.220446e-16, -2.220446e-16, 0.000000e+00
 transfer_entropy(xs, ys, k = 2, local = TRUE)
 
-# [, 1] 0, 0, 0, 0, 0, 0, 0
-# [, 2] 0, 0, 0, 0, 0, 0, 0
-transfer_entropy(ys, xs, k = 2, local = TRUE, mwindow = TRUE)
+# With a background process
+xs <- c(0, 1, 1, 1, 1, 0, 0, 0, 0)
+ys <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
+ws <- array(c(1, 0, 1, 0, 1, 1, 1, 1, 1,
+              1, 1, 0, 1, 0, 1, 1, 1, 1), dim = c(2, 9, 1))
+transfer_entropy(xs, ys, ws, k = 2) # 0
 
-# [, 1] 0, 0, 0, 0, 0, 0, 0
-# [, 2] 0, 0, 0, 0, 0, 0, 0
-transfer_entropy(xs, ys, k = 2, local = TRUE, mwindow = TRUE)
+# [, 1] 0, 0, 0, 0, 0, 0, 0, 0, 0 
+te <- transfer_entropy(xs, ys, ws, k = 2, local = T)
+t(te)
