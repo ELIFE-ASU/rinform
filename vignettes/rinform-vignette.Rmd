@@ -1,5 +1,5 @@
 ---
-title: "The rinform Wrapper"
+title: "The _rinform_ Package"
 author: "Gabriele Valentini"
 date: "`r Sys.Date()`"
 output:
@@ -32,15 +32,75 @@ An R wrapper of the [Inform v1.0.0](https://elife-asu.github.io/Inform/) C libra
 
 * discrete emperical probability distributions which form the basis for
   all of the information-theoretic measures,
-  
 * classic information-theoretic measures built upon empirical distributions,
-
 * measures of information dynamics for time series.
 
 In addition to the core components, rinform also provides a small collection of utilities to deal with time series. 
 
+If you are using _rinform_, please consider citing the following articles:
+
+* D.G. Moore, G. Valentini, S.I. Walker, M. Levin. "Inform: Efficient 
+Information-Theoretic Analysis of Collective Behaviors". _Frontiers in Robotics & AI.
+(_under review_)
+* D.G. Moore, G. Valentini, S.I. Walker, M. Levin. "Inform: A Toolkit for
+Information-Theoretic Analysis of Complex Systems". In: _Proceedings of the 
+2017 IEEE Symposium Series on Computational Intelligence, Symposium on 
+Artificial Life_, IEEE Press, 2017. (_in press_)
 
 # Getting Started
+
+## Installation 
+
+## Getting Help
+
+*rinform*, as its parent library [inform](https://github.com/elife-asu/inform),
+is developed to help anyone
+interested in applying information-theoretic techniques get things done
+quickly and painlessly. We cannot do that without your feedback. We host the
+project's source code and issue tracker on [Github](https://github.com/elife-asu/rinform).
+Please create an issue if you find a bug, an error in this documentation,
+or have a feature you'd like to request. Your contribution will make
+*rinform* a better tool for everyone.
+
+If you are interested in contributing to *rinform*, please contact the developers,
+and we'll get you up and running!
+
+Resources: [Source Repository](https://github.com/elife-asu/rinform) and [Issue Tracker](https://github.com/elife-asu/rinform/issues)
+
+## Related Projects
+
+### Inform Community
+
+While *rinform* is a great tool to use directly in R, significant effort has gone
+into making it easy to access the functionality of the [*inform*](https://github.com/elife-asu/inform) library directly
+using other higher level languages. Here are a few of the wrappers that are
+under active development:
+
+* _PyInform_ for Python ([repository](https://github.com/elife-asu/pyinform), [webpage](https://elife-asu.github.io/PyInform))
+* _Inform.jl_ for Julia ([repository](https://github.com/elife-asu/inform.jl), webpage: _forthcoming_)
+* _InformWolfram_ for Mathematica Wolfram Language ([repository](https://github.com/elife-asu/informwolfram), webpage: _forthcoming_)
+
+### Intellectual Relatives
+
+*rinform* was not created in an intellectual vacuum. Many similar projects have preceded it
+and are under active development. All of those projects have advantages and disadvantages
+compared to *rnform*. If *Inform* doesn't meet your needs, I hope you will let us know, and
+try one of these:
+
+* [JIDT: Java Information Dynamics Toolkit](https://jlizier.github.il/jidt) (Java)
+* [TRENTOOL: TRansfer ENtropy TOOLbox](https://trentool.github.io/TRENTOOL3) (Matlab)
+* [dit: discrete information theory](https://docs.dit.io) (Python)
+* [MuTE: MuTE Toolbox- The Dynamic DIrected Links Detector](https://mutetoolbox.guru) (Matlab)
+* [MVGC: Multivariate Granger Causality Toolbox](https://users.sussex.ac.uk/~lionelb/MVGC) (Matlab)
+* [ACSS: Algorithmic Complexity for Short
+    Strings](https://cran.r-project.org/web/packages/acss) (R)
+* [OACC: Online Algorithmic Complexity
+    Calculator](https://complexitycalculator.com) (web-based, R)
+
+## Copyright and Licensing
+
+Copyright © 2017-2018 ELIFE, Arizona State University. Free use of this software is granted
+under the terms of the MIT License. See the [LICENSE](https://github.com/elife-asu/rinform/blob/master/LICENSE) file for details.
 
 # Error Handling
 
