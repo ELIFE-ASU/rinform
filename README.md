@@ -1,5 +1,7 @@
 # rinform #
-An R wrapper for the [inform](https://github.com/ELIFE-ASU/Inform) C library.
+An R wrapper for the [inform](https://github.com/ELIFE-ASU/Inform) C library to
+provide easy and computationally efficient tools for information-theoretic
+analysis of complex systems.
 
 Installation instructions and documentation for the _rinform_ package as well as
 information about related projects can be found
