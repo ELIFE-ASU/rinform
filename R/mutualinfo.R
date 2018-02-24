@@ -9,17 +9,10 @@
 ################################################################################
 #' Mutual Information
 #'
-#' Compute the average or the local mutual information between two time series.
-#' The bases \code{bx} and \code{by} are inferred from their respective time
-#' series if they are not provided (or are 0). The minimum value in both cases
-#' is 2. This function explicitly takes the logarithmic base \code{b} as an
-#' argument.
+#' Compute the average or the local mutual information between two or more time series.
+#' Each variable can have a different base.
 #'
-#' @param xs Vector specifying a time series.
-#' @param ys Vector specifying a time series.
-#' @param bx Integer giving the base of the \code{xs} time series.
-#' @param by Integer giving the base of the \code{ys} time series.
-#' @param b Double giving the base of the logarithm.
+#' @param series Matrix specifying a set of time series.
 #' @param local Boolean specifying whether to compute the local mutual
 #'        information.
 #'
@@ -33,79 +26,48 @@
 #' @useDynLib rinform r_mutual_info_
 #' @useDynLib rinform r_local_mutual_info_
 ################################################################################
-mutual_info <- function(xs, ys, bx = 0, by = 0, b = 2.0, local = FALSE) {
+mutual_info <- function(series, local = FALSE) {
   n   <- 0
-  m   <- 0  
+  l   <- 0  
   mi  <- 0
   err <- 0
-  
-  if (!is.numeric(xs)) {
-    stop("<xs> is not numeric")
-  }
 
-  if (!is.numeric(ys)) {
-    stop("<ys> is not numeric")
-  }
+  .check_series(series)
+  .check_series_num_variables(series)
+  .check_local(local)
 
-  # Extract number of series and length
-  if (is.vector(xs) & is.vector(ys)) {
-    if (length(xs) != length(ys)) {
-      stop("<xs> and <ys> differ in length")
-    }
-    n <- length(xs)
-  } else {
-    stop("<xs> and/or <ys> are not vectors")
-  }
+  n <- dim(series)[1]
+  l <- dim(series)[2]
 
-  # Convert to integer vector suitable for C
-  xs <- as.integer(xs)
-  ys <- as.integer(ys)
-
-  # Compute the value of <bx>
-  if (bx == 0) {
-    bx <- max(2, max(xs) + 1)
-  }
-
-  # Compute the value of <by>
-  if (by == 0) {
-    by <- max(2, max(ys) + 1)
-  }
+  # Compute the value of <b>
+  b        <- apply(series, 2, max) + 1
+  b[b < 2] <- 2  
 
   if (!local) {
     x <- .C("r_mutual_info_",
-            ys      = as.integer(xs),
-	    xs      = as.integer(ys),
+            series  = as.integer(series),
+	    l       = as.integer(l),
 	    n       = as.integer(n),
-	    bx      = as.integer(bx),
-	    by      = as.integer(by),
-	    b       = as.double(b),	    
+	    b       = as.integer(b),
 	    rval    = as.double(mi),
 	    err     = as.integer(err))
-	    
-    if (x$err == 0) {
+
+    if (.check_inform_error(x$err) == 0) {
       mi <- x$rval
-    } else {
-      stop("inform lib error (", x$err, ")")
     }
-    
   } else {
     mi <- rep(0, n)
     x <- .C("r_local_mutual_info_",
-            ys      = as.integer(xs),
-            xs      = as.integer(ys),
+            series  = as.integer(series),
+	    l       = as.integer(l),
 	    n       = as.integer(n),
-	    bx      = as.integer(bx),
-	    by      = as.integer(by),
-	    b       = as.double(b),	    
+	    b       = as.integer(b),
 	    rval    = as.double(mi),
 	    err     = as.integer(err))
 	    
-    if (x$err == 0) {
+    if (.check_inform_error(x$err) == 0) {
       mi <- x$rval
-    } else {
-      stop("inform lib error (", x$err, ")")
-    }
-    
+    }    
   }
 
   mi

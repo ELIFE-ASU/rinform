@@ -11,18 +11,11 @@
 #'
 #' Compute the average or the local conditional entropy between two time series.
 #' This function expects the \strong{condition} to be the first argument.
-#' The bases \code{bx} and \code{by} are inferred from their respective time
-#' series if they are not provided (or are 0). The minimum value in both cases
-#' is 2. This function explicitly takes the logarithmic base \code{b} as an
-#' argument.
 #'
 #' @param xs Vector specifying a time series drawn from
 #'        the conditional distribution.
 #' @param ys Vector specifying a time series drawn from
 #'        the target distribution.
-#' @param bx Integer giving the base of the conditional time series.
-#' @param by Integer giving the base of the target time series.
-#' @param b Double giving the base of the logarithm.
 #' @param local Boolean specifying whether to compute the local conditional
 #'        entropy.
 #'
@@ -36,44 +29,34 @@
 #' @useDynLib rinform r_conditional_entropy_
 #' @useDynLib rinform r_local_conditional_entropy_
 ################################################################################
-conditional_entropy <- function(xs, ys, bx = 0, by = 0, b = 2.0, local = FALSE) {
+conditional_entropy <- function(xs, ys, local = FALSE) {
   n   <- 0
-  m   <- 0  
   ce  <- 0
   err <- 0
-  
-  if (!is.numeric(xs)) {
-    stop("<xs> is not numeric")
-  }
 
-  if (!is.numeric(ys)) {
-    stop("<ys> is not numeric")
-  }
+  .check_series(xs)
+  .check_series(ys)
+  .check_local(local)
 
   # Extract number of series and length
   if (is.vector(xs) & is.vector(ys)) {
     if (length(xs) != length(ys)) {
-      stop("<xs> and <ys> differ in length")
+      stop("<", deparse(substitute(xs)), "> and <", deparse(substitute(ys)), "> differ in length")
     }
     n <- length(xs)
   } else {
-    stop("<xs> or/and <ys> are not vectors")  
+    stop("<", deparse(substitute(xs)), "> or/and <", deparse(substitute(ys)), "> are not vectors")
   }
-
 
   # Convert to integer vector suitable for C
   xs <- as.integer(xs)
   ys <- as.integer(ys)
 
   # Compute the value of <bx>
-  if (bx == 0) {
-    bx <- max(2, max(xs) + 1)
-  }
+  bx <- max(2, max(xs) + 1)
 
   # Compute the value of <by>
-  if (by == 0) {
-    by <- max(2, max(ys) + 1)
-  }
+  by <- max(2, max(ys) + 1)
 
   if (!local) {
     x <- .C("r_conditional_entropy_",
@@ -82,34 +65,25 @@ conditional_entropy <- function(xs, ys, bx = 0, by = 0, b = 2.0, local = FALSE) 
 	    n       = as.integer(n),
 	    bx      = as.integer(bx),
 	    by      = as.integer(by),
-	    b       = as.double(b),	    
 	    rval    = as.double(ce),
 	    err     = as.integer(err))
 	    
-    if (x$err == 0) {
+    if (.check_inform_error(x$err) == 0) {
       ce <- x$rval
-    } else {
-      stop("inform lib error (", x$err, ")")
     }
-    
   } else {
-    ce <- rep(0, m)
+    ce <- rep(0, n)
     x <- .C("r_local_conditional_entropy_",
             ys      = as.integer(xs),
             xs      = as.integer(ys),
 	    n       = as.integer(n),
 	    bx      = as.integer(bx),
 	    by      = as.integer(by),
-	    b       = as.double(b),	    
 	    rval    = as.double(ce),
 	    err     = as.integer(err))
-	    
-    if (x$err == 0) {
-      ce      <- x$rval
-    } else {
-      stop("inform lib error (", x$err, ")")
-    }
-    
+    if (.check_inform_error(x$err) == 0) {
+      ce <- x$rval
+    }    
   }
 
   ce

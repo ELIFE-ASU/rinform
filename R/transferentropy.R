@@ -10,19 +10,15 @@
 #' Transfer Entropy
 #'
 #' Compute the local or average transfer entropy from one time series \code{ys}
-#' to another \code{xs} with target history length \code{k}. If the base 
-#' \code{b} is not specified (or is 0), then it is inferred from the time series
-#' with 2 as a minimum. \code{b} must be at least the base of the time series
-#' and is used as the base of the logarithm.
+#' to another \code{xs} with target history length \code{k} conditioned on the
+#' background \code{ws}.
 #'
 #' @param ys Vector or matrix specifying one or more source time series.
-#' @param xs Vector or matrix specifying one or more target time series.
+#' @param xs Vector or matrix specifying one or more destination time series.
+#' @param ws Vector or matrix specifying one or more background time series.
 #' @param k Integer giving the history length.
-#' @param b Integer giving the base of the time series and logarithm.
 #' @param local Boolean specifying whether to compute the local transfer
 #'        entropy.
-#' @param mwindow Boolean specifying whether to compute the local transfer
-#'        entropy using a moving window of size \code{k}.
 #'
 #' @return Numeric giving the average transfer entropy or a vector giving the
 #'         local transfer entropy.
@@ -32,21 +28,22 @@
 #' @export
 #'
 #' @useDynLib rinform r_transfer_entropy_
+#' @useDynLib rinform r_complete_transfer_entropy_
 #' @useDynLib rinform r_local_transfer_entropy_
+#' @useDynLib rinform r_local_complete_transfer_entropy_
 ################################################################################
-transfer_entropy <- function(ys, xs, k, b = 0, local = FALSE, mwindow = FALSE) {
+transfer_entropy <- function(ys, xs, ws = NULL, k, local = FALSE) {
+  l   <- 0
   n   <- 0
   m   <- 0
   te  <- 0
   err <- 0
 
-  if (!is.numeric(ys)) {
-    stop("<ys> is not numeric")
-  }
-
-  if (!is.numeric(xs)) {
-    stop("<xs> is not numeric")
-  }
+  .check_series(ys)
+  .check_series(xs)
+  if(!is.null(ws)) .check_series_array(ws)
+  .check_history(k)
+  .check_local(local)
 
   # Extract number of series and length
   if (is.vector(xs) & is.vector(ys)) {
@@ -68,47 +65,87 @@ transfer_entropy <- function(ys, xs, k, b = 0, local = FALSE, mwindow = FALSE) {
   ys <- as.integer(ys)
 
   # Compute the value of <b>
-  if (b == 0) {
-    b = max(2, max(xs) + 1)
+  b <- max(2, max(xs) + 1, max(ys) + 1)
+
+  # Extract number of series and length of the background
+  if (!is.null(ws)) {
+    if (dim(ws)[2] != m) {
+      stop("<ws> differ in number of time steps")
+    }
+    if (dim(ws)[3] != n) {
+      stop("<ws> differ in number of time series")
+    }
+    l <- dim(ws)[1]
+
+    # Convert to integer vector suitable for C
+    wst <- as.integer(rep(0, l * m * n))
+    for (i in 1:l) {
+      wst[((i - 1) * m * n + 1):((m * n) * i)] <- as.integer(ws[i, , ])
+    }
+    ws <- wst
+
+    # Compute the value of <b>
+    b <- max(2, max(xs) + 1, max(ys) + 1, max(ws) + 1)
   }
 
   if (!local) {
-    x <- .C("r_transfer_entropy_",
-            ys      = as.integer(ys),
-	    xs      = as.integer(xs),
-	    n       = as.integer(n),
-	    m       = as.integer(m),
-	    b       = as.integer(b),
-	    k       = as.integer(k),
-	    rval    = as.double(te),
-	    err     = as.integer(err))
-	    
-    if (x$err == 0) {
-      te <- x$rval
+    if (l == 0) {
+      x <- .C("r_transfer_entropy_",
+              ys      = ys,
+	      xs      = xs,
+	      n       = as.integer(n),
+	      m       = as.integer(m),
+	      b       = as.integer(b),
+	      k       = as.integer(k),
+	      rval    = as.double(te),
+	      err     = as.integer(err))
     } else {
-      stop("inform lib error (", x$err, ")")
+      x <- .C("r_complete_transfer_entropy_",
+              ys      = ys,
+	      xs      = xs,
+	      ws      = ws,
+	      l       = as.integer(l),
+	      n       = as.integer(n),
+	      m       = as.integer(m),
+	      b       = as.integer(b),
+	      k       = as.integer(k),
+	      rval    = as.double(te),
+	      err     = as.integer(err))
     }
-    
+	    
+    if (.check_inform_error(x$err) == 0) {
+      te <- x$rval
+    }
   } else {
     te <- rep(0, (m - k) * n)
-    x <- .C("r_local_transfer_entropy_",
-            ys      = as.integer(ys),
-            xs      = as.integer(xs),
-	    n       = as.integer(n),
-	    m       = as.integer(m),
-	    b       = as.integer(b),
-	    k       = as.integer(k),
-	    mwindow = as.integer(mwindow),
-	    rval    = as.double(te),
-	    err     = as.integer(err))
-	    
-    if (x$err == 0) {
-      te      <- x$rval
-      dim(te) <- c(m - k, n)
-    } else {
-      stop("inform lib error (", x$err, ")")
+    if (l == 0) {
+      x <- .C("r_local_transfer_entropy_",
+              ys      = ys,
+	      xs      = xs,
+	      n       = as.integer(n),
+	      m       = as.integer(m),
+	      b       = as.integer(b),
+	      k       = as.integer(k),
+	      rval    = as.double(te),
+	      err     = as.integer(err))
+    } else{
+      x <- .C("r_local_complete_transfer_entropy_",
+              ys      = ys,
+	      xs      = xs,
+	      ws      = ws,
+	      l       = as.integer(l),
+	      n       = as.integer(n),
+	      m       = as.integer(m),
+	      b       = as.integer(b),
+	      k       = as.integer(k),
+	      rval    = as.double(te),
+	      err     = as.integer(err))
     }
     
+    if (.check_inform_error(x$err) == 0) {
+      te      <- x$rval
+      dim(te) <- c(m - k, n)
+    }
   }
 
   te
