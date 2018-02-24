@@ -35,7 +35,7 @@ test_that("active_info on single series", {
                            k = 2, local = !T), 0.469566, tolerance = 1e-6)			   
 })
 
-test_that("active_info on ensamble of series", {
+test_that("active_info on ensemble of series", {
   series      <- matrix(0, nrow = 8, ncol = 2)
   series[, 1] <- c(1, 1, 0, 0, 1, 0, 0, 1)
   series[, 2] <- c(0, 0, 0, 1, 0, 0, 0, 1)
@@ -77,7 +77,7 @@ test_that("active_info local on single series", {
                            k = 2, local = T)), 0.469566, tolerance = 1e-6)   
 })
 
-test_that("active_info local on ensamble of series", {
+test_that("active_info local on ensemble of series", {
   series      <- matrix(0, nrow = 8, ncol = 2)
   series[, 1] <- c(1, 1, 0, 0, 1, 0, 0, 1)
   series[, 2] <- c(0, 0, 0, 1, 0, 0, 0, 1)

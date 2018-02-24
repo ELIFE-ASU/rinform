@@ -16,6 +16,15 @@
   }
 }
 
+.check_series_array <- function (x) {
+  if (!is.array(x)) {
+    stop("<", deparse(substitute(x)), "> is not an array!", call. = !T)
+  }
+  if (length(dim(x)) != 3) {
+    stop("<", deparse(substitute(x)), "> is not a 3-dimensional array!", call. = !T)
+  }
+}
+
 .check_probability_vector <- function (p) {
   if (!is.numeric(p)) {
     stop("<", deparse(substitute(p)), "> is not numeric!", call. = !T)

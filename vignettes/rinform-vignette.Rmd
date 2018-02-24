@@ -401,6 +401,7 @@ d <- Dist(c(1, 2, 3))
 dump(d)
 
 # Accumulate events
+events <- c(0, 0, 1, 0, 1)
 d <- accumulate(d, events)
 dump(d)
 
@@ -881,6 +882,113 @@ t(re)
 ## Separable Information
 
 ## Transfer Entropy
+
+[Transer entropy](https://en.wikipedia.org/wiki/Transfer_entropy) (TE) was introduced
+in [[@Schreiber2000]](#References) to quantify information transfer between an
+information source and a destination, conditioning out shared history effects. TE
+was originally formulated considering only the source and destination; however many systems
+of interest have more than just those two components. As such, it may be further necessary to
+condition the probabilities on the states of all "background" components in the system.
+These two forms are sometimes referred to as _apparent_ and _complete_ transfer entropy,
+respectively ([[Lizier2008]](#References)).
+
+Our implementation of TE allows the user to condition the probabilities on any number of
+background processes, within hardware limits. For the subsequent description, take $X$
+to be the source, $Y$ the target, $W = \{W_1, \ldots, W_l\}$ be the background processes
+against which we'd like to condition. For example, we might take the state of two nodes
+in a dynamical network as the source and target, while all other nodes in the network
+are treated as the background. Transfer entropy is then defined in terms of a
+time-local variant
+$$
+t_{X \rightarrow Y, \mathcal{W}, i}(k) =
+    \log_2{\frac{p(y_{i+1},x_i|y^{(k)}_i,W_i)}
+    {p(y_{i+1}|y^{(k)}_i,W_i)p(x_{i+1}|y^{(k)}_i,W_i)}}
+$$
+
+where $W_i = w_{1,i}, \ldots, w_{l,i}$ are the states of each of the background nodes at
+time step $i$, and the probabilities are constructed empirically from the _entire_ time
+series. From the local variant, the temporally global transfer entropy is defined as
+$$
+T_{X \rightarrow Y, \mathcal{W}}(k)
+    = \langle t_{X \rightarrow Y, \mathcal{W}, i}(k) \rangle_i
+    = \sum_{y_{i+1},y^{(k)},x_i,W_i} p(y_{i+1},y^{(k)}_i,x_i,W_i)
+    \log_2{\frac{p(y_{i+1},x_i|y^{(k)}_i,W_i)}
+    {p(y_{i+1}|y^{(k)}_i,W_i)p(x_{i+1}|y^{(k)}_i,W_i)}}.
+$$
+
+Strictly speaking, the local and average transfer entropy are defined as
+$$
+t_{X \rightarrow Y, \mathcal{W}, i}
+    = \lim_{k\rightarrow \infty} t_{X \rightarrow Y, \mathcal{W}, i}(k)
+\qquad \textrm{and} \qquad
+T_{X \rightarrow Y, \mathcal{W}}
+    = \lim_{k\rightarrow \infty} t_{X \rightarrow Y, \mathcal{W}}(k),
+$$
+
+but we do not provide yet limiting functionality in this library
+([GitHub issues](https://github.com/elife-asu/Inform/issues/24)).
+
+__Interface:__
+
+Compute the average or local transfer entropy with a history length `k` with
+the possibility to conditioning on the background `back`.
+
+```r
+transfer_entropy(ys, xs, ws = NULL, k, local = FALSE) 
+```
+
+__Examples:__
+
+```{r}
+# One initial condition, no background:
+xs <- c(0, 1, 1, 1, 1, 0, 0, 0, 0)
+ys <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
+transfer_entropy(xs, ys, ws = NULL, k = 2)
+
+# .. and local variant:
+te <- transfer_entropy(xs, ys, ws = NULL, k = 2, local = T)
+t(te)
+
+# Two initial conditions, no background:
+xs <- matrix(0, nrow = 9, ncol = 2)
+xs[, 1] <- c(1, 0, 0, 0, 0, 1, 1, 1, 1)
+xs[, 2] <- c(1, 1, 1, 1, 0, 0, 0, 1, 1)
+ys <- matrix(0, nrow = 9, ncol = 2)
+ys[, 1] <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
+ys[, 2] <- c(1, 0, 0, 0, 0, 1, 1, 1, 0)
+transfer_entropy(xs, ys, ws = NULL, k = 2)
+
+# .. and local variant:
+te <- transfer_entropy(xs, ys, ws = NULL, k = 2, local = T)
+t(te)
+
+# One initial condition, one background process:
+xs <- c(0, 1, 1, 1, 1, 0, 0, 0, 0)
+ys <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
+ws <- array(c(0, 1, 1, 1, 1, 0, 1, 1, 1), dim = c(1, 9, 1))
+transfer_entropy(xs, ys, ws, k = 2)
+
+# .. and local variant:
+te <- transfer_entropy(xs, ys, ws, k = 2, local = T)
+t(te)
+```
+
+The following example is interesting in that the two background processes
+provide the same information about the destination as the source process does
+($X = W_1 \oplus W_2$) but they don't separately.
+
+```{r}
+# One initial condition, two background processes:
+xs <- c(0, 1, 1, 1, 1, 0, 0, 0, 0)
+ys <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
+ws <- array(c(1, 0, 1, 0, 1, 1, 1, 1, 1,
+              1, 1, 0, 1, 0, 1, 1, 1, 1), dim = c(2, 9, 1))
+transfer_entropy(xs, ys, ws, k = 2)
+
+# .. and local variant:
+te <- transfer_entropy(xs, ys, ws, k = 2, local = T)
+t(te)
+```
 
 # Utilities
 
