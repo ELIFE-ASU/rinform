@@ -162,7 +162,7 @@ get_item <- function(d, event) UseMethod("get_item")
  
 ################################################################################
 #' @useDynLib rinform r_get_item_
-#' @export
+#' @export 
 ################################################################################
 get_item.Dist <- function(d, event) {
   rval <- NULL
@@ -450,7 +450,7 @@ counts <- function(d) UseMethod("counts")
 
 ################################################################################
 #' @useDynLib rinform r_counts_
-#' @export
+#' @export 
 ################################################################################
 counts.Dist <- function(d) {
   err     <- 0
