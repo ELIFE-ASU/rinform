@@ -8,7 +8,7 @@ information about related projects can be found
 [here](https://elife-asu.github.io/rinform/).
 
 ## Copyright and Licensing ##
-Copyright © 2016-2017 ELIFE, Arizona State University. Free use of this
+Copyright © 2017-2018 ELIFE, Arizona State University. Free use of this
 software is granted under the terms of the MIT License.
 
 See the [LICENSE](https://github.com/elife-asu/rinform/blob/master/LICENSE)
