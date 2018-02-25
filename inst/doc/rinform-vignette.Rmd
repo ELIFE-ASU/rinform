@@ -37,7 +37,7 @@ An R wrapper of the [Inform v1.0.0](https://elife-asu.github.io/Inform/) C libra
 
 In addition to the core components, rinform also provides a small collection of utilities to deal with time series. 
 
-If you are using _rinform_, please consider citing the following articles:
+If you are using _rinform_, consider citing the following articles:
 
 * D.G. Moore, G. Valentini, S.I. Walker, M. Levin. "Inform: Efficient 
 Information-Theoretic Analysis of Collective Behaviors". _Frontiers in Robotics & AI.
@@ -101,8 +101,6 @@ try one of these:
 
 Copyright © 2017-2018 ELIFE, Arizona State University. Free use of this software is granted
 under the terms of the MIT License. See the [LICENSE](https://github.com/elife-asu/rinform/blob/master/LICENSE) file for details.
-
-# Error Handling
 
 # Empirical Distributions
 
@@ -1143,17 +1141,44 @@ __Interface:__
 
 __Examples:__
 
-### {#}
-
-__Interface:__
-
-__Examples:__
-
 ## Coalescing Time Series
+    
+The magic of information measures is that the actual values of a time series
+are irrelavent. For example, $\{0, 1, 0, 1, 1 \}$ has the same entropy as
+$\{2, 9, 2, 9, 9\}$ (possibly up to a rescaling). This give us the freedom
+to shift around the values of a time series as long as we do not change the
+relative number of states.
+    
+This function thus provides a way of "compressing" a time series into as
+small a base as possible. Why is this useful? Many of the measures use the base
+of the time series to determine how much memory to allocate; the larger the base,
+the higher the memory usage. It also affects the overall performance as the combinatorics
+climb exponentially with the base.
+    
+Notice that the encoding that is used ensures that the ordering of the states
+stays the same, e.g.,
+$$
+\{-8 \rightarrow 0, -2 \rightarrow 1, 2 \rightarrow 2, 4 \rightarrow 3, 6 \rightarrow 4\}
+$$.
 
 __Interface:__
 
+Coalesce a timeseries into as few contiguous states as possible.
+```r
+coalesce(series)
+```
+
 __Examples:__
+
+The two standard usage cases for this function are to reduce the base of a
+time series:
+```{r}
+coalesce(c(0, 2, 0, 2, 0, 2))
+```
+and to ensure that the states are non-negative:
+```{r}
+coalesce(c(-8, 2, 6, -2, 4))
+```
 
 ## Encoding/Decoding States
 

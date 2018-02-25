@@ -37,13 +37,8 @@ coalesce <- function(series) {
   err <- 0
   b   <- 0
 
-  if (!is.numeric(series)) {
-    stop("<series> is not numeric")
-  }
-
-  if (is.matrix(series)) {
-    stop("<series> is a matrix")
-  }
+  .check_series(series)
+  .check_series_vector(series)
 
   # Extract length of series
   n <- length(series)
@@ -58,12 +53,10 @@ coalesce <- function(series) {
 	     coal    = as.integer(coal),
 	     b       = as.integer(b),
 	     err     = as.integer(err))
-	    
-  if (x$err == 0) {
+
+  if (.check_inform_error(x$err) == 0) {
     coal <- x$coal
     b    <- x$b
-  } else {
-    stop("inform lib error (", x$err, ")")
   }
 
   list(series = coal, b = b)
