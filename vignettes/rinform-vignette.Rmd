@@ -832,6 +832,50 @@ t(er)
 
 ## Excess Entropy {#ExcessEntropy}
 
+Formally, the excess entropy is the mutual information between two adjacent, semi-infinite
+blocks of variables:
+$$
+E_X = \lim_{k \rightarrow \infty}I[(x_{-k},\ldots,x_{-1}),(x_0,\ldots,x_{k-1})].
+$$
+Because we cannot take the limit in practice, we implement the finite form:
+$$
+E_X(k) = I[(x_{-k},\ldots,x_1),(x_0,\ldots,x_{k-1})].
+$$
+
+We can think of excess entropy as a slight generalization of [active information](#ActiveInformation) or a special case of [predictive information](#PredictiveInformation).
+
+See [[@Crutchfield2003]](#References) and [[@Feldman2003]](#References) for more details.
+
+__Interface:__
+
+Compute the average or local excess entropy from a time series with block size `k`.
+
+```r
+excess_entropy(series, k, local = FALSE)
+```
+
+__Examples:__
+
+```{r}
+# One initial condition:
+series <- c(0, 0, 1, 1, 0, 0, 1, 1, 0)
+excess_entropy(series, k = 2)
+
+# ..and local variant:
+ee <- excess_entropy(series, k = 2, local = T)
+t(ee)
+
+# Two initial conditions:
+series      <- matrix(0, nrow = 9, ncol =2)
+series[, 1] <- c(0, 0, 1, 1, 0, 0, 1, 1, 0)
+series[, 2] <- c(0, 1, 0, 1, 0, 1, 0, 1, 0)
+excess_entropy(series, k = 2)
+
+# ..and local variant:
+ee <- excess_entropy(series, k = 2, local = T)
+t(ee)
+```
+
 ## Information Flow
 
 ## Evidence of Integration
@@ -888,7 +932,7 @@ t(mi)
 
 ## Partial Information Decomposition
 
-## Predictive Information
+## Predictive Information {#PredictiveInformation}
 
 Formally, the predictive information is the mutual information between a
 finite-history and a semi-infinite future:
