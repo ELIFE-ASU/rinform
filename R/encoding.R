@@ -28,23 +28,20 @@ encode <- function(state, b = NA) {
   err     <- 0
   encoded <- 0
 
-  if (!is.numeric(state)) {
-    stop("<state> is not numeric")
-  }
+  .check_series(state)
+  .check_series_vector(state)
 
-  if (is.matrix(state)) {
-    stop("<state> is a matrix")
-  }
-
-  # Extract length of series
+  # Extract length of <state>
   n <- length(state)
 
   if (n == 0) {
-    stop("cannot encode an empty array")
+    stop("<", deparse(substitute(state)), "> is an empty array!")
   }
 
   if (is.na(b)) {
     b <- max(2, max(state) + 1)
+  } else {
+    .check_base(b)
   }
 
   # Convert to integer vector suitable for C
@@ -57,10 +54,8 @@ encode <- function(state, b = NA) {
 	    encoded = as.integer(encoded),
             err     = as.integer(err))
 	    
-  if (x$err == 0) {
+  if (.check_inform_error(x$err) == 0) {
     encoded <- x$encoded
-  } else {
-    stop("inform lib error (", x$err, ")")
   }
 
   encoded
@@ -91,23 +86,19 @@ decode <- function(encoding, b, n = NA) {
   err   <- 0
   state <- 0
 
-  if (!is.numeric(encoding)) {
-    stop("<encoding> is not numeric")
-  }
-
-  if (is.matrix(encoding)) {
-    stop("<encoding> is a matrix")
-  }
-
+  .check_series(encoding)
+  .check_series_vector(encoding)  
+  .check_base(b)
+  
   # Extract length of encoding
   en <- length(encoding)
 
   if (en == 0) {
-    stop("cannot use an empty encoding")
+    stop("<", deparse(substitute(encoding)), "> is an empty encoding!")
   }
 
   if (en > 1) {
-    stop("cannot use an array of encodings")
+    stop("<", deparse(substitute(encoding)), "> is an array of encodings!")
   }
   
   b <- max(2, b)
@@ -124,16 +115,14 @@ decode <- function(encoding, b, n = NA) {
 	  state    = as.integer(state),
 	  n        = as.integer(length(state)),
 	  err      = as.integer(err))
-	    
-  if (x$err == 0) {
+
+  if (.check_inform_error(x$err) == 0) {
     if (!is.na(n)) {
       state <- x$state
     } else {
       # Remove leading zeros
       state <- x$state[min(which(x$state != 0)):length(x$state)]
     }
-  } else {
-    stop("inform lib error (", x$err, ")")
   }
 
   state
