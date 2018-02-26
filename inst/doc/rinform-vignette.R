@@ -266,6 +266,24 @@ mi <- mutual_info(xs, local = T)
 t(mi)
 
 ## ------------------------------------------------------------------------
+series <- c(0, 0, 1, 1, 0, 0, 1, 1, 0)
+predictive_info(series, 1, 2)
+
+# ..and local variant:
+pi <- predictive_info(series, 1, 2, T)
+t(pi)
+
+## ------------------------------------------------------------------------
+series      <- matrix(0, nrow = 9, ncol = 2)
+series[, 1] <- c(0, 0, 1, 1, 0, 0, 1, 1, 0)
+series[, 2] <- c(0, 1, 0, 1, 0, 1, 0, 1, 0)
+predictive_info(series, 1, 2)
+
+# ..and local variant:
+pi <- predictive_info(series, 1, 2, T)
+t(pi)
+
+## ------------------------------------------------------------------------
 xs <- c(0, 1, 0, 0, 0, 0, 0, 0, 0, 1)
 ys <- c(0, 1, 1, 1, 1, 0, 0, 1, 0, 0)
 

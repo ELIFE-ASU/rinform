@@ -7,34 +7,36 @@
 
 
 ################################################################################
-#' Active Information
+#' Predictive Information
 #'
-#' Compute the average or local active information of a timeseries with history
-#' length \code{k}.
+#' Compute the predictive information from a time series with history length
+#' \code{kpast} and future length \code{kfuture}.
 #'
 #' @param series Vector or matrix specifying one or more time series.
-#' @param k Integer giving the history length.
-#' @param local Boolean specifying whether to compute the local active
+#' @param kpast Integer giving the history length.
+#' @param kfuture Integer giving the future length.
+#' @param local Boolean specifying whether to compute the local predictive
 #'        information.
 #'
-#' @return Numeric giving the average active information or a vector giving the
-#'         local active information.
+#' @return Numeric giving the average predictive information or a vector giving
+#'         the local predictive information.
 #'
-#' @example inst/examples/ex_activeinfo.R
+#' @example inst/examples/ex_predictiveinfo.R
 #'
 #' @export
 #'
-#' @useDynLib rinform r_active_info_
-#' @useDynLib rinform r_local_active_info_
+#' @useDynLib rinform r_predictive_info_
+#' @useDynLib rinform r_local_predictive_info_
 ################################################################################
-active_info <- function(series, k, local = FALSE) {
+predictive_info <- function(series, kpast, kfuture, local = FALSE) {
   n   <- 0
   m   <- 0
-  ai  <- 0
+  pi  <- 0
   err <- 0
 
   .check_series(series)
-  .check_history(k)
+  .check_history(kpast)
+  .check_history(kfuture)
   .check_local(local)
 
   # Extract number of series and length
@@ -53,34 +55,36 @@ active_info <- function(series, k, local = FALSE) {
   b <- max(2, max(xs) + 1)
 
   if (!local) {
-    x <- .C("r_active_info_",
+    x <- .C("r_predictive_info_",
             series  = xs,
 	    n       = as.integer(n),
 	    m       = as.integer(m),
 	    b       = as.integer(b),
-	    k       = as.integer(k),
-	    rval    = as.double(ai),
+	    kpast   = as.integer(kpast),
+	    kfuture = as.integer(kfuture),
+	    rval    = as.double(pi),
 	    err     = as.integer(err))
 	    
     if (.check_inform_error(x$err) == 0) {
-      ai <- x$rval
+      pi <- x$rval
     }
   } else {
-    ai <- rep(0, (m - k) * n)
-    x <- .C("r_local_active_info_",
+    pi <- rep(0, (m - kpast - kfuture + 1) * n)
+    x <- .C("r_local_predictive_info_",
             series  = xs,
 	    n       = as.integer(n),
 	    m       = as.integer(m),
 	    b       = as.integer(b),
-	    k       = as.integer(k),
-	    rval    = as.double(ai),
+	    kpast   = as.integer(kpast),
+	    kfuture = as.integer(kfuture),
+	    rval    = as.double(pi),
 	    err     = as.integer(err))
 
     if (.check_inform_error(x$err) == 0) {
-      ai      <- x$rval
-      dim(ai) <- c(m - k, n)
+      pi      <- x$rval
+      dim(pi) <- c(m - kpast - kfuture + 1, n)
     }
   }
 
-  ai
+  pi
 }
