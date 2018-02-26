@@ -25,6 +25,22 @@
   }
 }
 
+.check_base <- function (x) {
+  if (is.null(x)) {
+    stop("<", deparse(substitute(x)), "> is NULL!", call. = !T)
+  }
+  if (!is.numeric(x)) {
+    stop("<", deparse(substitute(x)), "> is not numeric!", call. = !T)
+  }  
+  if (length(x) > 1) {
+    stop("<", deparse(substitute(x)), "> has length greater than 1!", call. = !T)
+  }  
+  if (length(x) < 1) {
+    stop("<", deparse(substitute(x)), "> is of length zero!", call. = !T)
+  }  
+}
+
+
 .check_probability_vector <- function (p) {
   if (!is.numeric(p)) {
     stop("<", deparse(substitute(p)), "> is not numeric!", call. = !T)

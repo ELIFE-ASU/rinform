@@ -11,7 +11,7 @@
 
 <meta name="author" content="Gabriele Valentini" />
 
-<meta name="date" content="2018-02-24" />
+<meta name="date" content="2018-02-25" />
 
 <title>The rinform Package</title>
 
@@ -1534,7 +1534,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">The <em>rinform</em> Package</h1>
 <h4 class="author"><em>Gabriele Valentini</em></h4>
-<h4 class="date"><em>2018-02-24</em></h4>
+<h4 class="date"><em>2018-02-25</em></h4>
 
 </div>
 
@@ -2466,11 +2466,11 @@ T_{X \rightarrow Y, \mathcal{W}}
 </tr>
 <tr class="odd">
 <td>Coalescing</td>
-<td></td>
+<td><a href="#Coalesce"><code>coalesce</code></a></td>
 </tr>
 <tr class="even">
-<td>Encoding/Decoding</td>
-<td></td>
+<td>State Encoding</td>
+<td><a href="#Encode"><code>encode</code></a>, <a href="#Decode"><code>decode</code></a></td>
 </tr>
 <tr class="odd">
 <td>Random Time Series</td>
@@ -2484,6 +2484,9 @@ T_{X \rightarrow Y, \mathcal{W}}
 </table>
 <section id="binning-time-series" class="level2">
 <h2><span class="header-section-number">5.1</span> Binning Time Series</h2>
+<p>All of the currently implemented time series measures are only defined on discretely-valued time series. However, in practice continuously-valued time series are ubiquitous. There are two approaches to accomodating continuous values.</p>
+<p>The simplest is to bin the time series, forcing the values into discrete states. This method has its downsides, namely that the binning is often a bit unphysical and it can introduce bias. What’s more, without some kind of guiding principle it can be difficult to decide exactly which binning approach.</p>
+<p>The second approach attempts to infer condinuous probability distributions from continuous data. This is potentially more robust, but more technically d ifficult. Unfortunately, <em>rinform</em> does not yet have an implementation of information measures on continous distributions.</p>
 <section id="SeriesRange" class="level3">
 <h3><span class="header-section-number">5.1.1</span> Series Range</h3>
 <p><strong>Interface:</strong></p>
@@ -2562,7 +2565,7 @@ T_{X \rightarrow Y, \mathcal{W}}
 <p><strong>Examples:</strong></p>
 </section>
 </section>
-<section id="coalescing-time-series" class="level2">
+<section id="Coalesce" class="level2">
 <h2><span class="header-section-number">5.3</span> Coalescing Time Series</h2>
 <p>The magic of information measures is that the actual values of a time series are irrelavent. For example, <span class="math inline">\(\{0, 1, 0, 1, 1 \}\)</span> has the same entropy as <span class="math inline">\(\{2, 9, 2, 9, 9\}\)</span> (possibly up to a rescaling). This give us the freedom to shift around the values of a time series as long as we do not change the relative number of states.</p>
 <p>This function thus provides a way of “compressing” a time series into as small a base as possible. Why is this useful? Many of the measures use the base of the time series to determine how much memory to allocate; the larger the base, the higher the memory usage. It also affects the overall performance as the combinatorics climb exponentially with the base.</p>
@@ -2588,10 +2591,69 @@ T_{X \rightarrow Y, \mathcal{W}}
 <div class="sourceLine" id="cb54-5" data-line-number="5"><span class="co">#&gt; $b</span></div>
 <div class="sourceLine" id="cb54-6" data-line-number="6"><span class="co">#&gt; [1] 5</span></div></code></pre>
 </section>
-<section id="encodingdecoding-states" class="level2">
-<h2><span class="header-section-number">5.4</span> Encoding/Decoding States</h2>
+<section id="state-encoding" class="level2">
+<h2><span class="header-section-number">5.4</span> State Encoding</h2>
+<p>State encoding is a necessity when complex time series are being analyzed. For example, <code>k</code>-history must be encoded as an integer in order to “observe” it using a Dist. What if you are interested in correlating the aggragate state of one group of nodes with that of another? You’d need to encode the groups’ states as integers. The following functions provides such functionality.</p>
+<div class="alert alert-warning">
+<p><strong>Attention!</strong></p>
+<p>As a practical matter, these utility functions should only be used as a stop-gap while a solution for your problem is implemented in the core <em>Inform</em> library and wrapped in <em>rinform</em>. “Why?” you ask? Well, these functions are about as efficient as they can be for one-off state encodings, but most of the time you are interested in encoding sequences of states. This can be done much more efficiently if you encode the entire sequence at once. You need domain-specific information to make that happen.</p>
+</div>
+<section id="Encode" class="level3">
+<h3><span class="header-section-number">5.4.1</span> Encode</h3>
+<p>This function uses a <a href="https://en.wikipedia.org/wiki/Endianness#Examples">big-endian</a> encoding scheme. That is, the most significant bits of the encoded integer are determined by the left-most end of the unencoded state. If <code>b</code> is not provided (or is <code>NA</code>), the base is inferred from the state with a minimum value of 2.</p>
 <p><strong>Interface:</strong></p>
+<p>Encode a base-‘b’ array of integers into a single integer.</p>
+<pre class="sourceCode r" id="cb55"><code class="sourceCode r"><div class="sourceLine" id="cb55-1" data-line-number="1"><span class="kw">encode</span>(state, <span class="dt">b =</span> <span class="ot">NA</span>)</div></code></pre>
 <p><strong>Examples:</strong></p>
+<p>Using the big-endian encoding scheme, the most significant bits of the encoded integer are determined by the left-most end of the unencoded state:</p>
+<pre class="sourceCode r" id="cb56"><code class="sourceCode r"><div class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">b =</span> <span class="dv">2</span>)</div>
+<div class="sourceLine" id="cb56-2" data-line-number="2"><span class="co">#&gt; [1] 1</span></div>
+<div class="sourceLine" id="cb56-3" data-line-number="3"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>), <span class="dt">b =</span> <span class="dv">3</span>)</div>
+<div class="sourceLine" id="cb56-4" data-line-number="4"><span class="co">#&gt; [1] 3</span></div>
+<div class="sourceLine" id="cb56-5" data-line-number="5"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="dt">b =</span> <span class="dv">4</span>)</div>
+<div class="sourceLine" id="cb56-6" data-line-number="6"><span class="co">#&gt; [1] 16</span></div>
+<div class="sourceLine" id="cb56-7" data-line-number="7"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">4</span>), <span class="dt">b =</span> <span class="dv">5</span>)</div>
+<div class="sourceLine" id="cb56-8" data-line-number="8"><span class="co">#&gt; [1] 29</span></div></code></pre>
+<p>If <code>b</code> is not provided or is <code>NA</code>, itt is inferred from the state:</p>
+<pre class="sourceCode r" id="cb57"><code class="sourceCode r"><div class="sourceLine" id="cb57-1" data-line-number="1"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>), <span class="ot">NA</span>)</div>
+<div class="sourceLine" id="cb57-2" data-line-number="2"><span class="co">#&gt; [1] 2</span></div>
+<div class="sourceLine" id="cb57-3" data-line-number="3"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>))</div>
+<div class="sourceLine" id="cb57-4" data-line-number="4"><span class="co">#&gt; [1] 6</span></div>
+<div class="sourceLine" id="cb57-5" data-line-number="5"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>))</div>
+<div class="sourceLine" id="cb57-6" data-line-number="6"><span class="co">#&gt; [1] 16</span></div></code></pre>
+</section>
+<section id="Decode" class="level3">
+<h3><span class="header-section-number">5.4.2</span> Decode</h3>
+<p>The provided encoded state is decoded using the <a href="https://en.wikipedia.org/wiki/Endianness#Examples">big-endian</a> encoding scheme. Note that the base <code>b</code> must be provided, but the number of digits <code>n</code> is optional. If <code>n</code> is provided then the decoded state will have exactly that many elements.</p>
+<p><strong>Interface:</strong></p>
+<p>Decode an integer into a base-<code>b</code> array with <code>n</code> digits.</p>
+<pre class="sourceCode r" id="cb58"><code class="sourceCode r"><div class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">decode</span>(encoding, b, <span class="dt">n =</span> <span class="ot">NA</span>)</div></code></pre>
+<p><strong>Examples:</strong></p>
+<p>This function assumes a big-endian encoding scheme:</p>
+<pre class="sourceCode r" id="cb59"><code class="sourceCode r"><div class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">decode</span>(<span class="dv">2</span>, <span class="dt">b =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">2</span>)</div>
+<div class="sourceLine" id="cb59-2" data-line-number="2"><span class="co">#&gt; [1] 1 0</span></div>
+<div class="sourceLine" id="cb59-3" data-line-number="3"><span class="co"># array([1, 0], dtype=int32)</span></div>
+<div class="sourceLine" id="cb59-4" data-line-number="4"><span class="kw">decode</span>(<span class="dv">6</span>, <span class="dt">b =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">3</span>)</div>
+<div class="sourceLine" id="cb59-5" data-line-number="5"><span class="co">#&gt; [1] 1 1 0</span></div>
+<div class="sourceLine" id="cb59-6" data-line-number="6"><span class="co">#array([1, 1, 0], dtype=int32)</span></div>
+<div class="sourceLine" id="cb59-7" data-line-number="7"><span class="kw">decode</span>(<span class="dv">6</span>, <span class="dt">b =</span> <span class="dv">3</span>, <span class="dt">n =</span> <span class="dv">2</span>)</div>
+<div class="sourceLine" id="cb59-8" data-line-number="8"><span class="co">#&gt; [1] 2 0</span></div>
+<div class="sourceLine" id="cb59-9" data-line-number="9"><span class="co">#array([2, 0], dtype=int32)</span></div></code></pre>
+<p>If <code>n</code> is provided then the decoded state will have exactly that many elements. However, note that if the provided <code>n</code> is too small to contain a full representation of the state, an error will be raised.</p>
+<pre class="sourceCode r" id="cb60"><code class="sourceCode r"><div class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">decode</span>(<span class="dv">2</span>, <span class="dt">b =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">4</span>)</div>
+<div class="sourceLine" id="cb60-2" data-line-number="2"><span class="co">#&gt; [1] 0 0 1 0</span></div></code></pre>
+<p>If <code>n</code> is not provided, the length of the decoded state is inferred from the <code>encoding</code> to be as small as possible:</p>
+<pre class="sourceCode r" id="cb61"><code class="sourceCode r"><div class="sourceLine" id="cb61-1" data-line-number="1"><span class="kw">decode</span>(<span class="dv">1</span>, <span class="dt">b =</span> <span class="dv">2</span>)</div>
+<div class="sourceLine" id="cb61-2" data-line-number="2"><span class="co">#&gt; [1] 1</span></div>
+<div class="sourceLine" id="cb61-3" data-line-number="3"><span class="kw">decode</span>(<span class="dv">1</span>, <span class="dt">b =</span> <span class="dv">3</span>)</div>
+<div class="sourceLine" id="cb61-4" data-line-number="4"><span class="co">#&gt; [1] 1</span></div>
+<div class="sourceLine" id="cb61-5" data-line-number="5"><span class="kw">decode</span>(<span class="dv">3</span>, <span class="dt">b =</span> <span class="dv">2</span>)</div>
+<div class="sourceLine" id="cb61-6" data-line-number="6"><span class="co">#&gt; [1] 1 1</span></div>
+<div class="sourceLine" id="cb61-7" data-line-number="7"><span class="kw">decode</span>(<span class="dv">3</span>, <span class="dt">b =</span> <span class="dv">3</span>)</div>
+<div class="sourceLine" id="cb61-8" data-line-number="8"><span class="co">#&gt; [1] 1 0</span></div>
+<div class="sourceLine" id="cb61-9" data-line-number="9"><span class="kw">decode</span>(<span class="dv">3</span>, <span class="dt">b =</span> <span class="dv">4</span>)</div>
+<div class="sourceLine" id="cb61-10" data-line-number="10"><span class="co">#&gt; [1] 3</span></div></code></pre>
+</section>
 </section>
 <section id="partitioning-time-series" class="level2">
 <h2><span class="header-section-number">5.5</span> Partitioning Time Series</h2>
