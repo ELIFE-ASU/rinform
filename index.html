@@ -11,7 +11,7 @@
 
 <meta name="author" content="Gabriele Valentini" />
 
-<meta name="date" content="2018-02-24" />
+<meta name="date" content="2018-02-25" />
 
 <title>The rinform Package</title>
 
@@ -1534,7 +1534,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">The <em>rinform</em> Package</h1>
 <h4 class="author"><em>Gabriele Valentini</em></h4>
-<h4 class="date"><em>2018-02-24</em></h4>
+<h4 class="date"><em>2018-02-25</em></h4>
 
 </div>
 
@@ -1546,7 +1546,7 @@ div.tocify {
 <li>measures of information dynamics for time series.</li>
 </ul>
 <p>In addition to the core components, rinform also provides a small collection of utilities to deal with time series.</p>
-<p>If you are using <em>rinform</em>, please consider citing the following articles:</p>
+<p>If you are using <em>rinform</em>, consider citing the following articles:</p>
 <ul>
 <li>D.G. Moore, G. Valentini, S.I. Walker, M. Levin. “Inform: Efficient Information-Theoretic Analysis of Collective Behaviors”. _Frontiers in Robotics &amp; AI. (<em>under review</em>)</li>
 <li>D.G. Moore, G. Valentini, S.I. Walker, M. Levin. “Inform: A Toolkit for Information-Theoretic Analysis of Complex Systems”. In: <em>Proceedings of the 2017 IEEE Symposium Series on Computational Intelligence, Symposium on Artificial Life</em>, IEEE Press, 2017. (<em>in press</em>)</li>
@@ -1592,11 +1592,8 @@ div.tocify {
 <p>Copyright © 2017-2018 ELIFE, Arizona State University. Free use of this software is granted under the terms of the MIT License. See the <a href="https://github.com/elife-asu/rinform/blob/master/LICENSE">LICENSE</a> file for details.</p>
 </section>
 </section>
-<section id="error-handling" class="level1">
-<h1><span class="header-section-number">2</span> Error Handling</h1>
-</section>
 <section id="empirical-distributions" class="level1">
-<h1><span class="header-section-number">3</span> Empirical Distributions</h1>
+<h1><span class="header-section-number">2</span> Empirical Distributions</h1>
 <p>The <a href="#DistClass"><code>Dist</code></a> class provides an <em>empirical</em> distribution, i.e. a histogram, representing the observed frequencies of some fixed-sized set of events. This class is the basis for all of the fundamental information measures provided on discrete probability distributions.</p>
 <p>The purpose of the <a href="#DistClass"><code>Dist</code></a> class is to make writing custom implementations of information-theoretic measures possible. Most of the measures implemented in <em>rinform</em> use this structure at their core.</p>
 <table>
@@ -1630,7 +1627,7 @@ div.tocify {
 </tbody>
 </table>
 <section id="DistClass" class="level2">
-<h2><span class="header-section-number">3.1</span> Distribution Class</h2>
+<h2><span class="header-section-number">2.1</span> Distribution Class</h2>
 <p>This class is the basis for almost all of the calculations performed via the library. It provides a means of managing observations and converting the observed event frequencies to probabilities.</p>
 <p>The distribution is, roughly, a histogram with finite support. The events are assumed to be mapped to the dense set of integers <span class="math inline">\(\{0,1,\ldots,N-1\}\)</span> where <span class="math inline">\(N\)</span> is the number of observable events. The number of observable events can be extracted with <a href="#length"><code>length</code></a>.</p>
 <p>Whenever the size of the support or the number of observed events is zero, the distribution is considered invalid meaning that you can’t trust any probabilities extracted from it.</p>
@@ -1668,9 +1665,9 @@ div.tocify {
 <div class="sourceLine" id="cb2-28" data-line-number="28"><span class="co">#&gt; [1] &quot;Dist&quot;</span></div></code></pre>
 </section>
 <section id="allocation" class="level2">
-<h2><span class="header-section-number">3.2</span> Allocation</h2>
+<h2><span class="header-section-number">2.2</span> Allocation</h2>
 <section id="Resize" class="level3">
-<h3><span class="header-section-number">3.2.1</span> Resize</h3>
+<h3><span class="header-section-number">2.2.1</span> Resize</h3>
 <p>If the distribution is <code>NULL</code>, a new distribution of the requested size is created.</p>
 <p>If the distribution already has the requested size, then the original distribution is returned. If the requested size is greater than the current size, then the newly observable events are assigned zero frequency. If the requested size is less than the current size, then the discarded events are lost and the observation count is adjusted accordingly.</p>
 <p>Note that the distribution cannot be reduced to size <code>0</code>. In that case the distribution is left unmodified.</p>
@@ -1724,7 +1721,7 @@ div.tocify {
 <div class="sourceLine" id="cb4-44" data-line-number="44"><span class="co">#&gt; [1] &quot;Dist&quot;</span></div></code></pre>
 </section>
 <section id="Copy" class="level3">
-<h3><span class="header-section-number">3.2.2</span> Copy</h3>
+<h3><span class="header-section-number">2.2.2</span> Copy</h3>
 <p>If the source distribution is <code>NULL</code>, then <code>NULL</code> is returned.</p>
 <p><strong>Interface:</strong></p>
 <p>Return a copy of the distribution <code>d</code>.</p>
@@ -1761,7 +1758,7 @@ div.tocify {
 <div class="sourceLine" id="cb6-29" data-line-number="29"><span class="co">#&gt; [1] &quot;Dist&quot;</span></div></code></pre>
 </section>
 <section id="Infer" class="level3">
-<h3><span class="header-section-number">3.2.3</span> Infer</h3>
+<h3><span class="header-section-number">2.2.3</span> Infer</h3>
 <p><strong>Interface:</strong></p>
 <p>Infer a distribution from a collection of observed <code>events</code>.</p>
 <pre class="sourceCode r" id="cb7"><code class="sourceCode r"><div class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">infer</span>(events)</div></code></pre>
@@ -1777,7 +1774,7 @@ div.tocify {
 <div class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt; [1] 0.375 0.375 0.250</span></div></code></pre>
 </section>
 <section id="Approximate" class="level3">
-<h3><span class="header-section-number">3.2.4</span> Approximate</h3>
+<h3><span class="header-section-number">2.2.4</span> Approximate</h3>
 <p><strong>Interface:</strong></p>
 <p>Approximate a given probability distribution to a given tolerance.</p>
 <pre class="sourceCode r" id="cb9"><code class="sourceCode r"><div class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">approximate</span>(probs, tol)</div></code></pre>
@@ -1794,7 +1791,7 @@ div.tocify {
 <div class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt; [1] 1 2</span></div></code></pre>
 </section>
 <section id="Uniform" class="level3">
-<h3><span class="header-section-number">3.2.5</span> Uniform</h3>
+<h3><span class="header-section-number">2.2.5</span> Uniform</h3>
 <p><strong>Interface:</strong></p>
 <p>Create a uniform distribution of a given size <code>n</code>. The support size <code>n</code> must define a valid support (i.e., <code>n</code> must be greater than 0).</p>
 <pre class="sourceCode r" id="cb11"><code class="sourceCode r"><div class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">uniform</span>(n)</div></code></pre>
@@ -1819,9 +1816,9 @@ div.tocify {
 </section>
 </section>
 <section id="accessorsmutators" class="level2">
-<h2><span class="header-section-number">3.3</span> Accessors/Mutators</h2>
+<h2><span class="header-section-number">2.3</span> Accessors/Mutators</h2>
 <section id="length" class="level3">
-<h3><span class="header-section-number">3.3.1</span> Length</h3>
+<h3><span class="header-section-number">2.3.1</span> Length</h3>
 <p><strong>Interface:</strong></p>
 <p>Get the size of the distribution’s support. If the distribution is <code>NULL</code>, then a support of 0 is returned.</p>
 <pre class="sourceCode r" id="cb13"><code class="sourceCode r"><div class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">length</span>(d)</div></code></pre>
@@ -1837,7 +1834,7 @@ div.tocify {
 <div class="sourceLine" id="cb14-9" data-line-number="9"><span class="co">#&gt; [1] 5</span></div></code></pre>
 </section>
 <section id="Counts" class="level3">
-<h3><span class="header-section-number">3.3.2</span> Counts</h3>
+<h3><span class="header-section-number">2.3.2</span> Counts</h3>
 <p><strong>Interface:</strong></p>
 <p>Get the total number of observations so far made.</p>
 <pre><code>counts(d)</code></pre>
@@ -1852,7 +1849,7 @@ div.tocify {
 <div class="sourceLine" id="cb16-8" data-line-number="8"><span class="co">#&gt; [1] TRUE</span></div></code></pre>
 </section>
 <section id="Valid" class="level3">
-<h3><span class="header-section-number">3.3.3</span> Valid</h3>
+<h3><span class="header-section-number">2.3.3</span> Valid</h3>
 <p><strong>Interface:</strong></p>
 <p>Determine whether or not the distribution is valid. In order to safely extract probabilities, the size of the support must be non-zero and the number of observations must be non-zero. In any other case, the distribution is invalid.</p>
 <pre class="sourceCode r" id="cb17"><code class="sourceCode r"><div class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">valid</span>(d)</div></code></pre>
@@ -1874,7 +1871,7 @@ div.tocify {
 <div class="sourceLine" id="cb18-15" data-line-number="15"><span class="co">#&gt; [1] FALSE</span></div></code></pre>
 </section>
 <section id="GetItem" class="level3">
-<h3><span class="header-section-number">3.3.4</span> Get Item</h3>
+<h3><span class="header-section-number">2.3.4</span> Get Item</h3>
 <p><strong>Interface:</strong></p>
 <p>Get the number of occurrences of a given <code>event</code>.</p>
 <pre class="sourceCode r" id="cb19"><code class="sourceCode r"><div class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">get_item</span>(d, event)</div></code></pre>
@@ -1891,7 +1888,7 @@ div.tocify {
 <div class="sourceLine" id="cb20-10" data-line-number="10"><span class="co">#&gt; [1] TRUE</span></div></code></pre>
 </section>
 <section id="SetItem" class="level3">
-<h3><span class="header-section-number">3.3.5</span> Set Item</h3>
+<h3><span class="header-section-number">2.3.5</span> Set Item</h3>
 <p><strong>Interface:</strong></p>
 <p>Set the number of occurrences of a given <code>event</code>. This function manually sets the number of occurrences of a given <code>event</code>. Note that the only restriction is that the value be positive. This means that this function can be used to invalidate the distribution by changing all of the event frequencies to zero.</p>
 <pre class="sourceCode r" id="cb21"><code class="sourceCode r"><div class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">set_item</span>(d, event, value)</div></code></pre>
@@ -1928,7 +1925,7 @@ div.tocify {
 <div class="sourceLine" id="cb22-30" data-line-number="30"><span class="co">#&gt; [1] &quot;Dist&quot;</span></div></code></pre>
 </section>
 <section id="Tick" class="level3">
-<h3><span class="header-section-number">3.3.6</span> Tick</h3>
+<h3><span class="header-section-number">2.3.6</span> Tick</h3>
 <p><strong>Interface:</strong></p>
 <p>Increment the number of observations of a given <code>event</code> and return an updated copy of the distribution <code>d</code>. As an alternative to <a href="#SetItem"><code>set_item</code></a>, this function simply increments the number of occurrences of a given event. This is useful when iteratively observing events.</p>
 <pre class="sourceCode r" id="cb23"><code class="sourceCode r"><div class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">tick</span>(d, event)</div></code></pre>
@@ -1946,7 +1943,7 @@ div.tocify {
 <div class="sourceLine" id="cb24-11" data-line-number="11"><span class="co">#&gt; [1] TRUE</span></div></code></pre>
 </section>
 <section id="Accumulate" class="level3">
-<h3><span class="header-section-number">3.3.7</span> Accumulate</h3>
+<h3><span class="header-section-number">2.3.7</span> Accumulate</h3>
 <p><strong>Interface:</strong></p>
 <p>Accumulate observations from a series. If an invalid distribution is provided, no events will be observed and an error will be raised. If an invalid event is provided, then the number of valid events to that point will be added and a warning will be raised.</p>
 <pre class="sourceCode r" id="cb25"><code class="sourceCode r"><div class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">accumulate</span>(d, events)</div></code></pre>
@@ -1971,9 +1968,9 @@ div.tocify {
 </section>
 </section>
 <section id="probabilities" class="level2">
-<h2><span class="header-section-number">3.4</span> Probabilities</h2>
+<h2><span class="header-section-number">2.4</span> Probabilities</h2>
 <section id="Probability" class="level3">
-<h3><span class="header-section-number">3.4.1</span> Probability</h3>
+<h3><span class="header-section-number">2.4.1</span> Probability</h3>
 <p><strong>Interface:</strong></p>
 <p>Extract the probability of an <code>event</code> from a distribution <code>d</code>. This function simply computes the probability of a given <code>event</code> and returns that value.</p>
 <pre class="sourceCode r" id="cb27"><code class="sourceCode r"><div class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">probability</span>(d, event)</div></code></pre>
@@ -1990,7 +1987,7 @@ div.tocify {
 <div class="sourceLine" id="cb28-10" data-line-number="10"><span class="co">#&gt; [1] TRUE</span></div></code></pre>
 </section>
 <section id="Dump" class="level3">
-<h3><span class="header-section-number">3.4.2</span> Dump</h3>
+<h3><span class="header-section-number">2.4.2</span> Dump</h3>
 <p><strong>Interface:</strong></p>
 <p>Dump the probabilities of all events to an array. This function computes the probabilities of all of the events in the support and return them as an array.</p>
 <pre class="sourceCode r" id="cb29"><code class="sourceCode r"><div class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">dump</span>(d)</div></code></pre>
@@ -2008,49 +2005,49 @@ div.tocify {
 </section>
 </section>
 <section id="shannon-information-measures" class="level1">
-<h1><span class="header-section-number">4</span> Shannon Information Measures</h1>
+<h1><span class="header-section-number">3</span> Shannon Information Measures</h1>
 <section id="entropy" class="level2">
-<h2><span class="header-section-number">4.1</span> Entropy</h2>
+<h2><span class="header-section-number">3.1</span> Entropy</h2>
 </section>
 <section id="mutual-information" class="level2">
-<h2><span class="header-section-number">4.2</span> Mutual Information</h2>
+<h2><span class="header-section-number">3.2</span> Mutual Information</h2>
 </section>
 <section id="conditional-entropy" class="level2">
-<h2><span class="header-section-number">4.3</span> Conditional Entropy</h2>
+<h2><span class="header-section-number">3.3</span> Conditional Entropy</h2>
 </section>
 <section id="conditional-mutual-information" class="level2">
-<h2><span class="header-section-number">4.4</span> Conditional Mutual Information</h2>
+<h2><span class="header-section-number">3.4</span> Conditional Mutual Information</h2>
 </section>
 <section id="relative-entropy" class="level2">
-<h2><span class="header-section-number">4.5</span> Relative Entropy</h2>
+<h2><span class="header-section-number">3.5</span> Relative Entropy</h2>
 </section>
 <section id="cross-entropy" class="level2">
-<h2><span class="header-section-number">4.6</span> Cross Entropy</h2>
+<h2><span class="header-section-number">3.6</span> Cross Entropy</h2>
 </section>
 </section>
 <section id="time-series-measures" class="level1">
-<h1><span class="header-section-number">5</span> Time Series Measures</h1>
+<h1><span class="header-section-number">4</span> Time Series Measures</h1>
 <p>The original purpose of <a href="https://github.com/elife-asu/inform/"><em>Inform</em></a> was to analyze time series data. This explains why most of <em>Inform</em>’s functionality resides in functions specifically optimized for analyzing time series. Many information measures have “local” variants which compute a time series of point-wise values. These feature is directly inherited by the <em>rinform</em> wrapper.</p>
 <p>We have been meticulous in ensuring that function and parameter names are consistent across measures. If you notice some inconsistency, please <a href="https://github.com/elife-asu/rinform/issue">report it as an issue</a>.</p>
 <section id="notation" class="level2">
-<h2><span class="header-section-number">5.1</span> Notation</h2>
+<h2><span class="header-section-number">4.1</span> Notation</h2>
 <p>Throughout the discussion of time series measures, we will try to use a consistent notation. We will denote random variables as <span class="math inline">\(X,Y,\ldots\)</span>, and let <span class="math inline">\(x_i,y_i,\ldots\)</span> represent the <span class="math inline">\(i\)</span>-th time step of a time series drawn from the associated random variable. Many of the measures consider <span class="math inline">\(k\)</span>-histories (a.k.a <span class="math inline">\(k\)</span>-blocks) of the time series, e.g. <span class="math display">\[x_i^{(k)} = \left\{x_{i-k+1}, x_{i-k+2},\ldots,x_i\right\}\]</span>.</p>
 <p>When denoting probability distributions, we will only make the random variable explicit in situations where the notation is ambiguous. We will typically write <span class="math inline">\(p(x_i)\)</span>, <span class="math inline">\(p(x_i^{(k)})\)</span>, and <span class="math inline">\(p(x_i^{(k)}, x_{i+1})\)</span> to denote the empirical probability of observing the <span class="math inline">\(x_i\)</span> state, the <span class="math inline">\(x_i^{(k)}\)</span> <span class="math inline">\(k\)</span>-history, and the joint probability of observing <span class="math inline">\(\left(x_i^{(k)}, x_{i+1}\right)\)</span>.</p>
 </section>
 <section id="implementation-details" class="level2">
-<h2><span class="header-section-number">5.2</span> Implementation Details</h2>
+<h2><span class="header-section-number">4.2</span> Implementation Details</h2>
 <section id="the-base-states-and-logarithms" class="level3">
-<h3><span class="header-section-number">5.2.1</span> The Base: States and Logarithms</h3>
+<h3><span class="header-section-number">4.2.1</span> The Base: States and Logarithms</h3>
 <p>The word “base” has two different meanings in the context of information measures on time series. It could refer to the base of the time series itself, that is the number of unique states in the time series. For example, the time series <span class="math inline">\(\{0,2,1,0,0\}\)</span> is a base-3 time series. On the other hand, it could refer to the base of the logarithm used in computing the information content of the inferred probability distributions. The problem is that these two meanings clash. The base of the time series affects the range of values the measure can produce, and the base of the logarithm represents a rescaling of those values.</p>
 <p>In the <em>rinform</em> wrapper we deal with this by <em>always</em> using base-2 logarithms and automatically computing the base of each time series internally to the wrapper. All of this ensures that the library is a simple as reasonably possible.</p>
 </section>
 <section id="multiple-initial-conditions" class="level3">
-<h3><span class="header-section-number">5.2.2</span> Multiple Initial Conditions</h3>
+<h3><span class="header-section-number">4.2.2</span> Multiple Initial Conditions</h3>
 <p>You generally need <em>a lot</em> of data to infer a probability distribution. An experimentalist or simulator might then collect data over multiple trials or initial conditions. Most of <em>rinform</em>’s time series measures allow the user to pass in a two-dimensional matrix with each column representing a time series from a different initial condition. From this the probability distributions are inferred, and the desired value is calculated. This has the downside of requiring that the user store all of the data in memory, but it has the advantage of being fast and simple.</p>
 </section>
 </section>
 <section id="ActiveInformation" class="level2">
-<h2><span class="header-section-number">5.3</span> Active Information</h2>
+<h2><span class="header-section-number">4.3</span> Active Information</h2>
 <p>Active information (AI) was introduced in <a href="#References"><span class="citation" data-cites="Lizier2012">(Lizier, Prokopenko, and Zomaya 2012)</span></a> to quantify information storage in distributed computations. Active information is defined in terms of a temporally local variant</p>
 <p><span class="math display">\[
 a_{X,i}(k) = \log_2{\frac{p(x_i^{(k)}, x_{i+1})}{p(x_i^{(k)})p(x_{i+1})}},
@@ -2102,7 +2099,7 @@ A_X = \lim_{k\rightarrow \infty}A_X(k),
 <div class="sourceLine" id="cb32-29" data-line-number="29"><span class="co">#&gt; [2,]  0.8073549</span></div></code></pre>
 </section>
 <section id="BlockEntropy" class="level2">
-<h2><span class="header-section-number">5.4</span> Block Entropy</h2>
+<h2><span class="header-section-number">4.4</span> Block Entropy</h2>
 <p>Block entropy, also known as <span class="math inline">\(N\)</span>-gram entropy <a href="#References"><span class="citation" data-cites="Shannon1948">(Shannon 1948)</span></a>, is the standard Shannon entropy of the <span class="math inline">\(k\)</span>-histories of a time series: <span class="math display">\[
 H(X^{(k)}) = -\sum_{x_i^{(k)}} p(x_i^{(k)}) \log_2{p(x_i^{(k)})}
 \]</span> which reduces to the traditional Shannon entropy for <span class="math inline">\(k = 1\)</span>.</p>
@@ -2153,7 +2150,7 @@ H(X^{(k)}) = -\sum_{x_i^{(k)}} p(x_i^{(k)}) \log_2{p(x_i^{(k)})}
 <div class="sourceLine" id="cb34-41" data-line-number="41"><span class="co">#&gt; [2,] 1.415037</span></div></code></pre>
 </section>
 <section id="conditional-entropy-1" class="level2">
-<h2><span class="header-section-number">5.5</span> Conditional Entropy</h2>
+<h2><span class="header-section-number">4.5</span> Conditional Entropy</h2>
 <p><a href="https://en.wikipedia.org/wiki/Conditional_entropy">Conditional entropy</a> is a measure of the amount of information required to describe a random variable <span class="math inline">\(Y\)</span> given knowledge of another random variable <span class="math inline">\(X\)</span>. When applied to time series, two time series are used to construct the empirical distributions and the conditional entropy is given <span class="math display">\[
 H(Y|X) = - \sum_{x_i,y_i} p(x_i,y_i) \log_2{p(y_i|x_i)}.
 \]</span></p>
@@ -2197,7 +2194,7 @@ h_i(Y|X) = -\log_2{p(y_i|x_i)}.
 <div class="sourceLine" id="cb36-30" data-line-number="30"><span class="co">#&gt; [1,] 0.7369656 3.906891</span></div></code></pre>
 </section>
 <section id="cross-entropy-1" class="level2">
-<h2><span class="header-section-number">5.6</span> Cross Entropy</h2>
+<h2><span class="header-section-number">4.6</span> Cross Entropy</h2>
 <p><a href="https://en.wikipedia.org/wiki/Cross_entropy">Cross entropy</a> between two distributions <span class="math inline">\(p_X\)</span> and <span class="math inline">\(q_X\)</span> measures the amount of information needed to identify events using a coding scheme optimized for <span class="math inline">\(q_X\)</span> when <span class="math inline">\(p_X\)</span> is the “real” distribution over <span class="math inline">\(X\)</span>. <span class="math display">\[
 H(p,q) = -\sum_{x} p(x) \log_2{q(x)}
 \]</span> Cross entropy’s local variant is equivalent to the self-information of <span class="math inline">\(q_X\)</span> and as such is implemented by the <a href="#BlockEntropy">local block entropy</a>.</p>
@@ -2216,10 +2213,10 @@ H(p,q) = -\sum_{x} p(x) \log_2{q(x)}
 <div class="sourceLine" id="cb38-8" data-line-number="8"><span class="co">#&gt; [1] 0.9124543</span></div></code></pre>
 </section>
 <section id="effective-information" class="level2">
-<h2><span class="header-section-number">5.7</span> Effective Information</h2>
+<h2><span class="header-section-number">4.7</span> Effective Information</h2>
 </section>
 <section id="entropy-rate" class="level2">
-<h2><span class="header-section-number">5.8</span> Entropy Rate</h2>
+<h2><span class="header-section-number">4.8</span> Entropy Rate</h2>
 <p><a href="https://en.wikipedia.org/wiki/Entropy_rate">Entropy rate</a> quantifies the amount of information needed to describe the next state of <span class="math inline">\(X\)</span> given observations of <span class="math inline">\(X^{(k)}.\)</span> In other wrods, it is the entropy of the time series conditioned on the <span class="math inline">\(k\)</span>-histories. The local entropy rate <span class="math display">\[
 h_{X,i}(k) = \log_2{\frac{p(x_i^{(k)}, x_{i+1})}{p(x_i^{(k)})}}.
 \]</span> can be averaged to obtain the global entropy rate <span class="math display">\[
@@ -2263,16 +2260,16 @@ H_X = \lim_{k\rightarrow \infty}H_X(k),
 <div class="sourceLine" id="cb40-24" data-line-number="24"><span class="co">#&gt; [2,] 0.0000000 0.4150375 0.5849625 0.0000000 0.4150375 0.5849625    0</span></div></code></pre>
 </section>
 <section id="excess-entropy" class="level2">
-<h2><span class="header-section-number">5.9</span> Excess Entropy</h2>
+<h2><span class="header-section-number">4.9</span> Excess Entropy</h2>
 </section>
 <section id="information-flow" class="level2">
-<h2><span class="header-section-number">5.10</span> Information Flow</h2>
+<h2><span class="header-section-number">4.10</span> Information Flow</h2>
 </section>
 <section id="evidence-of-integration" class="level2">
-<h2><span class="header-section-number">5.11</span> Evidence of Integration</h2>
+<h2><span class="header-section-number">4.11</span> Evidence of Integration</h2>
 </section>
 <section id="mutual-information-1" class="level2">
-<h2><span class="header-section-number">5.12</span> Mutual Information</h2>
+<h2><span class="header-section-number">4.12</span> Mutual Information</h2>
 <p><a href="https://en.wikipedia.org/wiki/Mutual_information">Mutual information</a> (MI) is a measure of the amount of mutual dependence between at least two random variables. Locally, MI is defined as <span class="math display">\[
 i_i(X_1,\ldots,X_l) = \frac{p(x_{1,i},\ldots,x_{l,i})}{p(x_{1,i})\ldots p(x_{l,i})}.
 \]</span> The mutual information is then just the time average of <span class="math inline">\(i_i(X_1, \ldots, X_l)\)</span>: <span class="math display">\[
@@ -2320,13 +2317,13 @@ I(X_1,\ldots,X_l) =
 <div class="sourceLine" id="cb42-34" data-line-number="34"><span class="co">#&gt; [1,] 0.7369656 0.7369656 3.321928 3.321928 3.321928 0.1520031</span></div></code></pre>
 </section>
 <section id="partial-information-decomposition" class="level2">
-<h2><span class="header-section-number">5.13</span> Partial Information Decomposition</h2>
+<h2><span class="header-section-number">4.13</span> Partial Information Decomposition</h2>
 </section>
 <section id="predictive-information" class="level2">
-<h2><span class="header-section-number">5.14</span> Predictive Information</h2>
+<h2><span class="header-section-number">4.14</span> Predictive Information</h2>
 </section>
 <section id="relative-entropy-1" class="level2">
-<h2><span class="header-section-number">5.15</span> Relative Entropy</h2>
+<h2><span class="header-section-number">4.15</span> Relative Entropy</h2>
 <p><a href="https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence">Relative entropy</a>, also known as the Kullback-Leibler divergence, measures the amount of information gained in switching from a prior distribution <span class="math inline">\(q_X\)</span> to a posterior distribution <span class="math inline">\(p_X\)</span> over <em>the same support</em>: <span class="math display">\[
 D_{KL}(p||q) = \sum_{x_i} p(x_i) \log_2{\frac{p(x_i)}{q(x_i)}}.
 \]</span> The local counterpart is <span class="math display">\[
@@ -2359,10 +2356,10 @@ d_{KL,i}(p||q) = log_2{\frac{p(x_i)}{q(x_i)}}.
 <div class="sourceLine" id="cb44-20" data-line-number="20"><span class="co">#&gt; [1,] -0.6780719 1.321928</span></div></code></pre>
 </section>
 <section id="separable-information" class="level2">
-<h2><span class="header-section-number">5.16</span> Separable Information</h2>
+<h2><span class="header-section-number">4.16</span> Separable Information</h2>
 </section>
 <section id="transfer-entropy" class="level2">
-<h2><span class="header-section-number">5.17</span> Transfer Entropy</h2>
+<h2><span class="header-section-number">4.17</span> Transfer Entropy</h2>
 <p><a href="https://en.wikipedia.org/wiki/Transfer_entropy">Transer entropy</a> (TE) was introduced in <a href="#References"><span class="citation" data-cites="Schreiber2000">(Schreiber 2000)</span></a> to quantify information transfer between an information source and a destination, conditioning out shared history effects. TE was originally formulated considering only the source and destination; however many systems of interest have more than just those two components. As such, it may be further necessary to condition the probabilities on the states of all “background” components in the system. These two forms are sometimes referred to as <em>apparent</em> and <em>complete</em> transfer entropy, respectively (<a href="#References">[Lizier2008]</a>).</p>
 <p>Our implementation of TE allows the user to condition the probabilities on any number of background processes, within hardware limits. For the subsequent description, take <span class="math inline">\(X\)</span> to be the source, <span class="math inline">\(Y\)</span> the target, <span class="math inline">\(W = \{W_1, \ldots, W_l\}\)</span> be the background processes against which we’d like to condition. For example, we might take the state of two nodes in a dynamical network as the source and target, while all other nodes in the network are treated as the background. Transfer entropy is then defined in terms of a time-local variant <span class="math display">\[
 t_{X \rightarrow Y, \mathcal{W}, i}(k) =
@@ -2446,7 +2443,7 @@ T_{X \rightarrow Y, \mathcal{W}}
 </section>
 </section>
 <section id="utilities" class="level1">
-<h1><span class="header-section-number">6</span> Utilities</h1>
+<h1><span class="header-section-number">5</span> Utilities</h1>
 <table>
 <colgroup>
 <col style="width: 26%"></col>
@@ -2469,11 +2466,11 @@ T_{X \rightarrow Y, \mathcal{W}}
 </tr>
 <tr class="odd">
 <td>Coalescing</td>
-<td></td>
+<td><a href="#Coalesce"><code>coalesce</code></a></td>
 </tr>
 <tr class="even">
-<td>Encoding/Decoding</td>
-<td></td>
+<td>State Encoding</td>
+<td><a href="#Encode"><code>encode</code></a>, <a href="#Decode"><code>decode</code></a></td>
 </tr>
 <tr class="odd">
 <td>Random Time Series</td>
@@ -2486,9 +2483,12 @@ T_{X \rightarrow Y, \mathcal{W}}
 </tbody>
 </table>
 <section id="binning-time-series" class="level2">
-<h2><span class="header-section-number">6.1</span> Binning Time Series</h2>
+<h2><span class="header-section-number">5.1</span> Binning Time Series</h2>
+<p>All of the currently implemented time series measures are only defined on discretely-valued time series. However, in practice continuously-valued time series are ubiquitous. There are two approaches to accomodating continuous values.</p>
+<p>The simplest is to bin the time series, forcing the values into discrete states. This method has its downsides, namely that the binning is often a bit unphysical and it can introduce bias. What’s more, without some kind of guiding principle it can be difficult to decide exactly which binning approach.</p>
+<p>The second approach attempts to infer condinuous probability distributions from continuous data. This is potentially more robust, but more technically d ifficult. Unfortunately, <em>rinform</em> does not yet have an implementation of information measures on continous distributions.</p>
 <section id="SeriesRange" class="level3">
-<h3><span class="header-section-number">6.1.1</span> Series Range</h3>
+<h3><span class="header-section-number">5.1.1</span> Series Range</h3>
 <p><strong>Interface:</strong></p>
 <p>Compute the range, minimum and maximum values in a floating-point time series and return them as a list.</p>
 <pre class="sourceCode r" id="cb48"><code class="sourceCode r"><div class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw">series_range</span>(series)</div></code></pre>
@@ -2506,7 +2506,7 @@ T_{X \rightarrow Y, \mathcal{W}}
 <div class="sourceLine" id="cb49-11" data-line-number="11"><span class="co">#&gt; [1] 2.3</span></div></code></pre>
 </section>
 <section id="BinSeries" class="level3">
-<h3><span class="header-section-number">6.1.2</span> Bin Series</h3>
+<h3><span class="header-section-number">5.1.2</span> Bin Series</h3>
 <p><strong>Interface:</strong></p>
 <p>Bin a floating-point time series following one of three different modalities:</p>
 <ul>
@@ -2553,45 +2553,120 @@ T_{X \rightarrow Y, \mathcal{W}}
 </section>
 </section>
 <section id="black-boxing-time-series" class="level2">
-<h2><span class="header-section-number">6.2</span> Black-Boxing Time Series</h2>
+<h2><span class="header-section-number">5.2</span> Black-Boxing Time Series</h2>
 <section id="BlackBox" class="level3">
-<h3><span class="header-section-number">6.2.1</span> Black-Box</h3>
+<h3><span class="header-section-number">5.2.1</span> Black-Box</h3>
 <p><strong>Interface:</strong></p>
 <p><strong>Examples:</strong></p>
 </section>
 <section id="BlackBoxParts" class="level3">
-<h3><span class="header-section-number">6.2.2</span> Black-Box Parts</h3>
-<p><strong>Interface:</strong></p>
-<p><strong>Examples:</strong></p>
-</section>
-<section id="section" class="level3">
-<h3><span class="header-section-number">6.2.3</span> {#}</h3>
+<h3><span class="header-section-number">5.2.2</span> Black-Box Parts</h3>
 <p><strong>Interface:</strong></p>
 <p><strong>Examples:</strong></p>
 </section>
 </section>
-<section id="coalescing-time-series" class="level2">
-<h2><span class="header-section-number">6.3</span> Coalescing Time Series</h2>
+<section id="Coalesce" class="level2">
+<h2><span class="header-section-number">5.3</span> Coalescing Time Series</h2>
+<p>The magic of information measures is that the actual values of a time series are irrelavent. For example, <span class="math inline">\(\{0, 1, 0, 1, 1 \}\)</span> has the same entropy as <span class="math inline">\(\{2, 9, 2, 9, 9\}\)</span> (possibly up to a rescaling). This give us the freedom to shift around the values of a time series as long as we do not change the relative number of states.</p>
+<p>This function thus provides a way of “compressing” a time series into as small a base as possible. Why is this useful? Many of the measures use the base of the time series to determine how much memory to allocate; the larger the base, the higher the memory usage. It also affects the overall performance as the combinatorics climb exponentially with the base.</p>
+<p>Notice that the encoding that is used ensures that the ordering of the states stays the same, e.g., <span class="math display">\[
+\{-8 \rightarrow 0, -2 \rightarrow 1, 2 \rightarrow 2, 4 \rightarrow 3, 6 \rightarrow 4\}
+\]</span>.</p>
 <p><strong>Interface:</strong></p>
+<p>Coalesce a timeseries into as few contiguous states as possible.</p>
+<pre class="sourceCode r" id="cb52"><code class="sourceCode r"><div class="sourceLine" id="cb52-1" data-line-number="1"><span class="kw">coalesce</span>(series)</div></code></pre>
 <p><strong>Examples:</strong></p>
+<p>The two standard usage cases for this function are to reduce the base of a time series:</p>
+<pre class="sourceCode r" id="cb53"><code class="sourceCode r"><div class="sourceLine" id="cb53-1" data-line-number="1"><span class="kw">coalesce</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">2</span>))</div>
+<div class="sourceLine" id="cb53-2" data-line-number="2"><span class="co">#&gt; $series</span></div>
+<div class="sourceLine" id="cb53-3" data-line-number="3"><span class="co">#&gt; [1] 0 1 0 1 0 1</span></div>
+<div class="sourceLine" id="cb53-4" data-line-number="4"><span class="co">#&gt; </span></div>
+<div class="sourceLine" id="cb53-5" data-line-number="5"><span class="co">#&gt; $b</span></div>
+<div class="sourceLine" id="cb53-6" data-line-number="6"><span class="co">#&gt; [1] 2</span></div></code></pre>
+<p>and to ensure that the states are non-negative:</p>
+<pre class="sourceCode r" id="cb54"><code class="sourceCode r"><div class="sourceLine" id="cb54-1" data-line-number="1"><span class="kw">coalesce</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">8</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">-2</span>, <span class="dv">4</span>))</div>
+<div class="sourceLine" id="cb54-2" data-line-number="2"><span class="co">#&gt; $series</span></div>
+<div class="sourceLine" id="cb54-3" data-line-number="3"><span class="co">#&gt; [1] 0 2 4 1 3</span></div>
+<div class="sourceLine" id="cb54-4" data-line-number="4"><span class="co">#&gt; </span></div>
+<div class="sourceLine" id="cb54-5" data-line-number="5"><span class="co">#&gt; $b</span></div>
+<div class="sourceLine" id="cb54-6" data-line-number="6"><span class="co">#&gt; [1] 5</span></div></code></pre>
 </section>
-<section id="encodingdecoding-states" class="level2">
-<h2><span class="header-section-number">6.4</span> Encoding/Decoding States</h2>
+<section id="state-encoding" class="level2">
+<h2><span class="header-section-number">5.4</span> State Encoding</h2>
+<p>State encoding is a necessity when complex time series are being analyzed. For example, <code>k</code>-history must be encoded as an integer in order to “observe” it using a Dist. What if you are interested in correlating the aggragate state of one group of nodes with that of another? You’d need to encode the groups’ states as integers. The following functions provides such functionality.</p>
+<div class="alert alert-warning">
+<p><strong>Attention!</strong></p>
+<p>As a practical matter, these utility functions should only be used as a stop-gap while a solution for your problem is implemented in the core <em>Inform</em> library and wrapped in <em>rinform</em>. “Why?” you ask? Well, these functions are about as efficient as they can be for one-off state encodings, but most of the time you are interested in encoding sequences of states. This can be done much more efficiently if you encode the entire sequence at once. You need domain-specific information to make that happen.</p>
+</div>
+<section id="Encode" class="level3">
+<h3><span class="header-section-number">5.4.1</span> Encode</h3>
+<p>This function uses a <a href="https://en.wikipedia.org/wiki/Endianness#Examples">big-endian</a> encoding scheme. That is, the most significant bits of the encoded integer are determined by the left-most end of the unencoded state. If <code>b</code> is not provided (or is <code>NA</code>), the base is inferred from the state with a minimum value of 2.</p>
 <p><strong>Interface:</strong></p>
+<p>Encode a base-‘b’ array of integers into a single integer.</p>
+<pre class="sourceCode r" id="cb55"><code class="sourceCode r"><div class="sourceLine" id="cb55-1" data-line-number="1"><span class="kw">encode</span>(state, <span class="dt">b =</span> <span class="ot">NA</span>)</div></code></pre>
 <p><strong>Examples:</strong></p>
+<p>Using the big-endian encoding scheme, the most significant bits of the encoded integer are determined by the left-most end of the unencoded state:</p>
+<pre class="sourceCode r" id="cb56"><code class="sourceCode r"><div class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">b =</span> <span class="dv">2</span>)</div>
+<div class="sourceLine" id="cb56-2" data-line-number="2"><span class="co">#&gt; [1] 1</span></div>
+<div class="sourceLine" id="cb56-3" data-line-number="3"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>), <span class="dt">b =</span> <span class="dv">3</span>)</div>
+<div class="sourceLine" id="cb56-4" data-line-number="4"><span class="co">#&gt; [1] 3</span></div>
+<div class="sourceLine" id="cb56-5" data-line-number="5"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="dt">b =</span> <span class="dv">4</span>)</div>
+<div class="sourceLine" id="cb56-6" data-line-number="6"><span class="co">#&gt; [1] 16</span></div>
+<div class="sourceLine" id="cb56-7" data-line-number="7"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">4</span>), <span class="dt">b =</span> <span class="dv">5</span>)</div>
+<div class="sourceLine" id="cb56-8" data-line-number="8"><span class="co">#&gt; [1] 29</span></div></code></pre>
+<p>If <code>b</code> is not provided or is <code>NA</code>, itt is inferred from the state:</p>
+<pre class="sourceCode r" id="cb57"><code class="sourceCode r"><div class="sourceLine" id="cb57-1" data-line-number="1"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>), <span class="ot">NA</span>)</div>
+<div class="sourceLine" id="cb57-2" data-line-number="2"><span class="co">#&gt; [1] 2</span></div>
+<div class="sourceLine" id="cb57-3" data-line-number="3"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>))</div>
+<div class="sourceLine" id="cb57-4" data-line-number="4"><span class="co">#&gt; [1] 6</span></div>
+<div class="sourceLine" id="cb57-5" data-line-number="5"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>))</div>
+<div class="sourceLine" id="cb57-6" data-line-number="6"><span class="co">#&gt; [1] 16</span></div></code></pre>
+</section>
+<section id="Decode" class="level3">
+<h3><span class="header-section-number">5.4.2</span> Decode</h3>
+<p>The provided encoded state is decoded using the <a href="https://en.wikipedia.org/wiki/Endianness#Examples">big-endian</a> encoding scheme. Note that the base <code>b</code> must be provided, but the number of digits <code>n</code> is optional. If <code>n</code> is provided then the decoded state will have exactly that many elements.</p>
+<p><strong>Interface:</strong></p>
+<p>Decode an integer into a base-<code>b</code> array with <code>n</code> digits.</p>
+<pre class="sourceCode r" id="cb58"><code class="sourceCode r"><div class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">decode</span>(encoding, b, <span class="dt">n =</span> <span class="ot">NA</span>)</div></code></pre>
+<p><strong>Examples:</strong></p>
+<p>This function assumes a big-endian encoding scheme:</p>
+<pre class="sourceCode r" id="cb59"><code class="sourceCode r"><div class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">decode</span>(<span class="dv">2</span>, <span class="dt">b =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">2</span>)</div>
+<div class="sourceLine" id="cb59-2" data-line-number="2"><span class="co">#&gt; [1] 1 0</span></div>
+<div class="sourceLine" id="cb59-3" data-line-number="3"><span class="co"># array([1, 0], dtype=int32)</span></div>
+<div class="sourceLine" id="cb59-4" data-line-number="4"><span class="kw">decode</span>(<span class="dv">6</span>, <span class="dt">b =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">3</span>)</div>
+<div class="sourceLine" id="cb59-5" data-line-number="5"><span class="co">#&gt; [1] 1 1 0</span></div>
+<div class="sourceLine" id="cb59-6" data-line-number="6"><span class="co">#array([1, 1, 0], dtype=int32)</span></div>
+<div class="sourceLine" id="cb59-7" data-line-number="7"><span class="kw">decode</span>(<span class="dv">6</span>, <span class="dt">b =</span> <span class="dv">3</span>, <span class="dt">n =</span> <span class="dv">2</span>)</div>
+<div class="sourceLine" id="cb59-8" data-line-number="8"><span class="co">#&gt; [1] 2 0</span></div>
+<div class="sourceLine" id="cb59-9" data-line-number="9"><span class="co">#array([2, 0], dtype=int32)</span></div></code></pre>
+<p>If <code>n</code> is provided then the decoded state will have exactly that many elements. However, note that if the provided <code>n</code> is too small to contain a full representation of the state, an error will be raised.</p>
+<pre class="sourceCode r" id="cb60"><code class="sourceCode r"><div class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">decode</span>(<span class="dv">2</span>, <span class="dt">b =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">4</span>)</div>
+<div class="sourceLine" id="cb60-2" data-line-number="2"><span class="co">#&gt; [1] 0 0 1 0</span></div></code></pre>
+<p>If <code>n</code> is not provided, the length of the decoded state is inferred from the <code>encoding</code> to be as small as possible:</p>
+<pre class="sourceCode r" id="cb61"><code class="sourceCode r"><div class="sourceLine" id="cb61-1" data-line-number="1"><span class="kw">decode</span>(<span class="dv">1</span>, <span class="dt">b =</span> <span class="dv">2</span>)</div>
+<div class="sourceLine" id="cb61-2" data-line-number="2"><span class="co">#&gt; [1] 1</span></div>
+<div class="sourceLine" id="cb61-3" data-line-number="3"><span class="kw">decode</span>(<span class="dv">1</span>, <span class="dt">b =</span> <span class="dv">3</span>)</div>
+<div class="sourceLine" id="cb61-4" data-line-number="4"><span class="co">#&gt; [1] 1</span></div>
+<div class="sourceLine" id="cb61-5" data-line-number="5"><span class="kw">decode</span>(<span class="dv">3</span>, <span class="dt">b =</span> <span class="dv">2</span>)</div>
+<div class="sourceLine" id="cb61-6" data-line-number="6"><span class="co">#&gt; [1] 1 1</span></div>
+<div class="sourceLine" id="cb61-7" data-line-number="7"><span class="kw">decode</span>(<span class="dv">3</span>, <span class="dt">b =</span> <span class="dv">3</span>)</div>
+<div class="sourceLine" id="cb61-8" data-line-number="8"><span class="co">#&gt; [1] 1 0</span></div>
+<div class="sourceLine" id="cb61-9" data-line-number="9"><span class="kw">decode</span>(<span class="dv">3</span>, <span class="dt">b =</span> <span class="dv">4</span>)</div>
+<div class="sourceLine" id="cb61-10" data-line-number="10"><span class="co">#&gt; [1] 3</span></div></code></pre>
+</section>
 </section>
 <section id="partitioning-time-series" class="level2">
-<h2><span class="header-section-number">6.5</span> Partitioning Time Series</h2>
+<h2><span class="header-section-number">5.5</span> Partitioning Time Series</h2>
 <p><strong>Interface:</strong></p>
 <p><strong>Examples:</strong></p>
 </section>
 <section id="random-time-series" class="level2">
-<h2><span class="header-section-number">6.6</span> Random Time Series</h2>
+<h2><span class="header-section-number">5.6</span> Random Time Series</h2>
 <p><strong>Interface:</strong></p>
 <p><strong>Examples:</strong></p>
 </section>
 <section id="time-series-to-tpm" class="level2">
-<h2><span class="header-section-number">6.7</span> Time Series to TPM</h2>
+<h2><span class="header-section-number">5.7</span> Time Series to TPM</h2>
 <p><strong>Interface:</strong></p>
 <p><strong>Examples:</strong></p>
 </section>
