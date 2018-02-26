@@ -244,6 +244,25 @@ er <- entropy_rate(series, k = 2, local = T)
 t(er)
 
 ## ------------------------------------------------------------------------
+# One initial condition:
+series <- c(0, 0, 1, 1, 0, 0, 1, 1, 0)
+excess_entropy(series, k = 2)
+
+# ..and local variant:
+ee <- excess_entropy(series, k = 2, local = T)
+t(ee)
+
+# Two initial conditions:
+series      <- matrix(0, nrow = 9, ncol =2)
+series[, 1] <- c(0, 0, 1, 1, 0, 0, 1, 1, 0)
+series[, 2] <- c(0, 1, 0, 1, 0, 1, 0, 1, 0)
+excess_entropy(series, k = 2)
+
+# ..and local variant:
+ee <- excess_entropy(series, k = 2, local = T)
+t(ee)
+
+## ------------------------------------------------------------------------
 # Two variables:
 xs <- matrix(c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
                0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1), ncol = 2)
