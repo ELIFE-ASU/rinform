@@ -38,9 +38,10 @@ shannon_entropy <- function(p, b = 2.0) {
 	  b         = as.double(b),
 	  sen       = as.double(sen),
           err       = as.integer(err))
-	  
-  if (err) stop("inform lib memory allocation error")		  
-  sen <- x$sen
+
+  if (.check_inform_error(x$err) == 0) {
+    sen <- x$sen
+  }
 
   sen
 }
@@ -79,6 +80,8 @@ shannon_mutual_info <- function(p_xy, p_x, p_y, b = 2.0) {
     stop("<p_y> is not a valid distribution")
   }
 
+  .check_base(b)
+
   x <- .C("r_shannon_mutual_info_",
           histogram_xy = p_xy$histogram,
 	  size_xy      = p_xy$size,
@@ -89,9 +92,10 @@ shannon_mutual_info <- function(p_xy, p_x, p_y, b = 2.0) {
 	  b            = as.double(b),
 	  smi          = as.double(smi),
           err          = as.integer(err))
-	  
-  if (err) stop("inform lib memory allocation error")		  
-  smi <- x$smi
+
+  if (.check_inform_error(x$err) == 0) {
+    smi <- x$smi
+  }
 
   smi
 }

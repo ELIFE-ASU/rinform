@@ -35,3 +35,55 @@ test_that("shannon_entropy checks parameters and functionality", {
   expect_equal(shannon_entropy(Dist(c(2, 2, 1)), b = 3.0), 0.960230, tolerance = 1e-6)
   expect_equal(shannon_entropy(Dist(c(2, 2, 1)), b = 4.0), 0.760964, tolerance = 1e-6)
 })
+
+test_that("shannon_mutual_info checks parameters and functionality", {
+  x <- Dist(c(5, 1)); y <- Dist(c(2, 3)); xy <- Dist(c(5, 3));
+  expect_error(shannon_mutual_info(Dist("1"),             x, y, b = 2))
+  expect_error(shannon_mutual_info(Dist(NULL),            x, y, b = 2))
+  expect_error(shannon_mutual_info(Dist(NA),              x, y, b = 2))
+  expect_error(shannon_mutual_info(Dist(matrix(1, 2, 2)), x, y, b = 2))
+  expect_error(shannon_mutual_info(Dist(0),               x, y, b = 2))
+  expect_error(shannon_mutual_info(Dist(-1),              x, y, b = 2))
+
+  expect_error(shannon_mutual_info(xy, Dist("1"),             y, b = 2))
+  expect_error(shannon_mutual_info(xy, Dist(NULL),            y, b = 2))
+  expect_error(shannon_mutual_info(xy, Dist(NA),              y, b = 2))
+  expect_error(shannon_mutual_info(xy, Dist(matrix(1, 2, 2)), y, b = 2))
+  expect_error(shannon_mutual_info(xy, Dist(0),               y, b = 2))
+  expect_error(shannon_mutual_info(xy, Dist(-1),              y, b = 2))
+
+  expect_error(shannon_mutual_info(xy, x, Dist("1"),             b = 2))
+  expect_error(shannon_mutual_info(xy, x, Dist(NULL),            b = 2))
+  expect_error(shannon_mutual_info(xy, x, Dist(NA),              b = 2))
+  expect_error(shannon_mutual_info(xy, x, Dist(matrix(1, 2, 2)), b = 2))
+  expect_error(shannon_mutual_info(xy, x, Dist(0),               b = 2))
+  expect_error(shannon_mutual_info(xy, x, Dist(-1),              b = 2))
+
+  expect_error(shannon_mutual_info(xy, x, y, b = "b"))
+  expect_error(shannon_mutual_info(xy, x, y, b = NULL))
+  expect_error(shannon_mutual_info(xy, x, y, b = NA))
+  expect_error(shannon_mutual_info(xy, x, y, b = -1))
+
+  x  <- Dist(c(5, 2, 3, 5, 1, 4, 6, 2, 1, 4, 2, 4))
+  y  <- Dist(c(2, 4, 5, 2, 7, 3, 9, 8, 8, 7, 2, 3))
+  xy <- Dist(12 * 12)
+  for (i in 1:12) {
+    for (j in 1:12) xy <- set_item(xy, j + (i - 1) * 12, get_item(x, i) * get_item(y, j))
+  }
+  expect_equal(shannon_mutual_info(xy, x, y, b = 0.0), 0.000000, tolerance = 1e-6)
+  expect_equal(shannon_mutual_info(xy, x, y, b = 0.5), 0.000000, tolerance = 1e-6)
+  expect_equal(shannon_mutual_info(xy, x, y, b = 1.5), 0.000000, tolerance = 1e-6)
+  expect_equal(shannon_mutual_info(xy, x, y, b = 2.0), 0.000000, tolerance = 1e-6)
+  expect_equal(shannon_mutual_info(xy, x, y, b = 3.0), 0.000000, tolerance = 1e-6)
+  expect_equal(shannon_mutual_info(xy, x, y, b = 4.0), 0.000000, tolerance = 1e-6)
+
+  x  <- Dist(c(80, 20))
+  y  <- Dist(c(25, 75))
+  xy <- Dist(c(10, 70, 15, 5))
+  expect_equal(shannon_mutual_info(xy, x, y, b = 0.0), 0.000000, tolerance = 1e-6)
+  expect_equal(shannon_mutual_info(xy, x, y, b = 0.5), -0.214171, tolerance = 1e-6)
+  expect_equal(shannon_mutual_info(xy, x, y, b = 1.5), 0.366128, tolerance = 1e-6)
+  expect_equal(shannon_mutual_info(xy, x, y, b = 2.0), 0.214171, tolerance = 1e-6)
+  expect_equal(shannon_mutual_info(xy, x, y, b = 3.0), 0.135127, tolerance = 1e-6)
+  expect_equal(shannon_mutual_info(xy, x, y, b = 4.0), 0.107086, tolerance = 1e-6)
+})
