@@ -51,10 +51,29 @@
   if (sum(p) != 1.0) {
     stop("<", deparse(substitute(p)), "> does not sum up to 1!", call. = !T)
   }
-  if (sum(p>0) != length(p)) {
+  if (sum(p >=  0) != length(p)) {
     stop("<", deparse(substitute(p)), "> contains negative values!", call. = !T)
   }
 }
+
+.check_tpm <- function (x) {
+  if (!is.numeric(x)) {
+    stop("<", deparse(substitute(x)), "> is not numeric!", call. = !T)
+  }
+  if (!is.matrix(x)) {
+    stop("<", deparse(substitute(x)), "> is not a matrix!", call. = !T)
+  }
+  if (dim(x)[1] != dim(x)[2]) {
+    stop("<", deparse(substitute(x)), "> is not a square matrix!", call. = !T)
+  }
+  if (prod(colSums(x) == rep(1, dim(x)[1])) != 1) {
+    stop("<", deparse(substitute(x)), ">'s columns do not sum up to 1!", call. = !T)
+  }
+  if (sum(x >= 0) != dim(x)[1] * dim(x)[2]) {
+    stop("<", deparse(substitute(x)), "> contains negative values!", call. = !T)
+  }  
+}
+
 
 .check_history <- function (k) {
   if (!is.numeric(k)) {

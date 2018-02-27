@@ -770,9 +770,51 @@ cross_entropy(ps, qs)
 cross_entropy(qs, ps)
 ```
 
-## Effective Information
+## Effective Information {#EffectiveInformation}
 
-## Entropy Rate
+Effective information is a _causal_ measure aimed at teasing out the causal structure of a
+dynamical system. In essence, it is the mutual information between an "intervention"
+distribution — a probability distribution over initial states — and the distribution after
+one time step:
+$$
+EI(A,p) = I(p,p^TA)
+$$
+where $A$ is the transition probability matrix and $p$ an intervention distribution.
+Functionality to construct a transition probability matrix from time series is
+provided by the [series_to_tpm](#TimeSeriestToTPM) function.
+
+See [[@Tononi2003]](#References), [[@Hoel2013]](#References) or [[@Hoel2017]](#References)
+for more information.
+
+__Interface:__
+
+Compute the effective information from an $n \times n$ transition probability matrix
+`tpm` given an intervention distribution `inter`. If `inter` is `NULL`, then the
+uniform distribution over the $n$ states is used.
+
+```r
+effective_info(tpm, inter = NULL)
+```
+__Examples:__
+
+Uniform intervention distribution:
+```{r}
+tpm      <- matrix(0, nrow = 2, ncol = 2)
+tpm[, 1] <- c(0.50, 0.5)
+tpm[, 2] <- c(0.25, 0.75)
+effective_info(tpm, NULL)
+```
+
+Non-uniform intervention distribution:
+```{r}
+tpm      <- matrix(0, nrow = 2, ncol = 2)
+tpm[, 1] <- c(0.50, 0.5)
+tpm[, 2] <- c(0.25, 0.75)
+inter    <- c(0.488372, 0.511628)
+effective_info(tpm, inter)
+```
+
+## Entropy Rate {#EntropyRate}
 
 [Entropy rate](https://en.wikipedia.org/wiki/Entropy_rate) quantifies the amount of
 information needed to describe the next state of $X$ given observations of
@@ -1398,9 +1440,10 @@ __Interface:__
 
 __Examples:__
 
-## Time Series to TPM
+## Time Series to TPM {#TimeSeriestToTPM}
 
 __Interface:__
+series_to_tpm
 
 __Examples:__
 
