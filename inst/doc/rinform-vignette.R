@@ -159,7 +159,16 @@ shannon_entropy(p, b = 3)
 xy <- Dist(c(10, 70, 15, 5))
 x  <- Dist(c(80, 20))
 y  <- Dist(c(25, 75))
-shannon_mutual_info(xy, x, y) #0.214170945007629
+
+shannon_mutual_info(xy, x, y)
+
+## ------------------------------------------------------------------------
+xy <- Dist(c(10, 70, 15, 5))
+x  <- Dist(c(80, 20))
+y  <- Dist(c(25, 75))
+
+shannon_conditional_entropy(xy, x)
+shannon_conditional_entropy(xy, y)
 
 ## ------------------------------------------------------------------------
 # One initial condition:

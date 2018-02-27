@@ -591,22 +591,58 @@ See [[@Cover1991]](#References) for more details.
 
 __Interface:__
 
-Compute the base-`b` mututal information between two random variables $X$ and $Y$.
+Compute the base-`b` mutual information between two random variables $X$ and $Y$.
 ```r
 shannon_mutual_info(p_xy, p_x, p_y, b = 2)
 ```
 
 __Examples:__
 
-Compute the base-2 mututal information between two random variables:
+Compute the base-2 mutual information between two random variables:
 ```{r}
 xy <- Dist(c(10, 70, 15, 5))
 x  <- Dist(c(80, 20))
 y  <- Dist(c(25, 75))
-shannon_mutual_info(xy, x, y) #0.214170945007629
+
+shannon_mutual_info(xy, x, y)
 ```
 
 ## Conditional Entropy
+
+
+[Conditional entropy](https://en.wikipedia.org/wiki/Conditional_entropy) quantifies
+the amount of information required to describe a random variable $X$ given knowledge
+of a random variable $Y$. With $p_Y$ the probability distribution of $Y$, and
+$p_{X,Y}$ the joint distribution for $(X,Y)$, the base-$b$ conditional entropy is
+defined as
+$$
+\begin{split}
+H(X|Y) &= -\sum_{x,y} p_{X,Y}(x,y) \log_b \frac{p_{X,Y}(x,y)}{p_Y(y)} \\
+       &= H(X,Y) - H(Y).
+\end{split}
+$$  
+
+See [[@Cover1991]](#References) for more details.
+
+__Interface:__
+
+Compute the base-`b` conditional entropy given joint (`p_xy`) and marginal
+(`p_y`) distributions.
+```r
+shannon_conditional_entropy(p_xy, p_y, b = 2.0)
+```
+
+__Examples:__
+
+Compute the base-2 conditional entropy between two random variables:
+```{r}
+xy <- Dist(c(10, 70, 15, 5))
+x  <- Dist(c(80, 20))
+y  <- Dist(c(25, 75))
+
+shannon_conditional_entropy(xy, x)
+shannon_conditional_entropy(xy, y)
+```
 
 ## Conditional Mutual Information
 

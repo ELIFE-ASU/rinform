@@ -130,6 +130,8 @@ shannon_conditional_entropy <- function(p_xy, p_y, b = 2.0) {
     stop("<p_y> is not a valid distribution")
   }
 
+  .check_base(b)
+
   x <- .C("r_shannon_conditional_entropy_",
           histogram_xy = p_xy$histogram,
 	  size_xy      = p_xy$size,
@@ -138,9 +140,10 @@ shannon_conditional_entropy <- function(p_xy, p_y, b = 2.0) {
 	  b            = as.double(b),
 	  sce          = as.double(sce),
           err          = as.integer(err))
-	  
-  if (err) stop("inform lib memory allocation error")		  
-  sce <- x$sce
+
+  if (.check_inform_error(x$err) == 0) {
+    sce <- x$sce
+  }
 
   sce
 }
