@@ -1,0 +1,37 @@
+library(rinform)
+context("Shannon Information Measures")
+
+test_that("shannon_entropy checks parameters and functionality", {
+  expect_error(shannon_entropy(Dist("1"),             b = 2))
+  expect_error(shannon_entropy(Dist(NULL),            b = 2))
+  expect_error(shannon_entropy(Dist(NA),              b = 2))
+  expect_error(shannon_entropy(Dist(matrix(1, 2, 2)), b = 2))
+  expect_error(shannon_entropy(Dist(0),               b = 2))
+  expect_error(shannon_entropy(Dist(-1),              b = 2))
+
+  expect_error(shannon_entropy(Dist(c(1, 1, 2, 1, 2)), b = "B"))
+  expect_error(shannon_entropy(Dist(c(1, 1, 2, 1, 2)), b = NULL))
+  expect_error(shannon_entropy(Dist(c(1, 1, 2, 1, 2)), b = NA))
+  expect_error(shannon_entropy(Dist(c(1, 1, 2, 1, 2)), b = -1))
+
+  expect_equal(shannon_entropy(Dist(c(0, 1, 0, 0, 0)), b = 0.0), 0.000000, tolerance = 1e-6)
+  expect_equal(shannon_entropy(Dist(c(0, 1, 0, 0, 0)), b = 0.5), 0.000000, tolerance = 1e-6)
+  expect_equal(shannon_entropy(Dist(c(0, 1, 0, 0, 0)), b = 1.5), 0.000000, tolerance = 1e-6)
+  expect_equal(shannon_entropy(Dist(c(0, 1, 0, 0, 0)), b = 2.0), 0.000000, tolerance = 1e-6)
+  expect_equal(shannon_entropy(Dist(c(0, 1, 0, 0, 0)), b = 3.0), 0.000000, tolerance = 1e-6)
+  expect_equal(shannon_entropy(Dist(c(0, 1, 0, 0, 0)), b = 4.0), 0.000000, tolerance = 1e-6)
+
+  expect_equal(shannon_entropy(Dist(c(1, 1, 1, 1, 1)), b = 0.0), 0.000000, tolerance = 1e-6)
+  expect_equal(shannon_entropy(Dist(c(1, 1, 1, 1, 1)), b = .5), -2.321928, tolerance = 1e-6)
+  expect_equal(shannon_entropy(Dist(c(1, 1, 1, 1, 1)), b = 1.5), 3.969362, tolerance = 1e-6)
+  expect_equal(shannon_entropy(Dist(c(1, 1, 1, 1, 1)), b = 2.0), 2.321928, tolerance = 1e-6)
+  expect_equal(shannon_entropy(Dist(c(1, 1, 1, 1, 1)), b = 3.0), 1.464973, tolerance = 1e-6)
+  expect_equal(shannon_entropy(Dist(c(1, 1, 1, 1, 1)), b = 4.0), 1.160964, tolerance = 1e-6)
+
+  expect_equal(shannon_entropy(Dist(c(2, 2, 1)), b = 0.0), 0.000000, tolerance = 1e-6)
+  expect_equal(shannon_entropy(Dist(c(2, 2, 1)), b = 0.5), -1.521928, tolerance = 1e-6)
+  expect_equal(shannon_entropy(Dist(c(2, 2, 1)), b = 1.5), 2.601753, tolerance = 1e-6)
+  expect_equal(shannon_entropy(Dist(c(2, 2, 1)), b = 2.0), 1.521928, tolerance = 1e-6)
+  expect_equal(shannon_entropy(Dist(c(2, 2, 1)), b = 3.0), 0.960230, tolerance = 1e-6)
+  expect_equal(shannon_entropy(Dist(c(2, 2, 1)), b = 4.0), 0.760964, tolerance = 1e-6)
+})

@@ -30,6 +30,8 @@ shannon_entropy <- function(p, b = 2.0) {
     stop("<p> is not a valid distribution")
   }
 
+  .check_base(b)
+
   x <- .C("r_shannon_entropy_",
           histogram = p$histogram,
 	  size      = p$size,

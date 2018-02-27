@@ -102,7 +102,7 @@ try one of these:
 Copyright © 2017-2018 ELIFE, Arizona State University. Free use of this software is granted
 under the terms of the MIT License. See the [LICENSE](https://github.com/elife-asu/rinform/blob/master/LICENSE) file for details.
 
-# Empirical Distributions
+# Empirical Distributions {#Distributions}
 
 
 The [`Dist`](#DistClass) class provides an _empirical_ distribution,
@@ -155,12 +155,14 @@ Dist(n)
 
 __Examples:__
 
+Create an empty distribution with support size 3:
 ```{r}
-# Create an empty distribution with support size 3
 Dist(3)
+```
 
-# Create a distribution with 2 events, the first observed 5 times, the second
-# observed 3 times
+Create a distribution with 2 events, the first observed 5 times, the second
+observed 3 times:
+```{r}
 Dist(c(5, 3))
 ```
 
@@ -187,16 +189,20 @@ resize(d, n)
 ```
 __Examples:__
 
+Create a distribution with size 2:
 ```{r}
-# Create a distribution with size 2
 d <- Dist(c(2, 13))
 d
+```
 
-# Increase the size of the support to 5
+Increase the size of the support to 5:
+```{r}
 d <- resize(d, 5)
 d
+```
 
-# Decrease the size of the support to 3
+Decrease the size of the support to 3:
+```{r}
 d <- resize(d, 3)
 d
 ```
@@ -215,12 +221,14 @@ copy(d)
 
 __Examples:__
 
+Create a base distribution `d`:
 ```{r}
-# Create base distribution
 d <- Dist(c(1:5))
 d
+```
 
-# Copy distribution
+Copy distribution to a different object `p`:
+```{r}
 p <- copy(d)
 p
 ```
@@ -237,14 +245,16 @@ infer(events)
 
 __Examples:__
 
+Create a distribution $d = \{3/5, 2/5\}$:
 ```{r}
-# Create a distribution ~ {3/5, 2/5}
-dist <- infer(c(0, 0, 1, 0, 1))
-dump(dist)
+d <- infer(c(0, 0, 1, 0, 1))
+dump(d)
+```
 
-# Create a distribution ~ {3/8, 3/8, 2/8}
-dist <- infer(c(0, 0, 1, 0, 1, 2, 2, 1))
-dump(dist)
+Create a distribution $d = \{3/8, 3/8, 2/8\}$:
+```{r}
+d <- infer(c(0, 0, 1, 0, 1, 2, 2, 1))
+dump(d)
 ```
 
 ### Approximate {#Approximate}
@@ -259,15 +269,15 @@ approximate(probs, tol)
 
 __Examples:__
 
+Approximate a distribution with tolerance $10^{-3}$:
 ```{r}
-# Approximate a distribution with tolerance 1e-3
 probs <- c(0.5, 0.2, 0.3)
-dist <- approximate(probs, 1e-3)
-dist$histogram
+d     <- approximate(probs, 1e-3)
+d$histogram
 
-probs <- c(1./3, 2./3)
-dist <- approximate(probs, 1e-3)
-dist$histogram
+probs <- c(1.0 / 3, 2.0 / 3)
+d     <- approximate(probs, 1e-3)
+d$histogram
 ```
 
 ### Uniform {#Uniform}
@@ -282,12 +292,12 @@ uniform(n)
 ```
 __Examples:__
 
+Initialize a uniform distribution of size 3:
 ```{r}
-# Uniform distribution of size 3
-dist <- uniform(3)
-dist
+d <- uniform(3)
+d
 
-dump(dist)
+dump(d)
 ```
 
 ## Accessors/Mutators
@@ -519,9 +529,82 @@ dump(dist)
 
 # Shannon Information Measures
 
+The _rinform_ package provides a collection of entropy and other information measures
+defined on discrete probability distributions (see [Dist](#Distributions)).
+These functions form the core of _Inform_ as all of the time series analysis functions
+are built upon them. _rinform_ provides access to these functions in the case
+the user wants to use them outside the (already wrapped) time series measures.
+
 ## Entropy
 
+Taking $X$ to be a random variable with $p_X$ a probability distribution on
+$X$, the base-$b$ Shannon entropy is defined as 
+$$
+H(X) = - \sum_{x} p_X(x) \log_b p_X(x).
+$$
+
+See [[@Shannon1948]](#References) for more details.
+
+__Interface:__
+
+Compute the base-`b` Shannon entropy of the distribution `p`.
+```r
+shannon_entropy(p, b = 2)
+```
+    
+__Example:__
+
+Compute the Shannon entropy of a uniform distribution:
+```{r}
+p <- Dist(c(1, 1, 1, 1))
+shannon_entropy(p)
+shannon_entropy(p, b = 4)
+```
+
+Compute the Shannon entropy of a non-uniform distribution:
+```{r}
+p <- Dist(c(2, 1))
+shannon_entropy(p)
+shannon_entropy(p, b = 3)
+```
+
 ## Mutual Information
+
+[Mutual information](https://en.wikipedia.org/wiki/Mutual_information) provides a
+measure of the mutual dependence between two random variables. Let $X$ and $Y$ be
+random variables with probability distributions $p_X$ and $p_Y$ respectively, and
+$p_{X,Y}$ the joint probability distribution over $(X,Y)$. The base-$b$ mutual
+information between $X$ and $Y$ is defined as
+$$
+\begin{split}
+I(X;Y) &= \sum_{x,y} p_{X,Y}(x,y) \log_b \frac{p_{X,Y}(x,y)}{p_X(x)p_Y(y)} \\
+       &= H(X) + H(Y) - H(X,Y).
+\end{split}
+$$
+Here the second line takes advantage of the properties of logarithms and the
+definition of Shannon entropy.
+
+To some degree one can think of mutual information as a measure of the
+(linear and non-linear) coorelations between random variables.
+
+See [[@Cover1991]](#References) for more details.
+
+__Interface:__
+
+Compute the base-`b` mututal information between two random variables $X$ and $Y$.
+```r
+shannon_mutual_info(p_xy, p_x, p_y, b = 2)
+```
+
+__Examples:__
+
+Compute the base-2 mututal information between two random variables:
+```{r}
+xy <- Dist(c(10, 70, 15, 5))
+x  <- Dist(c(80, 20))
+y  <- Dist(c(25, 75))
+shannon_mutual_info(xy, x, y)
+```
 
 ## Conditional Entropy
 

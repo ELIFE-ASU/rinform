@@ -38,8 +38,10 @@
   if (length(x) < 1) {
     stop("<", deparse(substitute(x)), "> is of length zero!", call. = !T)
   }  
+  if (x < 0) {
+    stop("<", deparse(substitute(x)), "> must be non-negative!", call. = !T)
+  }  
 }
-
 
 .check_probability_vector <- function (p) {
   if (!is.numeric(p)) {

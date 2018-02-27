@@ -7,7 +7,7 @@ void r_shannon_entropy_(int *histogram, int *size, double *b,
   dist = inform_dist_create((const uint32_t *) histogram, *size);
   
   if (dist != NULL) {
-    *sen = inform_shannon(dist, *b);
+    *sen = inform_shannon_entropy(dist, *b);
     inform_dist_free(dist);      
   } else {
     *err = 1;

@@ -5,60 +5,53 @@ knitr::opts_chunk$set(
 )
 
 ## ------------------------------------------------------------------------
-# Create an empty distribution with support size 3
 Dist(3)
 
-# Create a distribution with 2 events, the first observed 5 times, the second
-# observed 3 times
+## ------------------------------------------------------------------------
 Dist(c(5, 3))
 
 ## ------------------------------------------------------------------------
-# Create a distribution with size 2
 d <- Dist(c(2, 13))
 d
 
-# Increase the size of the support to 5
+## ------------------------------------------------------------------------
 d <- resize(d, 5)
 d
 
-# Decrease the size of the support to 3
+## ------------------------------------------------------------------------
 d <- resize(d, 3)
 d
 
 ## ------------------------------------------------------------------------
-# Create base distribution
 d <- Dist(c(1:5))
 d
 
-# Copy distribution
+## ------------------------------------------------------------------------
 p <- copy(d)
 p
 
 ## ------------------------------------------------------------------------
-# Create a distribution ~ {3/5, 2/5}
-dist <- infer(c(0, 0, 1, 0, 1))
-dump(dist)
-
-# Create a distribution ~ {3/8, 3/8, 2/8}
-dist <- infer(c(0, 0, 1, 0, 1, 2, 2, 1))
-dump(dist)
+d <- infer(c(0, 0, 1, 0, 1))
+dump(d)
 
 ## ------------------------------------------------------------------------
-# Approximate a distribution with tolerance 1e-3
+d <- infer(c(0, 0, 1, 0, 1, 2, 2, 1))
+dump(d)
+
+## ------------------------------------------------------------------------
 probs <- c(0.5, 0.2, 0.3)
-dist <- approximate(probs, 1e-3)
-dist$histogram
+d     <- approximate(probs, 1e-3)
+d$histogram
 
-probs <- c(1./3, 2./3)
-dist <- approximate(probs, 1e-3)
-dist$histogram
+probs <- c(1.0 / 3, 2.0 / 3)
+d     <- approximate(probs, 1e-3)
+d$histogram
 
 ## ------------------------------------------------------------------------
-# Uniform distribution of size 3
-dist <- uniform(3)
-dist
+d <- uniform(3)
+d
 
-dump(dist)
+dump(d)
 
 ## ------------------------------------------------------------------------
 # NULL distribution
@@ -151,6 +144,22 @@ dump(dist)
 # Modify and dump again
 dist <- set_item(dist, 1, 12)
 dump(dist)
+
+## ------------------------------------------------------------------------
+p <- Dist(c(1, 1, 1, 1))
+shannon_entropy(p)
+shannon_entropy(p, b = 4)
+
+## ------------------------------------------------------------------------
+p <- Dist(c(2, 1))
+shannon_entropy(p)
+shannon_entropy(p, b = 3)
+
+## ------------------------------------------------------------------------
+xy <- Dist(c(10, 70, 15, 5))
+x  <- Dist(c(80, 20))
+y  <- Dist(c(25, 75))
+shannon_mutual_info(xy, x, y) #0.214170945007629
 
 ## ------------------------------------------------------------------------
 # One initial condition:
