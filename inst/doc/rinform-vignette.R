@@ -171,6 +171,13 @@ shannon_conditional_entropy(xy, x)
 shannon_conditional_entropy(xy, y)
 
 ## ------------------------------------------------------------------------
+xyz <- Dist(c(24, 24, 9, 6, 25, 15, 10, 5))
+xz  <- Dist(c(15, 9, 5, 10))
+yz  <- Dist(c(9, 15, 10, 15))
+z   <- Dist(c(3, 5))
+shannon_cond_mutual_info(xyz, xz, yz, z)
+
+## ------------------------------------------------------------------------
 # One initial condition:
 series <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
 active_info(series, k = 2)

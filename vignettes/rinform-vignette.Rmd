@@ -607,8 +607,7 @@ y  <- Dist(c(25, 75))
 shannon_mutual_info(xy, x, y)
 ```
 
-## Conditional Entropy
-
+## Conditional Entropy {#ConditionalEntropy}
 
 [Conditional entropy](https://en.wikipedia.org/wiki/Conditional_entropy) quantifies
 the amount of information required to describe a random variable $X$ given knowledge
@@ -644,7 +643,43 @@ shannon_conditional_entropy(xy, x)
 shannon_conditional_entropy(xy, y)
 ```
 
-## Conditional Mutual Information
+## Conditional Mutual Information {#ConditionalMutualInformation}
+
+
+[Conditional mutual information](https://en.wikipedia.org/wiki/Conditional_mutual_information)
+was introduced by [[@Dobrushin1959]](#References) and [[@Wyner1978]](#References)
+and approximately quantifies the average mutual information between random
+variables $X$ and $Y$ given knowledge of a third $Z$. Following the same notation
+as for the [conditional entropy](#ConditionalEntropy), the base-$b$ conditional mutual
+information is defined as
+$$
+\begin{split}
+I(X;Y|Z) &= -\sum_{x,y,z} p_{X,Y,Z}(x,y,z) \log_b
+\frac{p_{X,Y|Z}(x,y|z)}{p_{X|Z}(x|z)p_{Y|Z}(y|z)} \\
+         &= -\sum_{x,y,z} p_{X,Y,Z}(x,y,z) \log_b \frac{p_{X,Y,Z}(x,y,z)p_{Z}(z)}{p_{X,Z}(x,z)p_{Y,Z}(y,z)} \\
+         &= H(X,Z) + H(Y,Z) - H(Z) - H(X,Y,Z)
+\end{split}
+$$
+
+__Interface:__
+
+Compute the base-`b` conditional mutual information given the joint
+(`p_xyz`) and marginal (`p_xz`, `p_yz`, `p_z`) distributions.
+```r
+shannon_cond_mutual_info(p_xyz, p_xz, p_yz, p_z, b = 2)
+```
+
+__Examples:__
+
+Compute the base-2 conditional mutual information between two random variables
+given a third:
+```{r}
+xyz <- Dist(c(24, 24, 9, 6, 25, 15, 10, 5))
+xz  <- Dist(c(15, 9, 5, 10))
+yz  <- Dist(c(9, 15, 10, 15))
+z   <- Dist(c(3, 5))
+shannon_cond_mutual_info(xyz, xz, yz, z)
+```
 
 ## Relative Entropy
 

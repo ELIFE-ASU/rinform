@@ -92,6 +92,12 @@
   }
 }
 
+.check_distribution <- function (d) {
+  if (!valid(d)) {
+    stop("<", deparse(substitute(d)), "> is not a valid distribution!", call. = !T)
+  }
+}
+
 .check_is_not_corrupted <- function(d, only_warning = !T) {
   rval <- T
   
