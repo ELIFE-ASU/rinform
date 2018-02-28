@@ -4,4 +4,4 @@ yz  <- Dist(c(9, 15, 10, 15))
 z   <- Dist(c(3, 5))
 shannon_cond_mutual_info(xyz, xz, yz, z)           # 0.1259494
 shannon_cond_mutual_info(xyz, xz, yz, z, b = 3)    # 0.0794652
-shannon_cond_mutual_info(xyz, xz, yz, z, b = -1)   # NaN
+shannon_cond_mutual_info(xyz, xz, yz, z, b = -1)   # Error

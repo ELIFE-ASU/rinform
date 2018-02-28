@@ -190,7 +190,7 @@ shannon_cond_mutual_info <- function(p_xyz, p_xz, p_yz, p_z, b = 2.0) {
 #' @param q Dist specifying the prior distribution.
 #' @param b Numeric giving the base of the logarithm.
 #'
-#' @return Numeric giving the Shannon realtive entropy.
+#' @return Numeric giving the Shannon relative entropy.
 #'
 #' @example inst/examples/ex_shannon_relative_entropy.R
 #'
@@ -202,13 +202,9 @@ shannon_relative_entropy <- function(p, q, b = 2.0) {
   sre <- 0
   err <- 0
 
-  if (!valid(p)) {
-    stop("<p> is not a valid distribution")
-  }
-
-  if (!valid(q)) {
-    stop("<q> is not a valid distribution")
-  }
+  .check_distribution(p)
+  .check_distribution(q)
+  .check_base(b)
 
   x <- .C("r_shannon_relative_entropy_",
           histogram_p = p$histogram,
@@ -219,8 +215,9 @@ shannon_relative_entropy <- function(p, q, b = 2.0) {
 	  sre         = as.double(sre),
           err         = as.integer(err))
 	  
-  if (err) stop("inform lib memory allocation error")		  
-  sre <- x$sre
+  if (.check_inform_error(x$err) == 0) {
+    sre <- x$sre
+  }
 
   sre
 }

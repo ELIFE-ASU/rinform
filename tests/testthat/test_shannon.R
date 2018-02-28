@@ -196,3 +196,49 @@ test_that("shannon_cond_mutual_info checks parameters and functionality", {
   expect_equal(shannon_cond_mutual_info(xy, x, y, b = 3.0), 0.135127, tolerance = 1e-6)
   expect_equal(shannon_cond_mutual_info(xy, x, y, b = 4.0), 0.107086, tolerance = 1e-6)
 })
+
+test_that("shannon_relative_entropy checks parameters and functionality", {
+  p <- Dist(c(2, 3)); q <- Dist(c(5, 3))
+  expect_error(shannon_relative_entropy(Dist("1"),             q, b = 2))
+  expect_error(shannon_relative_entropy(Dist(NULL),            q, b = 2))
+  expect_error(shannon_relative_entropy(Dist(NA),              q, b = 2))
+  expect_error(shannon_relative_entropy(Dist(matrix(1, 2, 2)), q, b = 2))
+  expect_error(shannon_relative_entropy(Dist(0),               q, b = 2))
+  expect_error(shannon_relative_entropy(Dist(-1),              q, b = 2))
+
+  expect_error(shannon_relative_entropy(p, Dist("1"),             b = 2))
+  expect_error(shannon_relative_entropy(p, Dist(NULL),            b = 2))
+  expect_error(shannon_relative_entropy(p, Dist(NA),              b = 2))
+  expect_error(shannon_relative_entropy(p, Dist(matrix(1, 2, 2)), b = 2))
+  expect_error(shannon_relative_entropy(p, Dist(0),               b = 2))
+  expect_error(shannon_relative_entropy(p, Dist(-1),              b = 2))
+
+  expect_error(shannon_relative_entropy(p, q, b = "b"))
+  expect_error(shannon_relative_entropy(p, q, b = NULL))
+  expect_error(shannon_relative_entropy(p, q, b = NA))
+  expect_error(shannon_relative_entropy(p, q, b = -1))
+
+  p  <- Dist(round(runif(10) * 100))
+  expect_equal(shannon_relative_entropy(p, p, b = 0.0), 0.000000, tolerance = 1e-6)
+  expect_equal(shannon_relative_entropy(p, p, b = 0.5), 0.000000, tolerance = 1e-6)
+  expect_equal(shannon_relative_entropy(p, p, b = 1.5), 0.000000, tolerance = 1e-6)
+  expect_equal(shannon_relative_entropy(p, p, b = 2.0), 0.000000, tolerance = 1e-6)
+  expect_equal(shannon_relative_entropy(p, p, b = 3.0), 0.000000, tolerance = 1e-6)
+  expect_equal(shannon_relative_entropy(p, p, b = 4.0), 0.000000, tolerance = 1e-6)
+
+  p <- Dist(c(1, 0, 0)); q <- Dist(c(1, 1, 1))
+  for (b in seq(0, 4, 0.5)) {
+    expect_equal(shannon_relative_entropy(p, q, b), log2(3) / log2(b), tolerance = 1e-6)
+  }
+
+  p <- Dist(c(1, 1, 0))
+  for (b in seq(0, 4, 0.5)) {
+    expect_equal(shannon_relative_entropy(p, q, b), log2(3/2) / log2(b), tolerance = 1e-6)
+  }
+
+  p <- Dist(c(2, 2, 1))
+  for (b in seq(0, 4, 0.5)) {
+    expect_equal(shannon_relative_entropy(p, q, b),
+                 (4 * log2(6 / 5) + log2(3 / 5)) / (5 * log2(b)), tolerance = 1e-6)
+  }
+})

@@ -178,6 +178,17 @@ z   <- Dist(c(3, 5))
 shannon_cond_mutual_info(xyz, xz, yz, z)
 
 ## ------------------------------------------------------------------------
+p <- Dist(c(4, 1))
+q <- Dist(c(1, 1))
+shannon_relative_entropy(p, q)
+shannon_relative_entropy(q, p)
+     
+p <- Dist(c(1, 0))
+q <- Dist(c(1, 1))
+shannon_relative_entropy(p, q)
+shannon_relative_entropy(q, p)
+
+## ------------------------------------------------------------------------
 # One initial condition:
 series <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
 active_info(series, k = 2)
