@@ -7,7 +7,7 @@ void r_shannon_entropy_(int *histogram, int *size, double *b,
   dist = inform_dist_create((const uint32_t *) histogram, *size);
   
   if (dist != NULL) {
-    *sen = inform_shannon(dist, *b);
+    *sen = inform_shannon_entropy(dist, *b);
     inform_dist_free(dist);      
   } else {
     *err = 1;
@@ -92,6 +92,25 @@ void r_shannon_relative_entropy_(int *histogram_p, int *size_p,
   
   if (p != NULL && p != NULL) {
       *sre = inform_shannon_re(p, q, *b);
+    inform_dist_free(p);      
+    inform_dist_free(q);      
+  } else {
+    *err = 1;
+    if (p != NULL)   inform_dist_free(p);
+    if (q != NULL)   inform_dist_free(q);
+  }
+}
+
+void r_shannon_cross_entropy_(int *histogram_p, int *size_p,
+				 int *histogram_q, int *size_q,
+				 double *b, double *sce, int *err) {
+  inform_dist *p, *q;
+    
+  p = inform_dist_create((const uint32_t *) histogram_p, *size_p);
+  q = inform_dist_create((const uint32_t *) histogram_q, *size_q);
+  
+  if (p != NULL && p != NULL) {
+      *sce = inform_shannon_cross(p, q, *b);
     inform_dist_free(p);      
     inform_dist_free(q);      
   } else {

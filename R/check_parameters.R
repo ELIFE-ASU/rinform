@@ -38,8 +38,10 @@
   if (length(x) < 1) {
     stop("<", deparse(substitute(x)), "> is of length zero!", call. = !T)
   }  
+  if (x < 0) {
+    stop("<", deparse(substitute(x)), "> must be non-negative!", call. = !T)
+  }  
 }
-
 
 .check_probability_vector <- function (p) {
   if (!is.numeric(p)) {
@@ -87,6 +89,12 @@
 .check_local <- function (local) {
   if (!is.logical(local)) {
     stop("<", deparse(substitute(local)), "> is not logical!", call. = !T)
+  }
+}
+
+.check_distribution <- function (d) {
+  if (!valid(d)) {
+    stop("<", deparse(substitute(d)), "> is not a valid distribution!", call. = !T)
   }
 }
 

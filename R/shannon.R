@@ -26,9 +26,8 @@ shannon_entropy <- function(p, b = 2.0) {
   sen <- 0
   err <- 0
 
-  if (!valid(p)) {
-    stop("<p> is not a valid distribution")
-  }
+  .check_distribution(p)
+  .check_base(b)
 
   x <- .C("r_shannon_entropy_",
           histogram = p$histogram,
@@ -36,9 +35,10 @@ shannon_entropy <- function(p, b = 2.0) {
 	  b         = as.double(b),
 	  sen       = as.double(sen),
           err       = as.integer(err))
-	  
-  if (err) stop("inform lib memory allocation error")		  
-  sen <- x$sen
+
+  if (.check_inform_error(x$err) == 0) {
+    sen <- x$sen
+  }
 
   sen
 }
@@ -65,17 +65,10 @@ shannon_mutual_info <- function(p_xy, p_x, p_y, b = 2.0) {
   smi <- 0
   err <- 0
 
-  if (!valid(p_xy)) {
-    stop("<p_xy> is not a valid distribution")
-  }
-
-  if (!valid(p_y)) {
-    stop("<p_y> is not a valid distribution")
-  }
-
-  if (!valid(p_y)) {
-    stop("<p_y> is not a valid distribution")
-  }
+  .check_distribution(p_xy)
+  .check_distribution(p_x)
+  .check_distribution(p_y)
+  .check_base(b)
 
   x <- .C("r_shannon_mutual_info_",
           histogram_xy = p_xy$histogram,
@@ -87,9 +80,10 @@ shannon_mutual_info <- function(p_xy, p_x, p_y, b = 2.0) {
 	  b            = as.double(b),
 	  smi          = as.double(smi),
           err          = as.integer(err))
-	  
-  if (err) stop("inform lib memory allocation error")		  
-  smi <- x$smi
+
+  if (.check_inform_error(x$err) == 0) {
+    smi <- x$smi
+  }
 
   smi
 }
@@ -116,13 +110,9 @@ shannon_conditional_entropy <- function(p_xy, p_y, b = 2.0) {
   sce <- 0
   err <- 0
 
-  if (!valid(p_xy)) {
-    stop("<p_xy> is not a valid distribution")
-  }
-
-  if (!valid(p_y)) {
-    stop("<p_y> is not a valid distribution")
-  }
+  .check_distribution(p_xy)
+  .check_distribution(p_y)
+  .check_base(b)
 
   x <- .C("r_shannon_conditional_entropy_",
           histogram_xy = p_xy$histogram,
@@ -132,9 +122,10 @@ shannon_conditional_entropy <- function(p_xy, p_y, b = 2.0) {
 	  b            = as.double(b),
 	  sce          = as.double(sce),
           err          = as.integer(err))
-	  
-  if (err) stop("inform lib memory allocation error")		  
-  sce <- x$sce
+
+  if (.check_inform_error(x$err) == 0) {
+    sce <- x$sce
+  }
 
   sce
 }
@@ -142,7 +133,7 @@ shannon_conditional_entropy <- function(p_xy, p_y, b = 2.0) {
 ################################################################################
 #' Shannon Conditional Mutual Information
 #'
-#' Compute the base-\code{b} conditional mutual information the given joint
+#' Compute the base-\code{b} conditional mutual information given joint
 #' \code{p_xyz} and marginal \code{p_xz}, \code{p_yz}, \code{p_z} distributions.
 #'
 #' @param p_xyx Dist specifying the joint distribution.
@@ -163,21 +154,11 @@ shannon_cond_mutual_info <- function(p_xyz, p_xz, p_yz, p_z, b = 2.0) {
   scmi <- 0
   err  <- 0
 
-  if (!valid(p_xyz)) {
-    stop("<p_xyz> is not a valid distribution")
-  }
-
-  if (!valid(p_xz)) {
-    stop("<p_xz> is not a valid distribution")
-  }
-
-  if (!valid(p_yz)) {
-    stop("<p_yz> is not a valid distribution")
-  }
-
-  if (!valid(p_z)) {
-    stop("<p_z> is not a valid distribution")
-  }
+  .check_distribution(p_xyz)
+  .check_distribution(p_xz)
+  .check_distribution(p_yz)
+  .check_distribution(p_z)
+  .check_base(b)
 
   x <- .C("r_shannon_cond_mutual_info_",
           histogram_xyz = p_xyz$histogram,
@@ -191,9 +172,10 @@ shannon_cond_mutual_info <- function(p_xyz, p_xz, p_yz, p_z, b = 2.0) {
 	  b             = as.double(b),
 	  scmi          = as.double(scmi),
           err           = as.integer(err))
-	  
-  if (err) stop("inform lib memory allocation error")		  
-  scmi <- x$scmi
+
+  if (.check_inform_error(x$err) == 0) {
+    scmi <- x$scmi
+  }
 
   scmi
 }
@@ -208,7 +190,7 @@ shannon_cond_mutual_info <- function(p_xyz, p_xz, p_yz, p_z, b = 2.0) {
 #' @param q Dist specifying the prior distribution.
 #' @param b Numeric giving the base of the logarithm.
 #'
-#' @return Numeric giving the Shannon realtive entropy.
+#' @return Numeric giving the Shannon relative entropy.
 #'
 #' @example inst/examples/ex_shannon_relative_entropy.R
 #'
@@ -220,13 +202,9 @@ shannon_relative_entropy <- function(p, q, b = 2.0) {
   sre <- 0
   err <- 0
 
-  if (!valid(p)) {
-    stop("<p> is not a valid distribution")
-  }
-
-  if (!valid(q)) {
-    stop("<q> is not a valid distribution")
-  }
+  .check_distribution(p)
+  .check_distribution(q)
+  .check_base(b)
 
   x <- .C("r_shannon_relative_entropy_",
           histogram_p = p$histogram,
@@ -237,8 +215,51 @@ shannon_relative_entropy <- function(p, q, b = 2.0) {
 	  sre         = as.double(sre),
           err         = as.integer(err))
 	  
-  if (err) stop("inform lib memory allocation error")		  
-  sre <- x$sre
+  if (.check_inform_error(x$err) == 0) {
+    sre <- x$sre
+  }
 
   sre
+}
+
+################################################################################
+#' Shannon Cross Entropy
+#'
+#' Compute the base-\code{b} Shannon cross entropy between a true distribution
+#' \code{p} and an unnatural distribution \code{q}.
+#'
+#' @param p Dist specifying the true distribution.
+#' @param q Dist specifying the unnatural distribution.
+#' @param b Numeric giving the base of the logarithm.
+#'
+#' @return Numeric giving the Shannon cross entropy.
+#'
+#' @example inst/examples/ex_shannon_cross_entropy.R
+#'
+#' @export
+#'
+#' @useDynLib rinform r_shannon_cross_entropy_
+################################################################################
+shannon_cross_entropy <- function(p, q, b = 2.0) {
+  sce <- 0
+  err <- 0
+
+  .check_distribution(p)
+  .check_distribution(q)
+  .check_base(b)
+
+  x <- .C("r_shannon_cross_entropy_",
+          histogram_p = p$histogram,
+	  size_p      = p$size,
+          histogram_q = q$histogram,
+	  size_q      = q$size,
+	  b           = as.double(b),
+	  sce         = as.double(sce),
+          err         = as.integer(err))
+	  
+  if (.check_inform_error(x$err) == 0) {
+    sce <- x$sce
+  }
+
+  sce
 }
