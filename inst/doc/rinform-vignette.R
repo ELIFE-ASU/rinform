@@ -189,6 +189,14 @@ shannon_relative_entropy(p, q)
 shannon_relative_entropy(q, p)
 
 ## ------------------------------------------------------------------------
+p <- Dist(c(1, 0, 0))
+q <- Dist(c(2, 1, 1))
+shannon_cross_entropy(p, q)
+shannon_cross_entropy(q, p)
+shannon_cross_entropy(p, q, b = 3)
+shannon_cross_entropy(q, p, b = 3)
+
+## ------------------------------------------------------------------------
 # One initial condition:
 series <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
 active_info(series, k = 2)

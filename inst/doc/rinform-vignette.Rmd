@@ -721,9 +721,38 @@ shannon_relative_entropy(q, p)
 
 ## Cross Entropy
 
+The [cross entropy](https://en.wikipedia.org/wiki/Cross_entropy) between
+two probability distributions $p$ and $q$ over the same support measures the
+average information needed to identify an event drawn from the set using a
+coding optimized for an "unnatural" probability distribution
+$q$, rather than the "true" distribution $p$. The cross entropy for the
+distributions $p$ and $q$ is defined as:
+$$
+\begin{split}
+H(p_{X}, q_{X}) &= -\sum_{x} p_{X}(x) \log_b q_{X}(x) \\
+        &= H(p_{X}) - D_{KL}(p_X || q_X).
+\end{split}
+$$  
+
 __Interface:__
 
+Compute the base-‘b’ Shannon cross entropy between a true distribution ‘p’ and
+an unnatural distribution ‘q’.
+```r
+shannon_cross_entropy(p, q, b = 2)
+```
+
 __Examples:__
+
+Compute the base-2 cross entropy between two distributions:
+```{r}
+p <- Dist(c(1, 0, 0))
+q <- Dist(c(2, 1, 1))
+shannon_cross_entropy(p, q)
+shannon_cross_entropy(q, p)
+shannon_cross_entropy(p, q, b = 3)
+shannon_cross_entropy(q, p, b = 3)
+```
 
 # Time Series Measures
 

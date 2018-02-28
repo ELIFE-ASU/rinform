@@ -221,3 +221,45 @@ shannon_relative_entropy <- function(p, q, b = 2.0) {
 
   sre
 }
+
+################################################################################
+#' Shannon Cross Entropy
+#'
+#' Compute the base-\code{b} Shannon cross entropy between a true distribution
+#' \code{p} and an unnatural distribution \code{q}.
+#'
+#' @param p Dist specifying the true distribution.
+#' @param q Dist specifying the unnatural distribution.
+#' @param b Numeric giving the base of the logarithm.
+#'
+#' @return Numeric giving the Shannon cross entropy.
+#'
+#' @example inst/examples/ex_shannon_cross_entropy.R
+#'
+#' @export
+#'
+#' @useDynLib rinform r_shannon_cross_entropy_
+################################################################################
+shannon_cross_entropy <- function(p, q, b = 2.0) {
+  sce <- 0
+  err <- 0
+
+  .check_distribution(p)
+  .check_distribution(q)
+  .check_base(b)
+
+  x <- .C("r_shannon_cross_entropy_",
+          histogram_p = p$histogram,
+	  size_p      = p$size,
+          histogram_q = q$histogram,
+	  size_q      = q$size,
+	  b           = as.double(b),
+	  sce         = as.double(sce),
+          err         = as.integer(err))
+	  
+  if (.check_inform_error(x$err) == 0) {
+    sce <- x$sce
+  }
+
+  sce
+}
