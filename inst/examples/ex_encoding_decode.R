@@ -12,6 +12,3 @@ decode(3, b = 2) # [1, 1]
 decode(3, b = 3) # [1, 0]
 decode(3, b = 4) # [3]
 
-# If n is too small to contain a full representation of the state,
-# an error will be raised.
-decode(6, b = 2, n = 2)
