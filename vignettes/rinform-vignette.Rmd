@@ -1409,21 +1409,21 @@ t(te)
 
 # Utilities
 
-+--------------------+----------------------------------------------------------+
-| Type               | Functions                                                |
-+====================+==========================================================+
-| Binning            |[`series_range`](#SeriesRange), [`bin_series`](#BinSeries)|
-+--------------------+----------------------------------------------------------+
-| Black-Boxing       |  |
-+--------------------+---------------------------------------------------------------+
-| Coalescing         | [`coalesce`](#Coalesce) |
-+--------------------+----------------------------------------------------------+
-| State Encoding     | [`encode`](#Encode), [`decode`](#Decode) |
-+--------------------+----------------------------------------------------------+
-| Random Time Series |            |
-+--------------------+----------------------------------------------------------+
-| Time Series to TPM |            |
-+--------------------+----------------------------------------------------------+
++--------------------------+----------------------------------------------------------+
+| Type                     | Functions                                                |
++==========================+==========================================================+
+| Binning                  |[`series_range`](#SeriesRange), [`bin_series`](#BinSeries)|
++--------------------------+----------------------------------------------------------+
+| Black-Boxing             |  |
++--------------------------+----------------------------------------------------------+
+| Coalescing               | [`coalesce`](#Coalesce) |
++--------------------------+----------------------------------------------------------+
+| State Encoding           | [`encode`](#Encode), [`decode`](#Decode) |
++--------------------------+----------------------------------------------------------+
+| Partitioning Time Series |            |
++--------------------------+----------------------------------------------------------+
+| Time Series to TPM       | [`series_to_tpm`](#TimeSeriestToTPM) |
++--------------------------+----------------------------------------------------------+
 
 
 ## Binning Time Series
@@ -1456,15 +1456,13 @@ series_range(series)
 
 __Examples:__
 
+Find range, minimum, and maximum values of a continuous state time series:
 ```{r}
-# Valid time series
 xs <- c(0.2, 0.5, -3.2, 1.8, 0.6, 2.3)
 series_range(xs)
 ```
 
 ### Bin Series {#BinSeries}
-
-__Interface:__
 
 Bin a floating-point time series following one of three different modalities:
 
@@ -1472,16 +1470,16 @@ Bin a floating-point time series following one of three different modalities:
 bins, and return the size of the bins. If the size of each bin is too small, less than
 $10 \epsilon$, then all entries are placed in the same bin and an error is set.
 ($\epsilon$ is the double-precision machine epsilon.)
-
 * Bin a floating-point time series into bins of a specified size `step`, and return
 the number of bins. If the bin size is too small, less than $10 \epsilon$, then an error
 is set.
-
 * Bin a floating-point time series into bins defined by an array of `bounds`, and
 return the bounds of bins. 
 
-Return a list giving the binned sequence, the number of bins and either the
-bin sizes or bin bounds.
+__Interface:__
+
+Bin a floating-point time series and return a list giving the binned sequence,
+the number of bins and either the bin sizes or bin bounds.
      
 ```r
 bin_series(series, b = NA, step = NA, bounds = NA)
@@ -1489,16 +1487,20 @@ bin_series(series, b = NA, step = NA, bounds = NA)
 
 __Examples:__
 
+First method with `b` uniformely sized bins:
 ```{r}
-# First method: number of bins
 series <- c(1, 2, 3, 4, 5, 6)
 bin_series(series, b = 2)
+```
 
-# Second method: bin size
+Second method with speficied bin size `step`:
+```{r}
 bin_series(series, step = 2.0)
+```
 
-# Third method: bin bounds
-bin_series(series, bounds = c(3,7))
+Third method with specific bin `bounds`:
+```{r}
+bin_series(series, bounds = c(3, 7))
 ```
 
 ## Black-Boxing Time Series
@@ -1507,11 +1509,19 @@ bin_series(series, bounds = c(3,7))
 
 __Interface:__
 
+```r
+
+```
+
 __Examples:__
 
 ### Black-Box Parts {#BlackBoxParts}
 
 __Interface:__
+
+```r
+
+```
 
 __Examples:__
 
@@ -1549,6 +1559,7 @@ time series:
 ```{r}
 coalesce(c(0, 2, 0, 2, 0, 2))
 ```
+
 and to ensure that the states are non-negative:
 ```{r}
 coalesce(c(-8, 2, 6, -2, 4))
@@ -1627,11 +1638,8 @@ __Examples:__
 This function assumes a big-endian encoding scheme:
 ```{r}
 decode(2, b = 2, n = 2)
-# array([1, 0], dtype=int32)
 decode(6, b = 2, n = 3)
-#array([1, 1, 0], dtype=int32)
 decode(6, b = 3, n = 2)
-#array([2, 0], dtype=int32)
 ```
 
 If `n` is provided then the decoded state will have exactly that
@@ -1655,18 +1663,20 @@ decode(3, b = 4)
 
 __Interface:__
 
-__Examples:__
+```r
 
-## Random Time Series
-
-__Interface:__
+```
 
 __Examples:__
 
 ## Time Series to TPM {#TimeSeriestToTPM}
 
 __Interface:__
-series_to_tpm
+
+
+```r
+series_to_tpm(series)
+```
 
 __Examples:__
 

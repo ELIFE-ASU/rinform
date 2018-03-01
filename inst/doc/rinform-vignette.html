@@ -11,7 +11,7 @@
 
 <meta name="author" content="Gabriele Valentini" />
 
-<meta name="date" content="2018-02-27" />
+<meta name="date" content="2018-03-01" />
 
 <title>The rinform Package</title>
 
@@ -1534,7 +1534,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">The <em>rinform</em> Package</h1>
 <h4 class="author"><em>Gabriele Valentini</em></h4>
-<h4 class="date"><em>2018-02-27</em></h4>
+<h4 class="date"><em>2018-03-01</em></h4>
 
 </div>
 
@@ -2656,8 +2656,8 @@ T_{X \rightarrow Y, \mathcal{W}}
 <h1><span class="header-section-number">5</span> Utilities</h1>
 <table>
 <colgroup>
-<col style="width: 26%"></col>
-<col style="width: 73%"></col>
+<col style="width: 31%"></col>
+<col style="width: 68%"></col>
 </colgroup>
 <thead>
 <tr class="header">
@@ -2683,12 +2683,12 @@ T_{X \rightarrow Y, \mathcal{W}}
 <td><a href="#Encode"><code>encode</code></a>, <a href="#Decode"><code>decode</code></a></td>
 </tr>
 <tr class="odd">
-<td>Random Time Series</td>
+<td>Partitioning Time Series</td>
 <td></td>
 </tr>
 <tr class="even">
 <td>Time Series to TPM</td>
-<td></td>
+<td><a href="#TimeSeriestToTPM"><code>series_to_tpm</code></a></td>
 </tr>
 </tbody>
 </table>
@@ -2703,63 +2703,61 @@ T_{X \rightarrow Y, \mathcal{W}}
 <p>Compute the range, minimum and maximum values in a floating-point time series and return them as a list.</p>
 <pre class="sourceCode r" id="cb74"><code class="sourceCode r"><div class="sourceLine" id="cb74-1" data-line-number="1"><span class="kw">series_range</span>(series)</div></code></pre>
 <p><strong>Examples:</strong></p>
-<pre class="sourceCode r" id="cb75"><code class="sourceCode r"><div class="sourceLine" id="cb75-1" data-line-number="1"><span class="co"># Valid time series</span></div>
-<div class="sourceLine" id="cb75-2" data-line-number="2">xs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">-3.2</span>, <span class="fl">1.8</span>, <span class="fl">0.6</span>, <span class="fl">2.3</span>)</div>
-<div class="sourceLine" id="cb75-3" data-line-number="3"><span class="kw">series_range</span>(xs)</div>
-<div class="sourceLine" id="cb75-4" data-line-number="4"><span class="co">#&gt; $srange</span></div>
-<div class="sourceLine" id="cb75-5" data-line-number="5"><span class="co">#&gt; [1] 5.5</span></div>
-<div class="sourceLine" id="cb75-6" data-line-number="6"><span class="co">#&gt; </span></div>
-<div class="sourceLine" id="cb75-7" data-line-number="7"><span class="co">#&gt; $smin</span></div>
-<div class="sourceLine" id="cb75-8" data-line-number="8"><span class="co">#&gt; [1] -3.2</span></div>
-<div class="sourceLine" id="cb75-9" data-line-number="9"><span class="co">#&gt; </span></div>
-<div class="sourceLine" id="cb75-10" data-line-number="10"><span class="co">#&gt; $smax</span></div>
-<div class="sourceLine" id="cb75-11" data-line-number="11"><span class="co">#&gt; [1] 2.3</span></div></code></pre>
+<p>Find range, minimum, and maximum values of a continuous state time series:</p>
+<pre class="sourceCode r" id="cb75"><code class="sourceCode r"><div class="sourceLine" id="cb75-1" data-line-number="1">xs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">-3.2</span>, <span class="fl">1.8</span>, <span class="fl">0.6</span>, <span class="fl">2.3</span>)</div>
+<div class="sourceLine" id="cb75-2" data-line-number="2"><span class="kw">series_range</span>(xs)</div>
+<div class="sourceLine" id="cb75-3" data-line-number="3"><span class="co">#&gt; $srange</span></div>
+<div class="sourceLine" id="cb75-4" data-line-number="4"><span class="co">#&gt; [1] 5.5</span></div>
+<div class="sourceLine" id="cb75-5" data-line-number="5"><span class="co">#&gt; </span></div>
+<div class="sourceLine" id="cb75-6" data-line-number="6"><span class="co">#&gt; $smin</span></div>
+<div class="sourceLine" id="cb75-7" data-line-number="7"><span class="co">#&gt; [1] -3.2</span></div>
+<div class="sourceLine" id="cb75-8" data-line-number="8"><span class="co">#&gt; </span></div>
+<div class="sourceLine" id="cb75-9" data-line-number="9"><span class="co">#&gt; $smax</span></div>
+<div class="sourceLine" id="cb75-10" data-line-number="10"><span class="co">#&gt; [1] 2.3</span></div></code></pre>
 </section>
 <section id="BinSeries" class="level3">
 <h3><span class="header-section-number">5.1.2</span> Bin Series</h3>
-<p><strong>Interface:</strong></p>
 <p>Bin a floating-point time series following one of three different modalities:</p>
 <ul>
-<li><p>Bin a floating-point time series into a finite-state time series with <code>b</code> uniform sized bins, and return the size of the bins. If the size of each bin is too small, less than <span class="math inline">\(10 \epsilon\)</span>, then all entries are placed in the same bin and an error is set. (<span class="math inline">\(\epsilon\)</span> is the double-precision machine epsilon.)</p></li>
-<li><p>Bin a floating-point time series into bins of a specified size <code>step</code>, and return the number of bins. If the bin size is too small, less than <span class="math inline">\(10 \epsilon\)</span>, then an error is set.</p></li>
-<li><p>Bin a floating-point time series into bins defined by an array of <code>bounds</code>, and return the bounds of bins.</p></li>
+<li>Bin a floating-point time series into a finite-state time series with <code>b</code> uniform sized bins, and return the size of the bins. If the size of each bin is too small, less than <span class="math inline">\(10 \epsilon\)</span>, then all entries are placed in the same bin and an error is set. (<span class="math inline">\(\epsilon\)</span> is the double-precision machine epsilon.)</li>
+<li>Bin a floating-point time series into bins of a specified size <code>step</code>, and return the number of bins. If the bin size is too small, less than <span class="math inline">\(10 \epsilon\)</span>, then an error is set.</li>
+<li>Bin a floating-point time series into bins defined by an array of <code>bounds</code>, and return the bounds of bins.</li>
 </ul>
-<p>Return a list giving the binned sequence, the number of bins and either the bin sizes or bin bounds.</p>
+<p><strong>Interface:</strong></p>
+<p>Bin a floating-point time series and return a list giving the binned sequence, the number of bins and either the bin sizes or bin bounds.</p>
 <pre class="sourceCode r" id="cb76"><code class="sourceCode r"><div class="sourceLine" id="cb76-1" data-line-number="1"><span class="kw">bin_series</span>(series, <span class="dt">b =</span> <span class="ot">NA</span>, <span class="dt">step =</span> <span class="ot">NA</span>, <span class="dt">bounds =</span> <span class="ot">NA</span>)</div></code></pre>
 <p><strong>Examples:</strong></p>
-<pre class="sourceCode r" id="cb77"><code class="sourceCode r"><div class="sourceLine" id="cb77-1" data-line-number="1"><span class="co"># First method: number of bins</span></div>
-<div class="sourceLine" id="cb77-2" data-line-number="2">series &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>)</div>
-<div class="sourceLine" id="cb77-3" data-line-number="3"><span class="kw">bin_series</span>(series, <span class="dt">b =</span> <span class="dv">2</span>)</div>
-<div class="sourceLine" id="cb77-4" data-line-number="4"><span class="co">#&gt; $binned</span></div>
-<div class="sourceLine" id="cb77-5" data-line-number="5"><span class="co">#&gt; [1] 0 0 0 1 1 1</span></div>
-<div class="sourceLine" id="cb77-6" data-line-number="6"><span class="co">#&gt; </span></div>
-<div class="sourceLine" id="cb77-7" data-line-number="7"><span class="co">#&gt; $b</span></div>
-<div class="sourceLine" id="cb77-8" data-line-number="8"><span class="co">#&gt; [1] 2</span></div>
-<div class="sourceLine" id="cb77-9" data-line-number="9"><span class="co">#&gt; </span></div>
-<div class="sourceLine" id="cb77-10" data-line-number="10"><span class="co">#&gt; $spec</span></div>
-<div class="sourceLine" id="cb77-11" data-line-number="11"><span class="co">#&gt; [1] 2.5</span></div>
-<div class="sourceLine" id="cb77-12" data-line-number="12"></div>
-<div class="sourceLine" id="cb77-13" data-line-number="13"><span class="co"># Second method: bin size</span></div>
-<div class="sourceLine" id="cb77-14" data-line-number="14"><span class="kw">bin_series</span>(series, <span class="dt">step =</span> <span class="fl">2.0</span>)</div>
-<div class="sourceLine" id="cb77-15" data-line-number="15"><span class="co">#&gt; $binned</span></div>
-<div class="sourceLine" id="cb77-16" data-line-number="16"><span class="co">#&gt; [1] 0 0 1 1 2 2</span></div>
-<div class="sourceLine" id="cb77-17" data-line-number="17"><span class="co">#&gt; </span></div>
-<div class="sourceLine" id="cb77-18" data-line-number="18"><span class="co">#&gt; $b</span></div>
-<div class="sourceLine" id="cb77-19" data-line-number="19"><span class="co">#&gt; [1] 3</span></div>
-<div class="sourceLine" id="cb77-20" data-line-number="20"><span class="co">#&gt; </span></div>
-<div class="sourceLine" id="cb77-21" data-line-number="21"><span class="co">#&gt; $spec</span></div>
-<div class="sourceLine" id="cb77-22" data-line-number="22"><span class="co">#&gt; [1] 2</span></div>
-<div class="sourceLine" id="cb77-23" data-line-number="23"></div>
-<div class="sourceLine" id="cb77-24" data-line-number="24"><span class="co"># Third method: bin bounds</span></div>
-<div class="sourceLine" id="cb77-25" data-line-number="25"><span class="kw">bin_series</span>(series, <span class="dt">bounds =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">7</span>))</div>
-<div class="sourceLine" id="cb77-26" data-line-number="26"><span class="co">#&gt; $binned</span></div>
-<div class="sourceLine" id="cb77-27" data-line-number="27"><span class="co">#&gt; [1] 0 0 1 1 1 1</span></div>
-<div class="sourceLine" id="cb77-28" data-line-number="28"><span class="co">#&gt; </span></div>
-<div class="sourceLine" id="cb77-29" data-line-number="29"><span class="co">#&gt; $b</span></div>
-<div class="sourceLine" id="cb77-30" data-line-number="30"><span class="co">#&gt; [1] 2</span></div>
-<div class="sourceLine" id="cb77-31" data-line-number="31"><span class="co">#&gt; </span></div>
-<div class="sourceLine" id="cb77-32" data-line-number="32"><span class="co">#&gt; $spec</span></div>
-<div class="sourceLine" id="cb77-33" data-line-number="33"><span class="co">#&gt; [1] 3 7</span></div></code></pre>
+<p>First method with <code>b</code> uniformely sized bins:</p>
+<pre class="sourceCode r" id="cb77"><code class="sourceCode r"><div class="sourceLine" id="cb77-1" data-line-number="1">series &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>)</div>
+<div class="sourceLine" id="cb77-2" data-line-number="2"><span class="kw">bin_series</span>(series, <span class="dt">b =</span> <span class="dv">2</span>)</div>
+<div class="sourceLine" id="cb77-3" data-line-number="3"><span class="co">#&gt; $binned</span></div>
+<div class="sourceLine" id="cb77-4" data-line-number="4"><span class="co">#&gt; [1] 0 0 0 1 1 1</span></div>
+<div class="sourceLine" id="cb77-5" data-line-number="5"><span class="co">#&gt; </span></div>
+<div class="sourceLine" id="cb77-6" data-line-number="6"><span class="co">#&gt; $b</span></div>
+<div class="sourceLine" id="cb77-7" data-line-number="7"><span class="co">#&gt; [1] 2</span></div>
+<div class="sourceLine" id="cb77-8" data-line-number="8"><span class="co">#&gt; </span></div>
+<div class="sourceLine" id="cb77-9" data-line-number="9"><span class="co">#&gt; $spec</span></div>
+<div class="sourceLine" id="cb77-10" data-line-number="10"><span class="co">#&gt; [1] 2.5</span></div></code></pre>
+<p>Second method with speficied bin size <code>step</code>:</p>
+<pre class="sourceCode r" id="cb78"><code class="sourceCode r"><div class="sourceLine" id="cb78-1" data-line-number="1"><span class="kw">bin_series</span>(series, <span class="dt">step =</span> <span class="fl">2.0</span>)</div>
+<div class="sourceLine" id="cb78-2" data-line-number="2"><span class="co">#&gt; $binned</span></div>
+<div class="sourceLine" id="cb78-3" data-line-number="3"><span class="co">#&gt; [1] 0 0 1 1 2 2</span></div>
+<div class="sourceLine" id="cb78-4" data-line-number="4"><span class="co">#&gt; </span></div>
+<div class="sourceLine" id="cb78-5" data-line-number="5"><span class="co">#&gt; $b</span></div>
+<div class="sourceLine" id="cb78-6" data-line-number="6"><span class="co">#&gt; [1] 3</span></div>
+<div class="sourceLine" id="cb78-7" data-line-number="7"><span class="co">#&gt; </span></div>
+<div class="sourceLine" id="cb78-8" data-line-number="8"><span class="co">#&gt; $spec</span></div>
+<div class="sourceLine" id="cb78-9" data-line-number="9"><span class="co">#&gt; [1] 2</span></div></code></pre>
+<p>Third method with specific bin <code>bounds</code>:</p>
+<pre class="sourceCode r" id="cb79"><code class="sourceCode r"><div class="sourceLine" id="cb79-1" data-line-number="1"><span class="kw">bin_series</span>(series, <span class="dt">bounds =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">7</span>))</div>
+<div class="sourceLine" id="cb79-2" data-line-number="2"><span class="co">#&gt; $binned</span></div>
+<div class="sourceLine" id="cb79-3" data-line-number="3"><span class="co">#&gt; [1] 0 0 1 1 1 1</span></div>
+<div class="sourceLine" id="cb79-4" data-line-number="4"><span class="co">#&gt; </span></div>
+<div class="sourceLine" id="cb79-5" data-line-number="5"><span class="co">#&gt; $b</span></div>
+<div class="sourceLine" id="cb79-6" data-line-number="6"><span class="co">#&gt; [1] 2</span></div>
+<div class="sourceLine" id="cb79-7" data-line-number="7"><span class="co">#&gt; </span></div>
+<div class="sourceLine" id="cb79-8" data-line-number="8"><span class="co">#&gt; $spec</span></div>
+<div class="sourceLine" id="cb79-9" data-line-number="9"><span class="co">#&gt; [1] 3 7</span></div></code></pre>
 </section>
 </section>
 <section id="black-boxing-time-series" class="level2">
@@ -2767,11 +2765,13 @@ T_{X \rightarrow Y, \mathcal{W}}
 <section id="BlackBox" class="level3">
 <h3><span class="header-section-number">5.2.1</span> Black-Box</h3>
 <p><strong>Interface:</strong></p>
+<pre class="sourceCode r" id="cb80"><code class="sourceCode r"></code></pre>
 <p><strong>Examples:</strong></p>
 </section>
 <section id="BlackBoxParts" class="level3">
 <h3><span class="header-section-number">5.2.2</span> Black-Box Parts</h3>
 <p><strong>Interface:</strong></p>
+<pre class="sourceCode r" id="cb81"><code class="sourceCode r"></code></pre>
 <p><strong>Examples:</strong></p>
 </section>
 </section>
@@ -2784,22 +2784,22 @@ T_{X \rightarrow Y, \mathcal{W}}
 \]</span>.</p>
 <p><strong>Interface:</strong></p>
 <p>Coalesce a timeseries into as few contiguous states as possible.</p>
-<pre class="sourceCode r" id="cb78"><code class="sourceCode r"><div class="sourceLine" id="cb78-1" data-line-number="1"><span class="kw">coalesce</span>(series)</div></code></pre>
+<pre class="sourceCode r" id="cb82"><code class="sourceCode r"><div class="sourceLine" id="cb82-1" data-line-number="1"><span class="kw">coalesce</span>(series)</div></code></pre>
 <p><strong>Examples:</strong></p>
 <p>The two standard usage cases for this function are to reduce the base of a time series:</p>
-<pre class="sourceCode r" id="cb79"><code class="sourceCode r"><div class="sourceLine" id="cb79-1" data-line-number="1"><span class="kw">coalesce</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">2</span>))</div>
-<div class="sourceLine" id="cb79-2" data-line-number="2"><span class="co">#&gt; $series</span></div>
-<div class="sourceLine" id="cb79-3" data-line-number="3"><span class="co">#&gt; [1] 0 1 0 1 0 1</span></div>
-<div class="sourceLine" id="cb79-4" data-line-number="4"><span class="co">#&gt; </span></div>
-<div class="sourceLine" id="cb79-5" data-line-number="5"><span class="co">#&gt; $b</span></div>
-<div class="sourceLine" id="cb79-6" data-line-number="6"><span class="co">#&gt; [1] 2</span></div></code></pre>
+<pre class="sourceCode r" id="cb83"><code class="sourceCode r"><div class="sourceLine" id="cb83-1" data-line-number="1"><span class="kw">coalesce</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">2</span>))</div>
+<div class="sourceLine" id="cb83-2" data-line-number="2"><span class="co">#&gt; $series</span></div>
+<div class="sourceLine" id="cb83-3" data-line-number="3"><span class="co">#&gt; [1] 0 1 0 1 0 1</span></div>
+<div class="sourceLine" id="cb83-4" data-line-number="4"><span class="co">#&gt; </span></div>
+<div class="sourceLine" id="cb83-5" data-line-number="5"><span class="co">#&gt; $b</span></div>
+<div class="sourceLine" id="cb83-6" data-line-number="6"><span class="co">#&gt; [1] 2</span></div></code></pre>
 <p>and to ensure that the states are non-negative:</p>
-<pre class="sourceCode r" id="cb80"><code class="sourceCode r"><div class="sourceLine" id="cb80-1" data-line-number="1"><span class="kw">coalesce</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">8</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">-2</span>, <span class="dv">4</span>))</div>
-<div class="sourceLine" id="cb80-2" data-line-number="2"><span class="co">#&gt; $series</span></div>
-<div class="sourceLine" id="cb80-3" data-line-number="3"><span class="co">#&gt; [1] 0 2 4 1 3</span></div>
-<div class="sourceLine" id="cb80-4" data-line-number="4"><span class="co">#&gt; </span></div>
-<div class="sourceLine" id="cb80-5" data-line-number="5"><span class="co">#&gt; $b</span></div>
-<div class="sourceLine" id="cb80-6" data-line-number="6"><span class="co">#&gt; [1] 5</span></div></code></pre>
+<pre class="sourceCode r" id="cb84"><code class="sourceCode r"><div class="sourceLine" id="cb84-1" data-line-number="1"><span class="kw">coalesce</span>(<span class="kw">c</span>(<span class="op">-</span><span class="dv">8</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">-2</span>, <span class="dv">4</span>))</div>
+<div class="sourceLine" id="cb84-2" data-line-number="2"><span class="co">#&gt; $series</span></div>
+<div class="sourceLine" id="cb84-3" data-line-number="3"><span class="co">#&gt; [1] 0 2 4 1 3</span></div>
+<div class="sourceLine" id="cb84-4" data-line-number="4"><span class="co">#&gt; </span></div>
+<div class="sourceLine" id="cb84-5" data-line-number="5"><span class="co">#&gt; $b</span></div>
+<div class="sourceLine" id="cb84-6" data-line-number="6"><span class="co">#&gt; [1] 5</span></div></code></pre>
 </section>
 <section id="state-encoding" class="level2">
 <h2><span class="header-section-number">5.4</span> State Encoding</h2>
@@ -2813,71 +2813,65 @@ T_{X \rightarrow Y, \mathcal{W}}
 <p>This function uses a <a href="https://en.wikipedia.org/wiki/Endianness#Examples">big-endian</a> encoding scheme. That is, the most significant bits of the encoded integer are determined by the left-most end of the unencoded state. If <code>b</code> is not provided (or is <code>NA</code>), the base is inferred from the state with a minimum value of 2.</p>
 <p><strong>Interface:</strong></p>
 <p>Encode a base-‘b’ array of integers into a single integer.</p>
-<pre class="sourceCode r" id="cb81"><code class="sourceCode r"><div class="sourceLine" id="cb81-1" data-line-number="1"><span class="kw">encode</span>(state, <span class="dt">b =</span> <span class="ot">NA</span>)</div></code></pre>
+<pre class="sourceCode r" id="cb85"><code class="sourceCode r"><div class="sourceLine" id="cb85-1" data-line-number="1"><span class="kw">encode</span>(state, <span class="dt">b =</span> <span class="ot">NA</span>)</div></code></pre>
 <p><strong>Examples:</strong></p>
 <p>Using the big-endian encoding scheme, the most significant bits of the encoded integer are determined by the left-most end of the unencoded state:</p>
-<pre class="sourceCode r" id="cb82"><code class="sourceCode r"><div class="sourceLine" id="cb82-1" data-line-number="1"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">b =</span> <span class="dv">2</span>)</div>
-<div class="sourceLine" id="cb82-2" data-line-number="2"><span class="co">#&gt; [1] 1</span></div>
-<div class="sourceLine" id="cb82-3" data-line-number="3"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>), <span class="dt">b =</span> <span class="dv">3</span>)</div>
-<div class="sourceLine" id="cb82-4" data-line-number="4"><span class="co">#&gt; [1] 3</span></div>
-<div class="sourceLine" id="cb82-5" data-line-number="5"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="dt">b =</span> <span class="dv">4</span>)</div>
-<div class="sourceLine" id="cb82-6" data-line-number="6"><span class="co">#&gt; [1] 16</span></div>
-<div class="sourceLine" id="cb82-7" data-line-number="7"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">4</span>), <span class="dt">b =</span> <span class="dv">5</span>)</div>
-<div class="sourceLine" id="cb82-8" data-line-number="8"><span class="co">#&gt; [1] 29</span></div></code></pre>
+<pre class="sourceCode r" id="cb86"><code class="sourceCode r"><div class="sourceLine" id="cb86-1" data-line-number="1"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">b =</span> <span class="dv">2</span>)</div>
+<div class="sourceLine" id="cb86-2" data-line-number="2"><span class="co">#&gt; [1] 1</span></div>
+<div class="sourceLine" id="cb86-3" data-line-number="3"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>), <span class="dt">b =</span> <span class="dv">3</span>)</div>
+<div class="sourceLine" id="cb86-4" data-line-number="4"><span class="co">#&gt; [1] 3</span></div>
+<div class="sourceLine" id="cb86-5" data-line-number="5"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="dt">b =</span> <span class="dv">4</span>)</div>
+<div class="sourceLine" id="cb86-6" data-line-number="6"><span class="co">#&gt; [1] 16</span></div>
+<div class="sourceLine" id="cb86-7" data-line-number="7"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">4</span>), <span class="dt">b =</span> <span class="dv">5</span>)</div>
+<div class="sourceLine" id="cb86-8" data-line-number="8"><span class="co">#&gt; [1] 29</span></div></code></pre>
 <p>If <code>b</code> is not provided or is <code>NA</code>, itt is inferred from the state:</p>
-<pre class="sourceCode r" id="cb83"><code class="sourceCode r"><div class="sourceLine" id="cb83-1" data-line-number="1"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>), <span class="ot">NA</span>)</div>
-<div class="sourceLine" id="cb83-2" data-line-number="2"><span class="co">#&gt; [1] 2</span></div>
-<div class="sourceLine" id="cb83-3" data-line-number="3"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>))</div>
-<div class="sourceLine" id="cb83-4" data-line-number="4"><span class="co">#&gt; [1] 6</span></div>
-<div class="sourceLine" id="cb83-5" data-line-number="5"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>))</div>
-<div class="sourceLine" id="cb83-6" data-line-number="6"><span class="co">#&gt; [1] 16</span></div></code></pre>
+<pre class="sourceCode r" id="cb87"><code class="sourceCode r"><div class="sourceLine" id="cb87-1" data-line-number="1"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>), <span class="ot">NA</span>)</div>
+<div class="sourceLine" id="cb87-2" data-line-number="2"><span class="co">#&gt; [1] 2</span></div>
+<div class="sourceLine" id="cb87-3" data-line-number="3"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>))</div>
+<div class="sourceLine" id="cb87-4" data-line-number="4"><span class="co">#&gt; [1] 6</span></div>
+<div class="sourceLine" id="cb87-5" data-line-number="5"><span class="kw">encode</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>))</div>
+<div class="sourceLine" id="cb87-6" data-line-number="6"><span class="co">#&gt; [1] 16</span></div></code></pre>
 </section>
 <section id="Decode" class="level3">
 <h3><span class="header-section-number">5.4.2</span> Decode</h3>
 <p>The provided encoded state is decoded using the <a href="https://en.wikipedia.org/wiki/Endianness#Examples">big-endian</a> encoding scheme. Note that the base <code>b</code> must be provided, but the number of digits <code>n</code> is optional. If <code>n</code> is provided then the decoded state will have exactly that many elements.</p>
 <p><strong>Interface:</strong></p>
 <p>Decode an integer into a base-<code>b</code> array with <code>n</code> digits.</p>
-<pre class="sourceCode r" id="cb84"><code class="sourceCode r"><div class="sourceLine" id="cb84-1" data-line-number="1"><span class="kw">decode</span>(encoding, b, <span class="dt">n =</span> <span class="ot">NA</span>)</div></code></pre>
+<pre class="sourceCode r" id="cb88"><code class="sourceCode r"><div class="sourceLine" id="cb88-1" data-line-number="1"><span class="kw">decode</span>(encoding, b, <span class="dt">n =</span> <span class="ot">NA</span>)</div></code></pre>
 <p><strong>Examples:</strong></p>
 <p>This function assumes a big-endian encoding scheme:</p>
-<pre class="sourceCode r" id="cb85"><code class="sourceCode r"><div class="sourceLine" id="cb85-1" data-line-number="1"><span class="kw">decode</span>(<span class="dv">2</span>, <span class="dt">b =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">2</span>)</div>
-<div class="sourceLine" id="cb85-2" data-line-number="2"><span class="co">#&gt; [1] 1 0</span></div>
-<div class="sourceLine" id="cb85-3" data-line-number="3"><span class="co"># array([1, 0], dtype=int32)</span></div>
-<div class="sourceLine" id="cb85-4" data-line-number="4"><span class="kw">decode</span>(<span class="dv">6</span>, <span class="dt">b =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">3</span>)</div>
-<div class="sourceLine" id="cb85-5" data-line-number="5"><span class="co">#&gt; [1] 1 1 0</span></div>
-<div class="sourceLine" id="cb85-6" data-line-number="6"><span class="co">#array([1, 1, 0], dtype=int32)</span></div>
-<div class="sourceLine" id="cb85-7" data-line-number="7"><span class="kw">decode</span>(<span class="dv">6</span>, <span class="dt">b =</span> <span class="dv">3</span>, <span class="dt">n =</span> <span class="dv">2</span>)</div>
-<div class="sourceLine" id="cb85-8" data-line-number="8"><span class="co">#&gt; [1] 2 0</span></div>
-<div class="sourceLine" id="cb85-9" data-line-number="9"><span class="co">#array([2, 0], dtype=int32)</span></div></code></pre>
+<pre class="sourceCode r" id="cb89"><code class="sourceCode r"><div class="sourceLine" id="cb89-1" data-line-number="1"><span class="kw">decode</span>(<span class="dv">2</span>, <span class="dt">b =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">2</span>)</div>
+<div class="sourceLine" id="cb89-2" data-line-number="2"><span class="co">#&gt; [1] 1 0</span></div>
+<div class="sourceLine" id="cb89-3" data-line-number="3"><span class="kw">decode</span>(<span class="dv">6</span>, <span class="dt">b =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">3</span>)</div>
+<div class="sourceLine" id="cb89-4" data-line-number="4"><span class="co">#&gt; [1] 1 1 0</span></div>
+<div class="sourceLine" id="cb89-5" data-line-number="5"><span class="kw">decode</span>(<span class="dv">6</span>, <span class="dt">b =</span> <span class="dv">3</span>, <span class="dt">n =</span> <span class="dv">2</span>)</div>
+<div class="sourceLine" id="cb89-6" data-line-number="6"><span class="co">#&gt; [1] 2 0</span></div></code></pre>
 <p>If <code>n</code> is provided then the decoded state will have exactly that many elements. However, note that if the provided <code>n</code> is too small to contain a full representation of the state, an error will be raised.</p>
-<pre class="sourceCode r" id="cb86"><code class="sourceCode r"><div class="sourceLine" id="cb86-1" data-line-number="1"><span class="kw">decode</span>(<span class="dv">2</span>, <span class="dt">b =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">4</span>)</div>
-<div class="sourceLine" id="cb86-2" data-line-number="2"><span class="co">#&gt; [1] 0 0 1 0</span></div></code></pre>
+<pre class="sourceCode r" id="cb90"><code class="sourceCode r"><div class="sourceLine" id="cb90-1" data-line-number="1"><span class="kw">decode</span>(<span class="dv">2</span>, <span class="dt">b =</span> <span class="dv">2</span>, <span class="dt">n =</span> <span class="dv">4</span>)</div>
+<div class="sourceLine" id="cb90-2" data-line-number="2"><span class="co">#&gt; [1] 0 0 1 0</span></div></code></pre>
 <p>If <code>n</code> is not provided, the length of the decoded state is inferred from the <code>encoding</code> to be as small as possible:</p>
-<pre class="sourceCode r" id="cb87"><code class="sourceCode r"><div class="sourceLine" id="cb87-1" data-line-number="1"><span class="kw">decode</span>(<span class="dv">1</span>, <span class="dt">b =</span> <span class="dv">2</span>)</div>
-<div class="sourceLine" id="cb87-2" data-line-number="2"><span class="co">#&gt; [1] 1</span></div>
-<div class="sourceLine" id="cb87-3" data-line-number="3"><span class="kw">decode</span>(<span class="dv">1</span>, <span class="dt">b =</span> <span class="dv">3</span>)</div>
-<div class="sourceLine" id="cb87-4" data-line-number="4"><span class="co">#&gt; [1] 1</span></div>
-<div class="sourceLine" id="cb87-5" data-line-number="5"><span class="kw">decode</span>(<span class="dv">3</span>, <span class="dt">b =</span> <span class="dv">2</span>)</div>
-<div class="sourceLine" id="cb87-6" data-line-number="6"><span class="co">#&gt; [1] 1 1</span></div>
-<div class="sourceLine" id="cb87-7" data-line-number="7"><span class="kw">decode</span>(<span class="dv">3</span>, <span class="dt">b =</span> <span class="dv">3</span>)</div>
-<div class="sourceLine" id="cb87-8" data-line-number="8"><span class="co">#&gt; [1] 1 0</span></div>
-<div class="sourceLine" id="cb87-9" data-line-number="9"><span class="kw">decode</span>(<span class="dv">3</span>, <span class="dt">b =</span> <span class="dv">4</span>)</div>
-<div class="sourceLine" id="cb87-10" data-line-number="10"><span class="co">#&gt; [1] 3</span></div></code></pre>
+<pre class="sourceCode r" id="cb91"><code class="sourceCode r"><div class="sourceLine" id="cb91-1" data-line-number="1"><span class="kw">decode</span>(<span class="dv">1</span>, <span class="dt">b =</span> <span class="dv">2</span>)</div>
+<div class="sourceLine" id="cb91-2" data-line-number="2"><span class="co">#&gt; [1] 1</span></div>
+<div class="sourceLine" id="cb91-3" data-line-number="3"><span class="kw">decode</span>(<span class="dv">1</span>, <span class="dt">b =</span> <span class="dv">3</span>)</div>
+<div class="sourceLine" id="cb91-4" data-line-number="4"><span class="co">#&gt; [1] 1</span></div>
+<div class="sourceLine" id="cb91-5" data-line-number="5"><span class="kw">decode</span>(<span class="dv">3</span>, <span class="dt">b =</span> <span class="dv">2</span>)</div>
+<div class="sourceLine" id="cb91-6" data-line-number="6"><span class="co">#&gt; [1] 1 1</span></div>
+<div class="sourceLine" id="cb91-7" data-line-number="7"><span class="kw">decode</span>(<span class="dv">3</span>, <span class="dt">b =</span> <span class="dv">3</span>)</div>
+<div class="sourceLine" id="cb91-8" data-line-number="8"><span class="co">#&gt; [1] 1 0</span></div>
+<div class="sourceLine" id="cb91-9" data-line-number="9"><span class="kw">decode</span>(<span class="dv">3</span>, <span class="dt">b =</span> <span class="dv">4</span>)</div>
+<div class="sourceLine" id="cb91-10" data-line-number="10"><span class="co">#&gt; [1] 3</span></div></code></pre>
 </section>
 </section>
 <section id="partitioning-time-series" class="level2">
 <h2><span class="header-section-number">5.5</span> Partitioning Time Series</h2>
 <p><strong>Interface:</strong></p>
-<p><strong>Examples:</strong></p>
-</section>
-<section id="random-time-series" class="level2">
-<h2><span class="header-section-number">5.6</span> Random Time Series</h2>
-<p><strong>Interface:</strong></p>
+<pre class="sourceCode r" id="cb92"><code class="sourceCode r"></code></pre>
 <p><strong>Examples:</strong></p>
 </section>
 <section id="TimeSeriestToTPM" class="level2">
-<h2><span class="header-section-number">5.7</span> Time Series to TPM</h2>
-<p><strong>Interface:</strong> series_to_tpm</p>
+<h2><span class="header-section-number">5.6</span> Time Series to TPM</h2>
+<p><strong>Interface:</strong></p>
+<pre class="sourceCode r" id="cb93"><code class="sourceCode r"><div class="sourceLine" id="cb93-1" data-line-number="1"><span class="kw">series_to_tpm</span>(series)</div></code></pre>
 <p><strong>Examples:</strong></p>
 </section>
 </section>
