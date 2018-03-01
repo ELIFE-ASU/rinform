@@ -136,7 +136,7 @@ shannon_conditional_entropy <- function(p_xy, p_y, b = 2.0) {
 #' Compute the base-\code{b} conditional mutual information given joint
 #' \code{p_xyz} and marginal \code{p_xz}, \code{p_yz}, \code{p_z} distributions.
 #'
-#' @param p_xyx Dist specifying the joint distribution.
+#' @param p_xyz Dist specifying the joint distribution.
 #' @param p_xz Dist specifying the \code{x,z}-marginal distribution.
 #' @param p_yz Dist specifying the \code{y,z}-marginal distribution.
 #' @param p_z Dist specifying the \code{z}-marginal distribution.
