@@ -3,6 +3,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(rinform)
 
 ## ------------------------------------------------------------------------
 Dist(3)
