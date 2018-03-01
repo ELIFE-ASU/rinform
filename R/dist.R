@@ -85,7 +85,7 @@ Dist <- function(n) {
 #'
 #' @return Logical signifying that the object is not corrupted.
 #'
-#' @example inst/examples/ex_dist_is_not_corrupted.R
+#' @importFrom methods is
 #'
 #' @keywords internal
 ################################################################################
