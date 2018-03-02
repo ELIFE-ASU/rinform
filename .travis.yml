@@ -3,4 +3,4 @@
 language: R
 sudo: false
 cache: packages
-r_check_args: --as-cran --timings
+r_check_args: --as-cran
