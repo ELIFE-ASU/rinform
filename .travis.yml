@@ -3,7 +3,4 @@
 language: R
 sudo: false
 cache: packages
-env:
-  global:
-    - R_CHECK_ARGS="--timings"
-    - _R_CHECK_TIMINGS_="0"
+r_check_args: --as-cran --timings
