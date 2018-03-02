@@ -11,5 +11,6 @@ RoxygenNote: 6.0.1.9000
 Imports: methods
 Suggests: knitr,
     rmarkdown,
-    testthat
+    testthat,
+    roxygen2
 VignetteBuilder: knitr
