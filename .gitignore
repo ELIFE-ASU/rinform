@@ -13,8 +13,8 @@
 # RStudio files
 .Rproj.user/
 .Rproj
-# R documentation
-*.Rd
+# R documentation (needed for Travis)
+# *.Rd
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
