@@ -54,7 +54,7 @@ active_info <- function(series, k, local = FALSE) {
 
   if (!local) {
     x <- .C("r_active_info_",
-            series  = as.integer(xs),
+            series  = xs,
 	    n       = as.integer(n),
 	    m       = as.integer(m),
 	    b       = as.integer(b),
@@ -68,7 +68,7 @@ active_info <- function(series, k, local = FALSE) {
   } else {
     ai <- rep(0, (m - k) * n)
     x <- .C("r_local_active_info_",
-            series  = as.integer(xs),
+            series  = xs,
 	    n       = as.integer(n),
 	    m       = as.integer(m),
 	    b       = as.integer(b),

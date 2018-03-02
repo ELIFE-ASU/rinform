@@ -85,7 +85,7 @@ Dist <- function(n) {
 #'
 #' @return Logical signifying that the object is not corrupted.
 #'
-#' @example inst/examples/ex_dist_is_not_corrupted.R
+#' @importFrom methods is
 #'
 #' @keywords internal
 ################################################################################
@@ -117,7 +117,7 @@ is_not_corrupted <- function(d) {
 #'
 #' Method giving the size of the support of the distribution.
 #'
-#' @param d Dist object representing the distribution.
+#' @param x Dist object representing the distribution.
 #'
 #' @return Numeric giving the size of the support.
 #'
@@ -127,15 +127,15 @@ is_not_corrupted <- function(d) {
 #'
 #' @useDynLib rinform r_length_
 ################################################################################
-length.Dist <- function(d) {
+length.Dist <- function(x) {
   rval <- NULL
   err  <- 0
 
-  if(.check_is_not_corrupted(d)) {
+  if(.check_is_not_corrupted(x)) {
     rval <- .C("r_length_",
-               histogram = d$histogram,
-	       size      = d$size,
-	       counts    = d$counts,
+               histogram = x$histogram,
+	       size      = x$size,
+	       counts    = x$counts,
 	       rval      = as.integer(0),
 	       err       = as.integer(err))
     if (err) stop("inform lib memory allocation error")	       

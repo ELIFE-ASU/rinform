@@ -1,7 +1,33 @@
-inform_sources=$(wildcard src/*.c) $(wildcard src/utilities/*.c) $(wildcard src/ginger/*.c)
+inform_sources=src/active_info.c \
+	src/block_entropy.c \
+	src/conditional_entropy.c \
+	src/cross_entropy.c \
+	src/dist.c \
+	src/effective_info.c \
+	src/entropy_rate.c \
+	src/error.c \
+	src/excess_entropy.c \
+	src/information_flow.c \
+	src/integration.c \
+	src/mutual_info.c \
+	src/pid.c \
+	src/predictive_info.c \
+	src/relative_entropy.c \
+	src/separable_info.c \
+	src/shannon.c \
+	src/transfer_entropy.c \
+	src/utilities/binning.c \
+	src/utilities/black_boxing.c \
+	src/utilities/coalesce.c \
+	src/utilities/encoding.c \
+	src/utilities/partitions.c \
+	src/utilities/random.c \
+	src/utilities/tpm.c \
+	src/ginger/vector.c
 inform_objects=$(inform_sources:%.c=%.o)
 
-CFLAGS+=-Iinclude -O3
+CFLAGS=-Iinclude -O3 -fPIC -std=c11
 
 all: $(inform_objects)
 	$(AR) rsc libinform.a $^
+	rm $(inform_objects)

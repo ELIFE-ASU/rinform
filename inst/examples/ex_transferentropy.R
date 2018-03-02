@@ -65,5 +65,5 @@ ws <- array(c(1, 0, 1, 0, 1, 1, 1, 1, 1,
 transfer_entropy(xs, ys, ws, k = 2) # 0
 
 # [, 1] 0, 0, 0, 0, 0, 0, 0, 0, 0 
-te <- transfer_entropy(xs, ys, ws, k = 2, local = T)
+te <- transfer_entropy(xs, ys, ws, k = 2, local = TRUE)
 t(te)

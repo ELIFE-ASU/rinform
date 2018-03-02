@@ -25,6 +25,24 @@
   }
 }
 
+.check_base <- function (x) {
+  if (is.null(x)) {
+    stop("<", deparse(substitute(x)), "> is NULL!", call. = !T)
+  }
+  if (!is.numeric(x)) {
+    stop("<", deparse(substitute(x)), "> is not numeric!", call. = !T)
+  }  
+  if (length(x) > 1) {
+    stop("<", deparse(substitute(x)), "> has length greater than 1!", call. = !T)
+  }  
+  if (length(x) < 1) {
+    stop("<", deparse(substitute(x)), "> is of length zero!", call. = !T)
+  }  
+  if (x < 0) {
+    stop("<", deparse(substitute(x)), "> must be non-negative!", call. = !T)
+  }  
+}
+
 .check_probability_vector <- function (p) {
   if (!is.numeric(p)) {
     stop("<", deparse(substitute(p)), "> is not numeric!", call. = !T)
@@ -35,10 +53,29 @@
   if (sum(p) != 1.0) {
     stop("<", deparse(substitute(p)), "> does not sum up to 1!", call. = !T)
   }
-  if (sum(p>0) != length(p)) {
+  if (sum(p >=  0) != length(p)) {
     stop("<", deparse(substitute(p)), "> contains negative values!", call. = !T)
   }
 }
+
+.check_tpm <- function (x) {
+  if (!is.numeric(x)) {
+    stop("<", deparse(substitute(x)), "> is not numeric!", call. = !T)
+  }
+  if (!is.matrix(x)) {
+    stop("<", deparse(substitute(x)), "> is not a matrix!", call. = !T)
+  }
+  if (dim(x)[1] != dim(x)[2]) {
+    stop("<", deparse(substitute(x)), "> is not a square matrix!", call. = !T)
+  }
+  if (prod(colSums(x) == rep(1, dim(x)[1])) != 1) {
+    stop("<", deparse(substitute(x)), ">'s columns do not sum up to 1!", call. = !T)
+  }
+  if (sum(x >= 0) != dim(x)[1] * dim(x)[2]) {
+    stop("<", deparse(substitute(x)), "> contains negative values!", call. = !T)
+  }  
+}
+
 
 .check_history <- function (k) {
   if (!is.numeric(k)) {
@@ -52,6 +89,12 @@
 .check_local <- function (local) {
   if (!is.logical(local)) {
     stop("<", deparse(substitute(local)), "> is not logical!", call. = !T)
+  }
+}
+
+.check_distribution <- function (d) {
+  if (!valid(d)) {
+    stop("<", deparse(substitute(d)), "> is not a valid distribution!", call. = !T)
   }
 }
 

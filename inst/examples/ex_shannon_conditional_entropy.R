@@ -5,6 +5,5 @@ shannon_conditional_entropy(xy, x)              # 0.5971072
 shannon_conditional_entropy(xy, y)              # 0.5077571
 shannon_conditional_entropy(xy, x, b = 3)       # 0.3767327
 shannon_conditional_entropy(xy, y, b = 3)       # 0.3203591
-shannon_conditional_entropy(xy, x, b = -1)      # NaN
-shannon_conditional_entropy(xy, y, b = -1)      # NaN
+
 
