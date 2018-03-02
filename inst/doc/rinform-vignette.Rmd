@@ -29,7 +29,7 @@ knitr::opts_chunk$set(
 library(rinform)
 ```
 
-[![Travis-CI Build Status](https://travis-ci.org/elife-asu/rinform.svg?branch=master)](https://travis-ci.org/elife-asu/rinform)
+[![Travis-CI Build Status](https://travis-ci.org/ELIFE-ASU/rinform.svg?branch=master)](https://travis-ci.org/ELIFE-ASU/rinform)
 
 An R wrapper of the [Inform v1.0.0](https://elife-asu.github.io/Inform/) C library for performing information analysis of complex system. As for the Inform library, _rinform_ is structured around the concepts of:
 
