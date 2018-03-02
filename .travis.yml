@@ -10,3 +10,6 @@ r_binary_packages:
   - knitr
   - rmarkdown
   - roxygen2
+os:
+  - linux
+  - osx
