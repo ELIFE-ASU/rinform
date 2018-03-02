@@ -1,7 +1,7 @@
 inform_sources=$(wildcard src/*.c) $(wildcard src/utilities/*.c) $(wildcard src/ginger/*.c)
 inform_objects=$(inform_sources:%.c=%.o)
 
-CFLAGS+=-Iinclude -O3
+CFLAGS+=-Iinclude -O3 -std=c11
 
 all: $(inform_objects)
 	$(AR) rsc libinform.a $^
