@@ -26,7 +26,10 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(rinform)
 ```
+
+[![Travis-CI Build Status](https://travis-ci.org/ELIFE-ASU/rinform.svg?branch=master)](https://travis-ci.org/ELIFE-ASU/rinform)
 
 An R wrapper of the [Inform v1.0.0](https://elife-asu.github.io/Inform/) C library for performing information analysis of complex system. As for the Inform library, _rinform_ is structured around the concepts of:
 
@@ -35,7 +38,7 @@ An R wrapper of the [Inform v1.0.0](https://elife-asu.github.io/Inform/) C libra
 * classic information-theoretic measures built upon empirical distributions,
 * measures of information dynamics for time series.
 
-In addition to the core components, rinform also provides a small collection of utilities to deal with time series. 
+In addition to the core components, rinform also provides a small collection of utilities to deal with time series.
 
 If you are using _rinform_, consider citing the following articles:
 

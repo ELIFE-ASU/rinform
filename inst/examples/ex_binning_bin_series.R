@@ -9,10 +9,3 @@ bin_series(xs, step = 1)
 bounds <- c(2.0, 5.0)
 bin_series(xs, bounds = bounds)
 
-# These should give an error
-bin_series(xs, b = 3, step = 1, bounds = bounds)
-bin_series(xs, b = 3, step = 1)
-bin_series(xs, b = 3, bounds = bounds)
-
-bounds <- c(bounds, NA)
-bin_series(xs, bounds = bounds)
