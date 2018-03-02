@@ -5,3 +5,4 @@ CFLAGS+=-Iinclude -O3 -fPIC -std=c11
 
 all: $(inform_objects)
 	$(AR) rsc libinform.a $^
+	rm $(inform_objects)

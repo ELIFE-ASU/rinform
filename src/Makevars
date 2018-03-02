@@ -9,6 +9,7 @@ CXX_STD=CXX11
 .PHONY: all inform
 
 all: $(SHLIB)
+	rm $(INFORM_PATH)/libinform.a
 
 $(SHLIB): inform
 
