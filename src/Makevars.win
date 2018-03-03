@@ -14,4 +14,4 @@ all: $(SHLIB)
 $(SHLIB): inform
 
 inform: 
-	@(cd $(INFORM_PATH) && $(MAKE) -f Makevars CXX="$(CXX)" CC="$(CC)" CFLAGS="$(CFLAGS) $(CPICFLAGS)" AR="$(AR)" RANLIB="$(RANLIB)")
+	@(cd $(INFORM_PATH) && $(MAKE) CXX="$(CXX)" CC="$(CC)" CFLAGS="$(CFLAGS) $(CPICFLAGS)" AR="$(AR)" RANLIB="$(RANLIB)")
