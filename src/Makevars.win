@@ -14,4 +14,4 @@ all: $(SHLIB)
 $(SHLIB): inform
 
 inform: 
-	(cd $(INFORM_PATH); $(MAKE) -f Makevars)
+	(cd $(INFORM_PATH); $(MAKE) -f Makevars CC="$(CC)" CXX="$(CXX)")
