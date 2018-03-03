@@ -4,12 +4,20 @@ language: R
 sudo: required
 cache: packages
 r_check_args: --as-cran
+
 r_binary_packages:
   - testthat
   - devtools
   - knitr
   - rmarkdown
   - roxygen2
+
 os:
   - linux
   - osx
+
+r_packages:
+  - covr
+
+after_success:
+  - Rscript -e 'library(covr); codecov()'
