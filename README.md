@@ -3,7 +3,7 @@
 
 An R wrapper of the [Inform v1.0.0](https://elife-asu.github.io/Inform/) C library for performing information analysis of complex system. As for the Inform library, _rinform_ is structured around the concepts of:
 
-* discrete emperical probability distributions which form the basis for
+* discrete empirical probability distributions which form the basis for
   all of the information-theoretic measures,
 * classic information-theoretic measures built upon empirical distributions,
 * measures of information dynamics for time series.
