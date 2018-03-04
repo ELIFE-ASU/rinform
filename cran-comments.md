@@ -4,6 +4,7 @@
 * Windows Server 2012 R2 x64 (on AppVoyer), R 3.4.3
 * Ubuntu 14.04.05 LTS (on travis-ci), R 3.4.2
 * win-builder (devel and release)
+* codecov 91% (using testthat)
 
 ## R CMD check results
 There were no ERRORs or WARNINGs or NOTEs. 

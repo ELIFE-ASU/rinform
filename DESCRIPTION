@@ -11,7 +11,7 @@ Description: An R wrapper of the Inform v1.0.0 C library for performing
       information-theoretic measures built upon empirical distributions; and 3) measures of
       information dynamics for time series. In addition to the core components, rinform also
       provides a small collection of utilities to deal with time series.
-Depends: R (>= 3.3.1)
+Depends: R (>= 3.4.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
