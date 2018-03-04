@@ -69,7 +69,7 @@ to compile the _Inform_ source (e.g.,
 
 __Disclaimer: rinform is not yet on CRAN!__
 
-To install _rinform_ directly from the [CRAN]() repository you will simply need to
+To install _rinform_ directly from the CRAN repository you will simply need to
 type:
 ```{r eval = FALSE}
 install.packages("rinform")
@@ -143,15 +143,15 @@ and are under active development. All of those projects have advantages and disa
 compared to *Inform*. If *Inform* doesn't meet your needs, I hope you will let us know, and
 try one of these:
 
-* [JIDT: Java Information Dynamics Toolkit](https://jlizier.github.il/jidt) (Java)
+* [JIDT: Java Information Dynamics Toolkit](https://github.com/jlizier/jidt) (Java)
 * [TRENTOOL: TRansfer ENtropy TOOLbox](https://trentool.github.io/TRENTOOL3) (Matlab)
-* [dit: discrete information theory](https://docs.dit.io) (Python)
+* [dit: discrete information theory](http://docs.dit.io) (Python)
 * [MuTE: MuTE Toolbox- The Dynamic DIrected Links Detector](https://mutetoolbox.guru) (Matlab)
 * [MVGC: Multivariate Granger Causality Toolbox](https://users.sussex.ac.uk/~lionelb/MVGC) (Matlab)
 * [ACSS: Algorithmic Complexity for Short
-    Strings](https://cran.r-project.org/web/packages/acss) (R)
+    Strings](https://CRAN.R-project.org/package=acss) (R)
 * [OACC: Online Algorithmic Complexity
-    Calculator](https://complexitycalculator.com) (web-based, R)
+    Calculator](http://complexitycalculator.com/) (web-based, R)
 
 ## Copyright and Licensing
 
@@ -820,7 +820,7 @@ values. These feature is directly inherited by the *rinform* wrapper.
 
 We have been meticulous in ensuring that function and parameter names are consistent
 across measures. If you notice some inconsistency, please
-[report it as an issue](https://github.com/elife-asu/rinform/issue).
+[report it as an issue](https://github.com/elife-asu/rinform/issues).
 
 ## Notation
 

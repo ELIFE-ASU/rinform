@@ -13,6 +13,9 @@ Description: An R wrapper of the Inform v1.0.0 C library for performing
       provides a small collection of utilities to deal with time series.
 Depends: R (>= 3.4.0)
 License: MIT + file LICENSE
+Copyright: ELIFE@ASU
+URL: https://elife-asu.github.io/rinform/
+BugReports: https://github.com/ELIFE-ASU/rinform/issues/
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1.9000
