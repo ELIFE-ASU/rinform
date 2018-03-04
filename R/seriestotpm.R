@@ -9,8 +9,10 @@
 ################################################################################
 #' Time Series to TPM
 #'
-#' Description..
-#'
+#' Estimate the one-time-step transition probability matrix `A` from a time
+#' series. The element `A_{ji}` is the probability of transitioning to state
+#' `j` in the next time step given the system is in state `i` (note the
+#' column-major convention).
 #'
 #' @param series Vector or matrix specifying one or more time series.
 #'
