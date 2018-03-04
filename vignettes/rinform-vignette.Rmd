@@ -1727,13 +1727,39 @@ __Examples:__
 
 ## Time Series to TPM {#TimeSeriestToTPM}
 
+Some information measures are defined on transition probability matrices (TPM) as, for
+example, [Effective Information](#EffectiveInformation). For this reason, we provide a
+function `series_to_tpm` which estimates the one-time-step TPM from time series data.
+
 __Interface:__
 
+Estimate the one-time-step transition probability matrix $A$ from a time series.
+The element $A_{ji}$ is the probability of transitioning to state $j$ in the next
+time step given the system is in state $i$ (note the column-major convention).
 
 ```r
 series_to_tpm(series)
 ```
 
 __Examples:__
+
+Estimate a TPM from one time series:
+```{r}
+series <- c(0, 2, 1, 0, 1, 2, 0, 1, 2, 1, 0, 0, 2, 1, 1)
+series_to_tpm(series)
+```
+
+Estimate a TPM from multiple time series, in this case 7 2-steps series:
+```{r}
+series <- matrix(0, nrow = 2, ncol = 7)
+series[, 1] <- c(0, 0)
+series[, 2] <- c(0, 1)
+series[, 3] <- c(0, 1)
+series[, 4] <- c(0, 1)
+series[, 5] <- c(1, 0)
+series[, 6] <- c(1, 1)
+series[, 7] <- c(2, 2)
+series_to_tpm(series)
+```
 
 # References {#References}
