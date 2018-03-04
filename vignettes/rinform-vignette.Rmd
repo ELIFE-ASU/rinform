@@ -29,11 +29,12 @@ knitr::opts_chunk$set(
 library(rinform)
 ```
 
-[![Travis-CI Build Status](https://travis-ci.org/ELIFE-ASU/rinform.svg?branch=master)](https://travis-ci.org/ELIFE-ASU/rinform) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/elife-asu/rinform?branch=master&svg=true)](https://ci.appveyor.com/project/elife-asu/rinform)
+[![Travis-CI Build Status](https://travis-ci.org/ELIFE-ASU/rinform.svg?branch=master)](https://travis-ci.org/ELIFE-ASU/rinform) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/ELIFE-ASU/rinform?branch=master&svg=true)](https://ci.appveyor.com/project/ELIFE-ASU/rinform) [![codecov](https://codecov.io/gh/ELIFE-ASU/rinform/branch/master/graph/badge.svg)](https://codecov.io/gh/ELIFE-ASU/rinform)
+
 
 An R wrapper of the [Inform v1.0.0](https://elife-asu.github.io/Inform/) C library for performing information analysis of complex system. As for the Inform library, _rinform_ is structured around the concepts of:
 
-* discrete emperical probability distributions which form the basis for
+* discrete empirical probability distributions which form the basis for
   all of the information-theoretic measures,
 * classic information-theoretic measures built upon empirical distributions,
 * measures of information dynamics for time series.
@@ -56,7 +57,54 @@ rugatulus_ provided by the National Science Foundation (NSF grant PHY-1505048).
 
 # Getting Started
 
-## Installation 
+## Installation
+
+The _rinform_ package includes some C code, that is, the sources of the _Inform_
+library. You may need some extra tools to install _rinform_ as they are required
+to compile the _Inform_ source (e.g.,
+[Xcode](https://developer.apple.com/xcode/downloads/) for Mac users,
+[Rtools](http://cran.us.r-project.org/bin/windows/Rtools/) for Windows users)
+
+### Installation from CRAN
+
+__Disclaimer: rinform is not yet on CRAN!__
+
+To install _rinform_ directly from the CRAN repository you will simply need to
+type:
+```{r eval = FALSE}
+install.packages("rinform")
+```
+
+Once installed, you can load _rinform_ prior to use it with:
+```{r eval = FALSE}
+library(rinform)
+```
+
+### Installation from GitHub
+
+To install _rinform_ from its [GitHub](https://github.com/ELIFE-ASU/rinform) repository
+you will need to have installed the [devtools](https://github.com/r-lib/devtools) package.
+If you don't have devtools already, you can install it with:
+```{r eval = FALSE}
+install.packages("devtools")
+```
+
+Load devtools and install the latest stable version of _rinform_ (i.e., _master_ branch):
+```{r eval = FALSE}
+library(devtools)
+install_github("ELIFE-ASU/rinform")
+```
+
+In case you need to use the development version of _rinform_, you can specify to install
+from the _dev_ branch:
+```{r eval = FALSE}
+install_github("ELIFE-ASU/rinform", ref = "dev")
+```
+
+Once installed, you can load _rinform_ prior to use it with:
+```{r eval = FALSE}
+library(rinform)
+```
 
 ## Getting Help
 
@@ -89,20 +137,21 @@ under active development:
 
 ### Intellectual Relatives
 
-*rinform* was not created in an intellectual vacuum. Many similar projects have preceded it
+*Inform* and its collection of wrappers such as *rinform* were not created in an
+intellectual vacuum. Many similar projects have preceded it
 and are under active development. All of those projects have advantages and disadvantages
-compared to *rnform*. If *Inform* doesn't meet your needs, I hope you will let us know, and
+compared to *Inform*. If *Inform* doesn't meet your needs, I hope you will let us know, and
 try one of these:
 
-* [JIDT: Java Information Dynamics Toolkit](https://jlizier.github.il/jidt) (Java)
+* [JIDT: Java Information Dynamics Toolkit](https://github.com/jlizier/jidt) (Java)
 * [TRENTOOL: TRansfer ENtropy TOOLbox](https://trentool.github.io/TRENTOOL3) (Matlab)
-* [dit: discrete information theory](https://docs.dit.io) (Python)
+* [dit: discrete information theory](http://docs.dit.io) (Python)
 * [MuTE: MuTE Toolbox- The Dynamic DIrected Links Detector](https://mutetoolbox.guru) (Matlab)
 * [MVGC: Multivariate Granger Causality Toolbox](https://users.sussex.ac.uk/~lionelb/MVGC) (Matlab)
 * [ACSS: Algorithmic Complexity for Short
-    Strings](https://cran.r-project.org/web/packages/acss) (R)
+    Strings](https://CRAN.R-project.org/package=acss) (R)
 * [OACC: Online Algorithmic Complexity
-    Calculator](https://complexitycalculator.com) (web-based, R)
+    Calculator](http://complexitycalculator.com/) (web-based, R)
 
 ## Copyright and Licensing
 
@@ -771,7 +820,7 @@ values. These feature is directly inherited by the *rinform* wrapper.
 
 We have been meticulous in ensuring that function and parameter names are consistent
 across measures. If you notice some inconsistency, please
-[report it as an issue](https://github.com/elife-asu/rinform/issue).
+[report it as an issue](https://github.com/elife-asu/rinform/issues).
 
 ## Notation
 

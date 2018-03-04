@@ -1,0 +1,17 @@
+INFORM_PATH=inform-1.0.0
+
+PKG_LIBS+=$(INFORM_PATH)/libinform.a
+PKG_CPPFLAGS+=-D_USE_KNETFILE -D_FILE_OFFSET_BITS=64 \
+	-D_LARGEFILE64_SOURCE -I$(INFORM_PATH)/include -std=c11
+
+CXX_STD=CXX11
+
+.PHONY: all inform
+
+all: $(SHLIB)
+	rm $(INFORM_PATH)/libinform.a
+
+$(SHLIB): inform
+
+inform: 
+	(cd $(INFORM_PATH); $(MAKE) -f Makevars CC="$(CC)" CXX="$(CXX)" AR="$(AR)")
