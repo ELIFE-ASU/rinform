@@ -1199,7 +1199,7 @@ t(ee)
 
 ## Information Flow
 
-## Evidence of Integration
+## Evidence of Integration {#EvidenceOfIntegration}
 
 ## Mutual Information
 
@@ -1476,7 +1476,7 @@ t(te)
 +--------------------------+----------------------------------------------------------+
 | State Encoding           | [`encode`](#Encode), [`decode`](#Decode) |
 +--------------------------+----------------------------------------------------------+
-| Partitioning Time Series |            |
+| Partitioning Time Series | [`partitioning`](#PartitioningTimeSeries) |
 +--------------------------+----------------------------------------------------------+
 | Time Series to TPM       | [`series_to_tpm`](#TimeSeriestToTPM) |
 +--------------------------+----------------------------------------------------------+
@@ -1715,15 +1715,45 @@ decode(3, b = 3)
 decode(3, b = 4)
 ```
 
-## Partitioning Time Series
+## Partitioning Time Series {#PartitioningTimeSeries}
+
+Many analyses of complex systems consider partitioning the system into components or
+modules. One example of this is [Evidence of Integration](#EvidenceOfIntegration).
+
+For generality, we represent a partitioning of $N$ items into $1 \leq M \leq N$
+partitions as a sequence of integers $p_1, \ldots, p_N$ where $1 \leq p_i \leq M$
+is the partition to which the $i$-th item belongs.
+
+As an example, suppose we partitioned $\{X_1, X_2, X_3\}$ as $\{\{X_1\},
+\{X_2,X_3\}\}$. This would be represented as $(1, 2, 2)$ because $X_1$ belongs to
+the first partition and $X_2, X_3$ belong to the second partition.
+
+We provide a function, `partitioning` to facilitate the generation of all unique
+partitionings of a system of $N$ elements.
 
 __Interface:__
 
-```r
+Partition a number `n` of items into all possible different subsets. The number of
+partitions is given by the Bell number $B_n$.
 
+```r
+partitioning(n)
 ```
 
 __Examples:__
+
+Say we wish to partition a set containing 3 items:
+```{r}
+partitioning(3)
+```
+
+You'll notice that the number of partitions, i.e, number of columns, is equal
+to the [Bell number](https://en.wikipedia.org/wiki/Bell_number) $B_3 = 5$.
+
+We can compute the 9-th Bell number as follows:
+```{r}
+dim(partitioning(9))[2]
+```
 
 ## Time Series to TPM {#TimeSeriestToTPM}
 
