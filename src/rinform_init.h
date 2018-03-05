@@ -1,11 +1,19 @@
 /* rinform_active_info.c */
-extern void r_active_info_(int *series, int *n, int *m, int *b, int *k, double *rval, int *err);
-extern void r_local_active_info_(int *series, int *n, int *m, int *b, int *k, double *rval, int *err);
+extern void r_active_info_(int *series, int *n, int *m, int *b, int *k,
+			   double *rval, int *err);
+extern void r_local_active_info_(int *series, int *n, int *m, int *b, int *k,
+				 double *rval, int *err);
+
 /* rinform_binning.c */
-extern void r_series_range_(double *series, int *n, double *srange, double *smin, double *smax, int *err);
-extern void r_bin_series_bin_(double *series, int *n, int *b, int *binned, double *bin_size, int *err);
-extern void r_bin_series_step_(double *series, int *n, int *b, int *binned, double *step, int *err);
-extern void r_bin_series_bounds_(double *series, int *n, int *b, double *bounds, int *m, int *binned, int *err);
+extern void r_series_range_(double *series, int *n, double *srange, double *smin,
+			    double *smax, int *err);
+extern void r_bin_series_bin_(double *series, int *n, int *b, int *binned,
+			    double *bin_size, int *err);
+extern void r_bin_series_step_(double *series, int *n, int *b, int *binned,
+			    double *step, int *err);
+extern void r_bin_series_bounds_(double *series, int *n, int *b, double *bounds, int *m,
+		            int *binned, int *err);
+
 /* rinform_block_entropy.c */
 extern void r_block_entropy_(int *series, int *n, int *m, int *b, int *k, double *rval, int *err);
 extern void r_local_block_entropy_(int *series, int *n, int *m, int *b, int *k, double *rval, int *err);
@@ -47,6 +55,9 @@ extern void r_local_excess_entropy_(int *series, int *n, int *m, int *b, int *k,
 /* rinform_mutual_info.c */
 extern void r_mutual_info_(int *series, int *l, int *n, int *b, double *rval, int *err);
 extern void r_local_mutual_info_(int *series, int *l, int *n, int *b, double *rval, int *err);
+/* rinform_partitioning.c */
+extern void r_partitioning_(int *n, int *P);
+
 /* rinform_predictive_info.c */
 extern void r_predictive_info_(int *series, int *n, int *m, int *b, int *kpast, int *kfuture, double *rval, int *err);
 extern void r_local_predictive_info_(int *series, int *n, int *m, int *b, int *kpast, int *kfuture, double *rval, int *err);

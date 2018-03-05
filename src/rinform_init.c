@@ -38,6 +38,7 @@ static const R_CMethodDef CEntries[] = {
     {"r_local_relative_entropy_",          (DL_FUNC) &r_local_relative_entropy_,           6},
     {"r_local_transfer_entropy_",          (DL_FUNC) &r_local_transfer_entropy_,           8},
     {"r_mutual_info_",                     (DL_FUNC) &r_mutual_info_,                      6},
+    {"r_partitioning_",                    (DL_FUNC) &r_partitioning_,                     2},
     {"r_predictive_info_",                 (DL_FUNC) &r_predictive_info_,                  8},
     {"r_probability_",                     (DL_FUNC) &r_probability_,                      5},
     {"r_relative_entropy_",                (DL_FUNC) &r_relative_entropy_,                 6},
