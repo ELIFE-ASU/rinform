@@ -15,8 +15,8 @@ extern void r_bin_series_bounds_(double *series, int *n, int *b, double *bounds,
 		            int *binned, int *err);
 
 /* rinform_black_box.c */
-extern void r_black_box_(int *series, int *l, int *n, int *m, int *b, int *r,
-			 int *s, int *box, int *err);
+extern void r_black_box_(int *series, int *l, int *n, int *m, int *b, int *r, int *rNull,
+			 int *s, int *sNull, int *box, int *err);
 extern void r_black_box_parts_(int *series, int *l, int *n, int *m, int *b, int *r,
 			       int *s, int *parts, int *nparts, int *box, int *err);
 

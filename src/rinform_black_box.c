@@ -1,13 +1,18 @@
 #include "inform/utilities/black_boxing.h"
 #include <stdio.h>
 
-void r_black_box_(int *series, int *l, int *n, int *m, int *b, size_t *r,
-		  size_t *s, int *box, int *err) {
+void r_black_box_(int *series, int *l, int *n, int *m, int *b, int *r, int *rNull,
+		  int *s, int *sNull, int *box, int *err) {
   inform_error ierr = INFORM_SUCCESS;
-  
-  printf("%d\n", *r);
-  inform_black_box(series, *l, *n, *m, b, (*r == 0) ? (NULL) : (r),
-		   (*s == 0) ? (NULL) : (s), box, &ierr);
+  size_t R[*l], S[*l];
+
+  for (size_t i = 0; i < *l; ++i) {
+    if (*rNull == 0) { R[i] = r[i]; }
+    if (*sNull == 0) { S[i] = s[i]; }
+  }
+
+  inform_black_box(series, *l, *n, *m, b, *rNull ? NULL : R,
+		   *sNull ? NULL : S, box, &ierr);
   
   *err = ierr;
 }

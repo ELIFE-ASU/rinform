@@ -30,7 +30,9 @@
 #' @useDynLib rinform r_black_box_
 ################################################################################
 black_box <- function(series, l, r = NULL, s = NULL) {
-  err <- 0
+  err      <- 0
+  rNull    <- 1
+  sNull    <- 1
 
   .check_series(series)
   .check_positive_integer(l)
@@ -40,14 +42,16 @@ black_box <- function(series, l, r = NULL, s = NULL) {
     if (length(r) != l) {
       stop("<r> has length different from <l>!")
     }
-  } else { r <- c(0) }
+    rNull <- 0
+  } else { r <- 0 }
   
   if (!is.null(s)) {
     .check_series(s)
     if (length(s) != l) {
       stop("<s> has length different from <l>!")
     }
-  } else { s <- c(0) }
+    sNull <- 0
+  } else { s <- 0 }
 
   # Extract number of initial conditions and time steps
   if (is.vector(series)) {
@@ -67,18 +71,15 @@ black_box <- function(series, l, r = NULL, s = NULL) {
     m <- dim(series)[1]
     b <- rep(0, l)
     for (i in 1:l) {
-      b[i] <- max(2, max(series[1:n + n * (i - 1), ]) + 1)        
+      b[i] <- max(2, max(series[, 1:n + n * (i - 1)]) + 1)        
     }
   }
 
-  cat("l:", l, "\n")
-  cat("n:", n, "\n")
-  cat("m:", m, "\n")
-  cat("b:", b, "\n")
-  cat("r:", r, "\n")
-  cat("s:", s, "\n")
-
-  box <- rep(0, m - max(r) - max(s) + 1)
+  if      (max(r) > 0  & max(s) == 0) { box <- rep(-1, n  * (m - max(r) + 1)) }
+  else if (max(r) == 0 & max(s) > 0)  { box <- rep(-1, n  * (m - max(s))) }
+  else if (max(r) > 0  & max(s) > 0)  { box <- rep(-1, n  * (m - max(r) - max(s) + 1)) }
+  else if (max(r) == 0 & max(s) == 0) { box <- rep(-1, n  * m) }
+  
   x    <- .C("r_black_box_",
              series  = as.integer(series),
 	     l       = as.integer(l),
@@ -86,12 +87,15 @@ black_box <- function(series, l, r = NULL, s = NULL) {
 	     m       = as.integer(m),
 	     b       = as.integer(b),
 	     r       = as.integer(r),
+	     rNull   = as.integer(rNull),
 	     s       = as.integer(s),
+	     sNull   = as.integer(sNull),
 	     box     = as.integer(box),
 	     err     = as.integer(err))
 
   if (.check_inform_error(x$err) == 0) {
     box <- x$box
+    if (n > 1) { dim(box) <- c(length(box) / n, n) }
   }
 
   box

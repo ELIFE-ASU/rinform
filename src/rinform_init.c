@@ -9,7 +9,7 @@ static const R_CMethodDef CEntries[] = {
     {"r_bin_series_bin_",                  (DL_FUNC) &r_bin_series_bin_,                   6},
     {"r_bin_series_bounds_",               (DL_FUNC) &r_bin_series_bounds_,                7},
     {"r_bin_series_step_",                 (DL_FUNC) &r_bin_series_step_,                  6},
-    {"r_black_box_",                       (DL_FUNC) &r_black_box_,                        9},
+    {"r_black_box_",                       (DL_FUNC) &r_black_box_,                       11},
     {"r_black_box_parts_",                 (DL_FUNC) &r_black_box_parts_,                 10},
     {"r_block_entropy_",                   (DL_FUNC) &r_block_entropy_,                    7},
     {"r_coalesce_",                        (DL_FUNC) &r_coalesce_,                         5},
