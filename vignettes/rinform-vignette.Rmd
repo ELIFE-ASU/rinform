@@ -1561,12 +1561,54 @@ bin_series(series, bounds = c(3, 7))
 
 ## Black-Boxing Time Series
 
+It is often useful when analyzing complex systems to black-box components
+of the system. This process amounts to grouping components of the system and
+treating them as a single entity, without regard for its small-scale structure.
+As an example, consider you have two Boolean random variables $X$ and $Y$, and
+you observe time series of each simultaneously:
+$$
+X:\ \{0,1,1,0,1,0,0,1\}\\
+Y:\ \{1,0,0,1,1,0,1,0\}
+$$
+
+It may be worthwhile to consider these observations as observations of the joint
+variable $(X, Y)$:
+$$
+(X,Y):\ \{(0,1),(1,0),(1,0),(0,1),(1,1),(0,0),(0,1),(1,0)\}.
+$$
+
+The joint observations can then be naturally encoded, for example, as base-4 states
+$$
+(X,Y):\ \{1,2,2,1,3,0,1,2\}.
+$$
+
+We refer this process of mapping the observations of $X$ and $Y$ to the encoded
+observations of $(X, Y)$ as black boxing. In this case, the black boxing procedure is
+performed in "space" (you might think of $X$ and $Y$ having locations in space.
+We may also black box in time. The canonical example of this is considering the
+$k$-history of a random variable:
+$$
+X:\       \{0,1,1,0,1,0,0,1\}\\
+X^{(2)}:\ \{((0,1),(1,1),(1,0),(0,1),(1,0),(0,0),(0,1)\},
+$$
+and the observations of $X^{(2)}$ can be encoded as base-4 states:
+$$
+X^{(2)}:\ \{(1,3,2,1,2,0,1\}.
+$$
+
+We provide a basic black-boxing function, [`black_box`](#BlackBox), that allows
+the user to black-box in both space and into the future and past of a collection
+of random variables. The [`black_box_parts`](#BlackBoxParts) allows the user to
+black-box time series based on a [partitioning scheme](#PartitioningTimeSeries)
+(useful in the implementation of integration measures such as
+[Evidence of Integration](#EvidenceOfIntegration).
+
 ### Black-Box {#BlackBox}
 
 __Interface:__
 
 ```r
-
+black_box()
 ```
 
 __Examples:__
@@ -1576,7 +1618,7 @@ __Examples:__
 __Interface:__
 
 ```r
-
+black_box_parts()
 ```
 
 __Examples:__
