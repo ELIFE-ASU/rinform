@@ -1470,7 +1470,7 @@ t(te)
 +==========================+==========================================================+
 | Binning                  |[`series_range`](#SeriesRange), [`bin_series`](#BinSeries)|
 +--------------------------+----------------------------------------------------------+
-| Black-Boxing             |  |
+| Black-Boxing             | [`black_box`](#BlackBox), [`black_box_parts`](#BlackBoxParts) |
 +--------------------------+----------------------------------------------------------+
 | Coalescing               | [`coalesce`](#Coalesce) |
 +--------------------------+----------------------------------------------------------+
@@ -1561,25 +1561,152 @@ bin_series(series, bounds = c(3, 7))
 
 ## Black-Boxing Time Series
 
+It is often useful when analyzing complex systems to black-box components
+of the system by aggregating its states. This process amounts to grouping
+the states of different components of the system and treating them as a
+single state on a larger state-space and, in doing so, the black-boxed
+components are treated as a single entity, without regard for its small-scale structure.
+As an example, consider you have two Boolean random variables $X$ and $Y$, and
+you observe time series of each simultaneously:
+$$
+X:\ \{0,1,1,0,1,0,0,1\}\\
+Y:\ \{1,0,0,1,1,0,1,0\}
+$$
+
+It may be worthwhile to consider these observations as observations of the joint
+variable $(X, Y)$:
+$$
+(X,Y):\ \{(0,1),(1,0),(1,0),(0,1),(1,1),(0,0),(0,1),(1,0)\}.
+$$
+
+The joint observations can then be naturally encoded, for example, as base-4 states
+$$
+(X,Y):\ \{1,2,2,1,3,0,1,2\}.
+$$
+
+We refer this process of mapping the observations of $X$ and $Y$ to the encoded
+observations of $(X, Y)$ as black boxing. In this case, the black boxing procedure is
+performed in "space" (you might think of $X$ and $Y$ having locations in space.
+We may also black box in time. The canonical example of this is considering the
+$k$-history of a random variable:
+$$
+X:\       \{0,1,1,0,1,0,0,1\}\\
+X^{(2)}:\ \{((0,1),(1,1),(1,0),(0,1),(1,0),(0,0),(0,1)\},
+$$
+and the observations of $X^{(2)}$ can be encoded as base-4 states:
+$$
+X^{(2)}:\ \{(1,3,2,1,2,0,1\}.
+$$
+
+We provide a basic black-boxing function, [`black_box`](#BlackBox), that allows
+the user to black-box in both space and into the future and past of a collection
+of random variables. The [`black_box_parts`](#BlackBoxParts) allows the user to
+black-box time series based on a [partitioning scheme](#PartitioningTimeSeries)
+(useful in the implementation of integration measures such as
+[Evidence of Integration](#EvidenceOfIntegration).
+
 ### Black-Box {#BlackBox}
 
 __Interface:__
 
-```r
+Black-box time series from a collection of `l` sources where each
+series has the same number of time steps, same number of initial conditions,
+and possibly different bases into a single time series. The base of the
+resulting time series is given by the product of the bases of each time
+series in the collection. Black-boxing can be performed in time by
+providing history lengths `r` and future lengths through `s`.
 
+```r
+black_box(series, l, r = NULL, s = NULL)
 ```
 
 __Examples:__
+
+We'll black box two time series with no history and future:
+```{r}
+series      <- matrix(0, nrow = 8, ncol = 2)
+series[, 1] <- c(0, 1, 1, 0, 1, 0, 0, 1)
+series[, 2] <- c(1, 0, 0, 1, 1, 0, 1, 0)
+black_box(series, l = 2)
+```
+Note that, this is the first example described at the beginning of this section.
+
+Black-box a single time series in time with history length 2:
+```{r}
+series <- c(0, 1, 1, 0, 1, 0, 0, 1)
+black_box(series, l = 1, r = 2)
+```
+This is the second example described at the beginning of this section.
+
+Black-box two time series with histories and futures:
+```{r}
+series      <- matrix(0, nrow = 8, ncol = 2)
+series[, 1] <- c(0, 1, 1, 0, 1, 0, 0, 1)
+series[, 2] <- c(1, 0, 0, 1, 1, 0, 1, 0)
+black_box(series, l = 2, r = c(2, 1), s = c(0, 1))
+```
 
 ### Black-Box Parts {#BlackBoxParts}
 
 __Interface:__
 
-```r
+Black-box time series from a collection of $l$ sources where each
+series has the same number of time steps but possibly different bases into
+a number of different time series according to the partitioning scheme `parts`.
+The resulting time series and their bases are returned. The base of the
+resulting time series is given by the product of the bases of each time
+series in the partition. 
 
+```r
+black_box_parts(series, parts)
 ```
 
 __Examples:__
+
+Black-box 4 time series (each of length 8) into a single time series:
+```{r}
+xs      <- matrix(0, nrow = 8, ncol = 4)
+xs[, 1] <- c(0, 1, 1, 0, 1, 0, 0, 1)
+xs[, 2] <- c(1, 0, 0, 1, 1, 0, 1, 0)
+xs[, 3] <- c(0, 0, 0, 1, 1, 1, 0, 0)
+xs[, 4] <- c(1, 0, 1, 0, 1, 1, 1, 0)
+parts   <- c(1, 1, 1, 1)
+black_box_parts(xs, parts)
+```
+This could have been more simple using [`black_box`]($BlackBox), but it is for
+illustrative purpose.
+
+Black-box 4 time series (of length 8) into two time series using the
+partitioning scheme $(1,2,2,1)$. That is, combine the 1st and 4th, and the
+2nd and 3rd.
+```{r}
+parts   <- c(1, 2, 2, 1)
+x <- black_box_parts(xs, parts)
+x
+```
+Note that the two time series each have a base of 4, and the bases are
+returned as `$b`.
+
+Finally, in this example, we compute the multivariate mutual information
+between 4 time series (each of length 8) for all partitionings of the system
+(except the very first since that only yields a single time series).
+That is, each partition is treated as a seperate variable and
+the mutual information is computed between the partitioned variables.
+```{r}
+xs         <- matrix(0, nrow = 8, ncol = 4)
+xs[, 1]    <- c(0, 1, 1, 0, 1, 0, 0, 1)
+xs[, 2]    <- c(1, 0, 0, 1, 1, 0, 1, 0)
+xs[, 3]    <- c(0, 0, 0, 1, 1, 1, 0, 0)
+xs[, 4]    <- c(1, 0, 1, 0, 1, 1, 1, 0)
+all_parts  <- partitioning(4)
+mmi        <- rep(0, dim(all_parts)[2] - 1)
+
+for (i in 2:dim(all_parts)[2]) {
+  x          <- black_box_parts(xs, all_parts[, i])
+  mmi[i - 1] <- mutual_info(x$box)
+}
+round(mmi, 3)
+```
 
 ## Coalescing Time Series {#Coalesce}
     
