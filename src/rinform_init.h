@@ -76,6 +76,12 @@ extern void r_local_entropy_rate_(int *series, int *n, int *m, int *b, int *k, d
 extern void r_excess_entropy_(int *series, int *n, int *m, int *b, int *k, double *rval, int *err);
 extern void r_local_excess_entropy_(int *series, int *n, int *m, int *b, int *k, double *rval, int *err);
 
+/* rinform_integration_evidence.c */
+extern void r_integration_evidence_(int *series, int *l, int *n, int *b,
+			            double *evidence, int *err);
+extern void r_integration_evidence_parts_(int *series, int *l, int *n, int *b, int *parts,
+					  int *nparts, double *evidence, int *err);
+
 /* rinform_mutual_info.c */
 extern void r_mutual_info_(int *series, int *l, int *n, int *b, double *rval, int *err);
 extern void r_local_mutual_info_(int *series, int *l, int *n, int *b, double *rval, int *err);
