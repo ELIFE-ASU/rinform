@@ -61,7 +61,6 @@
   }
 }
 
-
 .check_positive_integer <- function (x) {
   if (is.null(x)) {
     stop("<", deparse(substitute(x)), "> is NULL!", call. = !T)

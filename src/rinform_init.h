@@ -69,12 +69,22 @@ extern void r_encode_(int *state, int *n, int *b, int *encoded, int *err);
 extern void r_decode_(int *encoding, int *b, int *state, int *n, int *err);
 
 /* rinform_entropyrate.c */
-extern void r_entropy_rate_(int *series, int *n, int *m, int *b, int *k, double *rval, int *err);
-extern void r_local_entropy_rate_(int *series, int *n, int *m, int *b, int *k, double *rval, int *err);
+extern void r_entropy_rate_(int *series, int *n, int *m, int *b, int *k,
+			    double *rval, int *err);
+extern void r_local_entropy_rate_(int *series, int *n, int *m, int *b, int *k,
+				  double *rval, int *err);
 
 /* rinform_excess_entropy.c */
-extern void r_excess_entropy_(int *series, int *n, int *m, int *b, int *k, double *rval, int *err);
-extern void r_local_excess_entropy_(int *series, int *n, int *m, int *b, int *k, double *rval, int *err);
+extern void r_excess_entropy_(int *series, int *n, int *m, int *b, int *k,
+			      double *rval, int *err);
+extern void r_local_excess_entropy_(int *series, int *n, int *m, int *b, int *k,
+				    double *rval, int *err);
+
+/* rinform_info_flow.c */
+extern void r_info_flow_(int *src, int *dst, int *lsrc, int *ldst, int *n, int *m, int *b,
+			 double *rval, int *err);
+extern void r_info_flow_back_(int *src, int *dst, int *back, int *lsrc, int *ldst,
+			      int *lback, int *n, int *m, int *b, double *rval, int *err);
 
 /* rinform_integration_evidence.c */
 extern void r_integration_evidence_(int *series, int *l, int *n, int *b,
@@ -84,13 +94,15 @@ extern void r_integration_evidence_parts_(int *series, int *l, int *n, int *b, i
 
 /* rinform_mutual_info.c */
 extern void r_mutual_info_(int *series, int *l, int *n, int *b, double *rval, int *err);
-extern void r_local_mutual_info_(int *series, int *l, int *n, int *b, double *rval, int *err);
+extern void r_local_mutual_info_(int *series, int *l, int *n, int *b,
+				 double *rval, int *err);
 
 /* rinform_partitioning.c */
 extern void r_partitioning_(int *n, int *P);
 
 /* rinform_predictive_info.c */
-extern void r_predictive_info_(int *series, int *n, int *m, int *b, int *kpast, int *kfuture, double *rval, int *err);
+extern void r_predictive_info_(int *series, int *n, int *m, int *b, int *kpast,
+			       int *kfuture, double *rval, int *err);
 extern void r_local_predictive_info_(int *series, int *n, int *m, int *b, int *kpast,
 				     int *kfuture, double *rval, int *err);
 

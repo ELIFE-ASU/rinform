@@ -1,23 +1,18 @@
-#include "inform/integration.h"
+#include "inform/information_flow.h"
 
-void r_integration_evidence_(int *series, int *l, int *n, int *b,
-			     double *evidence, int *err) {
+void r_info_flow_(int *src, int *dst, int *lsrc, int *ldst, int *n, int *m, int *b,
+		  double *rval, int *err) {
   inform_error ierr = INFORM_SUCCESS;
 
-  inform_integration_evidence(series, *l, *n, b, evidence, &ierr);
-  *err = ierr;
+  *rval = inform_information_flow(src, dst, NULL, *lsrc, *ldst, 0,  *n, *m, *b, &ierr);
+  *err  = ierr;
 }
 
-void r_integration_evidence_parts_(int *series, int *l, int *n, int *b,
-				   int *parts, int *nparts, double *evidence, int *err) {
+void r_info_flow_back_(int *src, int *dst, int *back, int *lsrc, int *ldst, int *lback,
+		       int *n, int *m, int *b, double *rval, int *err) {
   inform_error ierr = INFORM_SUCCESS;
-  size_t st_parts[*l];
 
-  for (size_t i = 0; i < *l; ++i) {
-    st_parts[i] = parts[i];
-  }
-
-  inform_integration_evidence_part(series, *l, *n, b, st_parts, *nparts, evidence, &ierr);
-  *err = ierr;
+  *rval = inform_information_flow(src, dst, back, *lsrc, *ldst, *lback,  *n, *m, *b, &ierr);
+  *err  = ierr;
 }
 

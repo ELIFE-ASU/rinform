@@ -1275,13 +1275,98 @@ integration_evidence(series, parts)
 
 ## Information Flow {#InformationFlow}
 
+Information flow (IF) was introduced by Ay and Polani as a measure of the "strength of a
+causal effect" [[@Ay2008]](#References). Unlike many of the other measures in _rinform_,
+information flow was designed around interventions. Rather than allowing dynamics
+to progress naturally, some subset of the random variables are forced into a particular
+state. If no interventions are performed, then IF reduces to
+[Conditional Mutual Information](https://en.wikipedia.org/wiki/Conditional_mutual_information).
+
+Practially, there is no way for _rinform_ to know from time series whether or not any
+interventions have actually been performed upon the system. As such, the onous is on the
+user to determine whether this function is in-fact computing Ay and Polani's information
+flow.
+
+In accordance with [[@Ay2008]](#References), information flow is defined as
+$$
+I_p(X \rightarrow Y | Z) = \sum_{x,y,z} p(z)p(x|\hat{z})p(y|\hat{x},\hat{z})
+    \log{
+        \frac{p(y|\hat{x},\hat{z})}
+        {\sum_{x^\prime} p(x^\prime|\hat{z})p(y|\hat{x}^\prime,\hat{z})}
+    }
+$$
+
+All probabilities are estimated from sequences of observations — the order of those
+sequences is irrelevant. A [future version of _Inform_](https://github.com/elife-asu/inform/issues/76), and thereafter _rinform_, will allow the user to specify intervention distributions.
+
 __Interface:__
 
-```r
+Compute the information flow from `lsrc` time series `src` to another `ldst`
+time series `dst`. Optionally, the user can specify `lback` background time series
+`back` to conditioning probabilities.
 
+
+```r
+info_flow(src, dst, back = NULL, lsrc, ldst, lback = 0)
 ```
 
 __Examples:__
+
+This example demonstrates how to user `info_flow` to analyzed Ay and Polani's
+diamond structure example, p.28-29 in [[@Ay2008]](#References). In this example, we
+have four interacting Boolean variables $W$, $X$, $Y$ and $Z$. The variables $X$ and
+$Y$ are each dependent on $W$: they simply copy it's state. The $Z$ variable
+is the XOR of the states of $X$ and $Y$. The variable $W$ is uniformly
+distributed.
+
+Left to it's own devices, this system might produce a sequence of observations
+like (natural dynamics):
+```{r}
+ws <- c(0, 0, 1, 0, 1, 1, 0, 1)
+xs <- c(0, 0, 1, 0, 1, 1, 0, 1)
+ys <- c(0, 0, 1, 0, 1, 1, 0, 1)
+zs <- c(0, 0, 0, 0, 0, 0, 0, 0)
+```
+From these we can compute the following information flows:
+$$
+I_p(X \rightarrow Y) = 1 \\
+I_p(X \rightarrow Y | W) = 0 \\
+I_p(W \rightarrow Z | Y) = 0.
+$$
+
+Our notation departs somewhat from that of [[@Ay2008]](#References) as we denote
+these as information flows despite the fact that we are not strictly intervening
+upon the system. If the user prefers, they can think of this as "intervening on 
+the system that is indistiguishable from the natural dynamics". In any case, we can
+use `info_flow` to compute the above values:
+```{r}
+info_flow(src = xs, dst = ys, lsrc = 1, ldst = 1)                      
+info_flow(src = xs, dst = ys, back = ws, lsrc = 1, ldst = 1, lback = 1)
+info_flow(src = ws, dst = zs, back = ys, lsrc = 1, ldst = 1, lback = 1)
+```
+
+Now, consider that we can intervene on $Y$ and force it to whichever state we so
+choose. Then we might end up with a sequence of observations as:
+```{r}
+ws <- c(0, 0, 1, 0, 1, 1, 0, 1)
+xs <- c(0, 0, 1, 0, 1, 1, 0, 1)
+ys <- c(1, 0, 1, 0, 0, 1, 1, 0)
+zs <- c(1, 0, 0, 0, 1, 0, 1, 1)
+```
+
+From these we can compute the following information flows:
+$$
+I_p(X \rightarrow Y) = 0 \\
+I_p(X \rightarrow Y | W) = 0 \\
+I_p(W \rightarrow Z | Y) = 1.
+$$
+
+In _rinform_ this looks like:
+```{r}
+info_flow(src = xs, dst = ys, lsrc = 1, ldst = 1)                      
+info_flow(src = xs, dst = ys, back = ws, lsrc = 1, ldst = 1, lback = 1)
+info_flow(src = ws, dst = zs, back = ys, lsrc = 1, ldst = 1, lback = 1)
+```
 
 ## Mutual Information {#MutualInformationTS}
 
