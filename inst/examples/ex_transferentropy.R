@@ -60,8 +60,8 @@ transfer_entropy(xs, ys, k = 2, local = TRUE)
 # With a background process
 xs <- c(0, 1, 1, 1, 1, 0, 0, 0, 0)
 ys <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
-ws <- array(c(1, 0, 1, 0, 1, 1, 1, 1, 1,
-              1, 1, 0, 1, 0, 1, 1, 1, 1), dim = c(2, 9, 1))
+ws <- matrix(c(1, 0, 1, 0, 1, 1, 1, 1, 1,
+               1, 1, 0, 1, 0, 1, 1, 1, 1), ncol = 2)
 transfer_entropy(xs, ys, ws, k = 2) # 0
 
 # [, 1] 0, 0, 0, 0, 0, 0, 0, 0, 0 

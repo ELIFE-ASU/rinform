@@ -901,22 +901,26 @@ active_info(series, k, local = FALSE)
 
 __Examples:__
 
+Compute Active Information with one initial condition:
 ```{r}
-# One initial condition:
 series <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
 active_info(series, k = 2)
-
-# ..and local variant:
+```
+and local variant:
+```{r}
 lai <- active_info(series, k = 2, local = T)
 t(lai)
+```
 
-# Two initial conditions:
+Compute Active Information with two initial conditions:
+```{r}
 series      <- matrix(nrow = 9, ncol = 2)
 series[, 1] <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
 series[, 2] <- c(1, 0, 0, 1, 0, 0, 1, 0, 0)
 active_info(series, k = 2)
-
-# ..and local variant:
+```
+and local variant:
+```{r}
 lai <- active_info(series, k = 2, local = T)
 t(lai)
 
@@ -940,31 +944,31 @@ block_entropy(series, k, local = FALSE)
 ```
 __Examples:__
 
+Compute Block Entropy with one initial condition and history lenght $k \in \{1, 2\}$:
 ```{r}
-# One initial condition:
-# k = 1
 series <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
 block_entropy(series, k = 1)
 
-# k = 2
 block_entropy(series, k = 2)
-
-# ..and local variant:
-# k = 1
+```
+and local variant:
+```{r}
 be <- block_entropy(series, k = 1, local = T)
 t(be)
 
-# k = 2
 be <- block_entropy(series, k = 2, local = T)
 t(be)
+```
 
-# Two initial conditions:
+Compute Block Entropy with two initial conditions and history lenght $k = 2$:
+```{r}
 series      <- matrix(nrow = 9, ncol = 2)
 series[, 1] <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
 series[, 2] <- c(1, 0, 0, 1, 0, 0, 1, 0, 0)
 block_entropy(series, k = 2)
-
-# ..and local variant:
+```
+and local variant:
+```{r}
 be <- block_entropy(series, k = 2, local = T)
 t(be)
 ```
@@ -998,16 +1002,17 @@ conditional_entropy(xs, ys, local = FALSE)
 
 __Examples:__
 
+Compute Conditional Entropy between two time series:
 ```{r}
 xs <- c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1)
 ys <- c(0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1)
 
-# Conditional entropy:
 conditional_entropy(xs, ys)
 
 conditional_entropy(ys, xs)
-
-# ..and local variant:
+```
+and local variant:
+```{r}
 ce <- conditional_entropy(xs, ys, local = T)
 t(ce)
 
@@ -1040,6 +1045,7 @@ cross_entropy(ps, qs)
 
 __Examples:__
 
+Compute Cross Entropy between two time series: 
 ```{r}
 ps <- c(0, 1, 1, 0, 1, 0, 0, 1, 0, 0)
 qs <- c(0, 0, 0, 0, 0, 1, 1, 0, 0, 1)
@@ -1076,7 +1082,7 @@ effective_info(tpm, inter = NULL)
 ```
 __Examples:__
 
-Uniform intervention distribution:
+Compute Effective Information with a uniform intervention distribution:
 ```{r}
 tpm      <- matrix(0, nrow = 2, ncol = 2)
 tpm[, 1] <- c(0.50, 0.5)
@@ -1084,7 +1090,7 @@ tpm[, 2] <- c(0.25, 0.75)
 effective_info(tpm, NULL)
 ```
 
-Non-uniform intervention distribution:
+Compute Effective Information with a non-uniform intervention distribution:
 ```{r}
 tpm      <- matrix(0, nrow = 2, ncol = 2)
 tpm[, 1] <- c(0.50, 0.5)
@@ -1131,22 +1137,26 @@ entropy_rate(series, k, local = FALSE)
 
 __Examples:__
 
+Compute the Entropy Rate for one initial condition:
 ```{r}
-# One initial condition:
 series <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
 entropy_rate(series, k = 2)
-
-# ..and local variant:
+```
+and local variant:
+```{r}
 er <- entropy_rate(series, k = 2, local = T)
 t(er)
+```
 
-# Two initial conditions:
+Compute the Entropy Rate for two initial conditions:
+```{r}
 series      <- matrix(nrow = 9, ncol = 2)
 series[, 1] <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
 series[, 2] <- c(1, 0, 0, 1, 0, 0, 1, 0, 0)
 entropy_rate(series, k = 2)
-
-# ..and local variant:
+```
+local variant:
+```{r}
 er <- entropy_rate(series, k = 2, local = T)
 t(er)
 ```
@@ -1177,23 +1187,27 @@ excess_entropy(series, k, local = FALSE)
 
 __Examples:__
 
+Compute Excess Entropy for one initial condition:
 ```{r}
-# One initial condition:
 series <- c(0, 0, 1, 1, 0, 0, 1, 1, 0)
 excess_entropy(series, k = 2)
-
-# ..and local variant:
-ee <- excess_entropy(series, k = 2, local = T)
+```
+and local variant:
+```{r}
+ee <- excess_entropy(series, k = 2, local = TRUE)
 t(ee)
+```
 
-# Two initial conditions:
+Compute Excess Entropy for two initial conditions:
+```{r}
 series      <- matrix(0, nrow = 9, ncol =2)
 series[, 1] <- c(0, 0, 1, 1, 0, 0, 1, 1, 0)
 series[, 2] <- c(0, 1, 0, 1, 0, 1, 0, 1, 0)
 excess_entropy(series, k = 2)
-
-# ..and local variant:
-ee <- excess_entropy(series, k = 2, local = T)
+```
+and local variant:
+```{r}
+ee <- excess_entropy(series, k = 2, local = TRUE)
 t(ee)
 ```
 
@@ -1228,25 +1242,27 @@ mutual_info(series, local = FALSE)
 
 __Examples:__
 
+Compute the Mutual Information between two variables:
 ```{r}
-# Two variables:
 xs <- matrix(c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
                0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1), ncol = 2)
-
 mutual_info(xs)
-
-# ..and local variant:
+```
+and local variant:
+```{r}
 mi <- mutual_info(xs, local = T)
 t(mi)
+```
 
-# Three variables:
+Compute the Mutual Information between three variables:
+```{r}
 xs <- matrix(c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
                0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1,
                1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1), ncol = 3)
-
 mutual_info(xs)
-
-# ..and local variant:
+```
+and local variant:
+```{r}
 mi <- mutual_info(xs, local = T)
 t(mi)
 ```
@@ -1288,8 +1304,9 @@ One initial condition:
 ```{r}
 series <- c(0, 0, 1, 1, 0, 0, 1, 1, 0)
 predictive_info(series, 1, 2)
-
-# ..and local variant:
+```
+and local variant:
+```{r}
 pi <- predictive_info(series, 1, 2, T)
 t(pi)
 ```
@@ -1300,8 +1317,9 @@ series      <- matrix(0, nrow = 9, ncol = 2)
 series[, 1] <- c(0, 0, 1, 1, 0, 0, 1, 1, 0)
 series[, 2] <- c(0, 1, 0, 1, 0, 1, 0, 1, 0)
 predictive_info(series, 1, 2)
-
-# ..and local variant:
+```
+and local variant:
+```{r}
 pi <- predictive_info(series, 1, 2, T)
 t(pi)
 ```
@@ -1335,16 +1353,16 @@ relative_entropy(xs, ys, local = FALSE)
 
 __Examples:__
 
+Compute the average relative entropy between two time series:
 ```{r}
 xs <- c(0, 1, 0, 0, 0, 0, 0, 0, 0, 1)
 ys <- c(0, 1, 1, 1, 1, 0, 0, 1, 0, 0)
 
-# Average relative entropy:
 relative_entropy(xs, ys)
-
 relative_entropy(ys, xs)
-
-# ..and local variant:
+```
+and local variant:
+```{r}
 re <- relative_entropy(xs, ys, local = T)
 t(re)
 
@@ -1404,7 +1422,7 @@ but we do not provide yet limiting functionality in this library
 __Interface:__
 
 Compute the average or local transfer entropy with a history length `k` with
-the possibility to conditioning on the background `back`.
+the possibility to conditioning on the background `ws`.
 
 ```r
 transfer_entropy(ys, xs, ws = NULL, k, local = FALSE) 
@@ -1412,17 +1430,20 @@ transfer_entropy(ys, xs, ws = NULL, k, local = FALSE)
 
 __Examples:__
 
+One initial condition, no background:
 ```{r}
-# One initial condition, no background:
 xs <- c(0, 1, 1, 1, 1, 0, 0, 0, 0)
 ys <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
 transfer_entropy(xs, ys, ws = NULL, k = 2)
-
-# .. and local variant:
+```
+and local variant:
+```{r}
 te <- transfer_entropy(xs, ys, ws = NULL, k = 2, local = T)
 t(te)
+```
 
-# Two initial conditions, no background:
+Two initial conditions, no background:
+```{r}
 xs <- matrix(0, nrow = 9, ncol = 2)
 xs[, 1] <- c(1, 0, 0, 0, 0, 1, 1, 1, 1)
 xs[, 2] <- c(1, 1, 1, 1, 0, 0, 0, 1, 1)
@@ -1430,18 +1451,22 @@ ys <- matrix(0, nrow = 9, ncol = 2)
 ys[, 1] <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
 ys[, 2] <- c(1, 0, 0, 0, 0, 1, 1, 1, 0)
 transfer_entropy(xs, ys, ws = NULL, k = 2)
-
-# .. and local variant:
+```
+and local variant:
+```{r}
 te <- transfer_entropy(xs, ys, ws = NULL, k = 2, local = T)
 t(te)
+```
 
-# One initial condition, one background process:
+One initial condition, one background process:
+```{r}
 xs <- c(0, 1, 1, 1, 1, 0, 0, 0, 0)
 ys <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
-ws <- array(c(0, 1, 1, 1, 1, 0, 1, 1, 1), dim = c(1, 9, 1))
+ws <- c(0, 1, 1, 1, 1, 0, 1, 1, 1)
 transfer_entropy(xs, ys, ws, k = 2)
-
-# .. and local variant:
+```
+and local variant:
+```{r}
 te <- transfer_entropy(xs, ys, ws, k = 2, local = T)
 t(te)
 ```
@@ -1450,15 +1475,16 @@ The following example is interesting in that the two background processes
 provide the same information about the destination as the source process does
 ($X = W_1 \oplus W_2$) but they don't separately.
 
+One initial condition, two background processes:
 ```{r}
-# One initial condition, two background processes:
 xs <- c(0, 1, 1, 1, 1, 0, 0, 0, 0)
 ys <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
-ws <- array(c(1, 0, 1, 0, 1, 1, 1, 1, 1,
-              1, 1, 0, 1, 0, 1, 1, 1, 1), dim = c(2, 9, 1))
+ws <- matrix(c(1, 0, 1, 0, 1, 1, 1, 1, 1,
+               1, 1, 0, 1, 0, 1, 1, 1, 1), ncol = 2)
 transfer_entropy(xs, ys, ws, k = 2)
-
-# .. and local variant:
+```
+and local variant:
+```{r}
 te <- transfer_entropy(xs, ys, ws, k = 2, local = T)
 t(te)
 ```
