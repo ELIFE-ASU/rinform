@@ -1211,11 +1211,79 @@ ee <- excess_entropy(series, k = 2, local = TRUE)
 t(ee)
 ```
 
-## Information Flow
-
 ## Evidence of Integration {#EvidenceOfIntegration}
 
-## Mutual Information
+Evidence of Integration (EoI) was introduced in [[@Biehl2016]](#References) as a means
+of identifying representations of agents in dynamical systems. Given a collection of
+random variables, $\mathcal{X}=\{X_1,X_2,\ldots,X_l\}$, we can form (non-trivial)
+partitionings of $\mathcal{X}$:
+$$
+\{\mathcal{Z} \subset \mathcal{P}(\mathcal{X})\setminus\{\mathcal{X},\varnothing\}\ |\
+    \mathcal{Z} \not= \varnothing,
+    \bigcup_{Z \in \mathcal{Z}} Z = \mathcal{X} ~\textrm{and}~ Z_i \cap Z_j = \varnothing,
+    i \not = j
+\}
+$$
+
+Each partitioning $\mathcal{Z} = \{Z_1, \ldots, Z_m\}$ consists of a collection of
+joint random variables built from $\mathcal{X}$. The configurations of
+$\mathcal{Z}$ are in one-to-one correspondence with the configurations of
+$\mathcal{X}$. Given such a partitioning, we can ask what the pointwise mutual
+information is:
+$$
+mi_\mathcal{Z}(z_1, \ldots, z_m) = \log{\frac{p(z_1, \ldots, z_m)}{p(z_1) \ldots p(z_m)}}.
+$$
+
+If $z=\{z_1,\ldots,z_m\}$ corresponds to the configuration $x=\{x_1,\ldots,x_l\}$,
+we refer to the above mutual information as the "evidence of
+integration of $x$ with respect to the partitioning $\mathcal{Z}$".
+
+We say that a configuration $x$ is _integrated_ if and only if the evidence of
+integration of $x$ is positive for all partitionings of the system.
+
+__Interface:__
+
+Given a sequence of $n$ observed states of $l$ random variables (`series`),
+compute the evidence of integration for each partitioning of the $l$ variables, and
+return the minimum and maximum evidence for each observation. If the number of
+variables $l$ is large, the user can test a small subset of the
+partitionings by providing a partitioning `parts` to increase confidence that the
+system is integrated. In this case, the function computes and returns the
+evidence of integration for each observation with respect to the partitioning `parts`.
+```r
+integration_evidence(series, parts = NULL)
+
+```
+
+__Examples:__
+
+Compute Evidence of Integration of three time series:
+```{r}
+series      <- matrix(0, nrow = 10, ncol = 3)
+series[, 1] <- c(0, 1, 0, 1, 1, 1, 0, 0, 1, 0)
+series[, 2] <- c(0, 1, 0, 1, 1, 1, 0, 0, 1, 0)
+series[, 3] <- c(1, 1, 1, 1, 1, 0, 0, 0, 0, 0)
+integration_evidence(series)
+```
+
+Compute Evidence of Integration for the same three time series but only for the
+partitionning `c(1, 1, 2)`:
+```{r}
+parts <- c(1, 1, 2)
+integration_evidence(series, parts)
+```
+
+## Information Flow {#InformationFlow}
+
+__Interface:__
+
+```r
+
+```
+
+__Examples:__
+
+## Mutual Information {#MutualInformationTS}
 
 [Mutual information](https://en.wikipedia.org/wiki/Mutual_information) (MI) is a measure of
 the amount of mutual dependence between at least two random variables. Locally, MI is

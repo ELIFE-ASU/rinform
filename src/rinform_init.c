@@ -28,6 +28,8 @@ static const R_CMethodDef CEntries[] = {
     {"r_excess_entropy_",                  (DL_FUNC) &r_excess_entropy_,                   7},
     {"r_get_item_",                        (DL_FUNC) &r_get_item_,                         6},
     {"r_infer_",                           (DL_FUNC) &r_infer_,                            4},
+    {"r_integration_evidence_",            (DL_FUNC) &r_integration_evidence_,             6},
+    {"r_integration_evidence_parts_",      (DL_FUNC) &r_integration_evidence_parts_,       8},
     {"r_length_",                          (DL_FUNC) &r_length_,                           5},
     {"r_local_active_info_",               (DL_FUNC) &r_local_active_info_,                7},
     {"r_local_block_entropy_",             (DL_FUNC) &r_local_block_entropy_,              7},

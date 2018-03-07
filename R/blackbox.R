@@ -73,7 +73,7 @@ black_box <- function(series, l, r = NULL, s = NULL) {
     for (i in 1:l) {
       b[i] <- max(2, max(series[, 1:n + n * (i - 1)]) + 1)        
     }
-  }
+  } else { stop("<series> is not a vector or a matrix!") }
 
   if      (max(r) > 0  & max(s) == 0) { box <- rep(-1, n  * (m - max(r) + 1)) }
   else if (max(r) == 0 & max(s) > 0)  { box <- rep(-1, n  * (m - max(s))) }
@@ -146,7 +146,7 @@ black_box_parts <- function(series, parts) {
     for (i in 1:l) {
       b[i] <- max(2, max(series[, i]) + 1)        
     }
-  }
+  } else { stop("<series> is not a vector or a matrix!") }
   
   box <- rep(-1, nparts * n + nparts)
   x    <- .C("r_black_box_parts_",
