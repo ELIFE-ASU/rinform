@@ -21,7 +21,7 @@
 #' @param r Vector giving the history lengths.
 #' @param s Vector giving the future lengths.
 #'
-#' @return Vector giving the black-boxed time series.
+#' @return Vector or Matrix giving the black-boxed time series.
 #'
 #' @example inst/examples/ex_black_box.R
 #'
@@ -94,9 +94,76 @@ black_box <- function(series, l, r = NULL, s = NULL) {
 	     err     = as.integer(err))
 
   if (.check_inform_error(x$err) == 0) {
-    box <- x$box
+    box <- as.numeric(x$box)
     if (n > 1) { dim(box) <- c(length(box) / n, n) }
   }
 
   box
+}
+
+################################################################################
+#' Black Box Parts
+#'
+#' Black-box time series from a collection of `l` sources where each series
+#' has the same number of time steps but possibly different bases into a number
+#' of different time series according to the partitioning scheme \code{parts}.
+#' The resulting time series and their bases are returned. The base of the
+#' resulting time series is given by the product of the bases of each time
+#' series in the partition. 
+#'
+#' @param series Matrix of the time series to black-box.
+#' @param parts Vector giving the partitioning schema.
+#'
+#' @return Vector or Matrix giving the black-boxed time series.
+#'
+#' @example inst/examples/ex_black_box_parts.R
+#'
+#' @export
+#'
+#' @useDynLib rinform r_black_box_parts_
+################################################################################
+black_box_parts <- function(series, parts) {
+  err      <- 0
+  
+  .check_series(series)
+  .check_partition(parts)
+
+  # Convert from R indexes to C indexes
+  parts  <- parts - 1
+  nparts <- max(parts) + 1
+
+  # Extract number of initial conditions and time steps
+  if (is.vector(series)) {
+    stop("<series> is a vector with only one time series!")  
+  } else if (is.matrix(series)) {
+    if (length(parts) != dim(series)[2]) {
+      stop("Length of <parts> is different from number of time series!")
+    }
+ 
+    l <- dim(series)[2]
+    n <- dim(series)[1]
+    b <- rep(0, l)
+    for (i in 1:l) {
+      b[i] <- max(2, max(series[, i]) + 1)        
+    }
+  }
+  
+  box <- rep(-1, nparts * n + nparts)
+  x    <- .C("r_black_box_parts_",
+             series  = as.integer(series),
+	     l       = as.integer(l),
+	     n       = as.integer(n),
+	     b       = as.integer(b),
+	     parts   = as.integer(parts),
+	     nparts  = as.integer(nparts),
+	     box     = as.integer(box),
+	     err     = as.integer(err))
+
+  if (.check_inform_error(x$err) == 0) {
+    box <- as.numeric(x$box[1:(nparts * n)])
+    b   <- as.numeric(x$box[(nparts * n + 1):length(x$box)])
+    if (nparts > 1) { dim(box) <- c(n, nparts) }
+  }
+
+  list(box = box, b = b)
 }

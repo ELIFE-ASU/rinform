@@ -16,7 +16,7 @@ black_box(series, l, r = NULL, s = NULL)
 \item{s}{Vector giving the future lengths.}
 }
 \value{
-Vector giving the black-boxed time series.
+Vector or Matrix giving the black-boxed time series.
 }
 \description{
 Black-box time series from a collection of \code{l} sources where each

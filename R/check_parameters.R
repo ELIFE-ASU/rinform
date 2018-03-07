@@ -43,6 +43,25 @@
   }  
 }
 
+.check_partition <- function (x) {
+  if (!is.numeric(x)) {
+    stop("<", deparse(substitute(x)), "> is not numeric!", call. = !T)
+  }
+  if (!is.vector(x)) {
+    stop("<", deparse(substitute(x)), "> is not a vector!", call. = !T)
+  }
+  if (!prod(x > 0)) {
+    stop("<", deparse(substitute(x)), "> is not striclty-positive defined!", call. = !T)
+  }
+  for (i in 1:max(x)) {
+    if (!(i %in% x)) {
+      stop("<", deparse(substitute(x)), "> does not contain partition <",
+           i, ">!", call. = !T)
+    }
+  }
+}
+
+
 .check_positive_integer <- function (x) {
   if (is.null(x)) {
     stop("<", deparse(substitute(x)), "> is NULL!", call. = !T)

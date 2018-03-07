@@ -1470,7 +1470,7 @@ t(te)
 +==========================+==========================================================+
 | Binning                  |[`series_range`](#SeriesRange), [`bin_series`](#BinSeries)|
 +--------------------------+----------------------------------------------------------+
-| Black-Boxing             |  |
+| Black-Boxing             | [`black_box`](#BlackBox), [`black_box_parts`](#BlackBoxParts) |
 +--------------------------+----------------------------------------------------------+
 | Coalescing               | [`coalesce`](#Coalesce) |
 +--------------------------+----------------------------------------------------------+
@@ -1650,11 +1650,63 @@ black_box(series, l = 2, r = c(2, 1), s = c(0, 1))
 
 __Interface:__
 
+Black-box time series from a collection of $l$ sources where each
+series has the same number of time steps but possibly different bases into
+a number of different time series according to the partitioning scheme `parts`.
+The resulting time series and their bases are returned. The base of the
+resulting time series is given by the product of the bases of each time
+series in the partition. 
+
 ```r
-black_box_parts()
+black_box_parts(series, parts)
 ```
 
 __Examples:__
+
+Black-box 4 time series (each of length 8) into a single time series:
+```{r}
+xs      <- matrix(0, nrow = 8, ncol = 4)
+xs[, 1] <- c(0, 1, 1, 0, 1, 0, 0, 1)
+xs[, 2] <- c(1, 0, 0, 1, 1, 0, 1, 0)
+xs[, 3] <- c(0, 0, 0, 1, 1, 1, 0, 0)
+xs[, 4] <- c(1, 0, 1, 0, 1, 1, 1, 0)
+parts   <- c(1, 1, 1, 1)
+black_box_parts(xs, parts)
+```
+This could have been more simple using [`black_box`]($BlackBox), but it is for
+illustrative purpose.
+
+Black-box 4 time series (of length 8) into two time series using the
+partitioning scheme $(1,2,2,1)$. That is, combine the 1st and 4th, and the
+2nd and 3rd.
+```{r}
+parts   <- c(1, 2, 2, 1)
+x <- black_box_parts(xs, parts)
+x
+```
+Note that the two time series each have a base of 4, and the bases are
+returned as `$b`.
+
+Finally, in this example, we compute the multivariate mutual information
+between 4 time series (each of length 8) for all partitionings of the system
+(except the very first since that only yields a single time series).
+That is, each partition is treated as a seperate variable and
+the mutual information is computed between the partitioned variables.
+```{r}
+xs         <- matrix(0, nrow = 8, ncol = 4)
+xs[, 1]    <- c(0, 1, 1, 0, 1, 0, 0, 1)
+xs[, 2]    <- c(1, 0, 0, 1, 1, 0, 1, 0)
+xs[, 3]    <- c(0, 0, 0, 1, 1, 1, 0, 0)
+xs[, 4]    <- c(1, 0, 1, 0, 1, 1, 1, 0)
+all_parts  <- partitioning(4)
+mmi        <- rep(0, dim(all_parts)[2] - 1)
+
+for (i in 2:dim(all_parts)[2]) {
+  x          <- black_box_parts(xs, all_parts[, i])
+  mmi[i - 1] <- mutual_info(x$box)
+}
+round(mmi, 3)
+```
 
 ## Coalescing Time Series {#Coalesce}
     
