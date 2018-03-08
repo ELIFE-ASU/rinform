@@ -111,6 +111,12 @@ extern void r_relative_entropy_(int *xs, int *ys, int *n, int *b, double *rval, 
 extern void r_local_relative_entropy_(int *xs, int *ys, int *n, int *b, double *rval,
 				      int *err);
 
+/* rinform_separable_info.c */
+extern void r_separable_info_(int *srcs, int *dest, int *l, int *n, int *m,
+			      int *b, int *k, double *rval, int *err);
+extern void r_local_separable_info_(int *srcs, int *dest, int *l, int *n, int *m,
+				    int *b, int *k, double *rval, int *err);
+
 /* rinform_series_to_tpm.c */
 extern void r_series_to_tpm_(int *series, int *n, int *m, int *b, double *tpm, int *err);
 

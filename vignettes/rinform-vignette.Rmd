@@ -1497,8 +1497,8 @@ See [[@Kullback1951]](#References) and [[@Cover1991]](#References) for more info
 
 __Interface:__
 
-Compute the average and local relative entropy between time series drawn from posterior and prior
-distributions, here `xs` and `ys` respectively.
+Compute the average and local relative entropy between time series drawn
+from posterior and prior distributions, here `xs` and `ys` respectively.
 
 ```r
 relative_entropy(xs, ys, local = FALSE)
@@ -1525,7 +1525,74 @@ t(re)
 
 ## Separable Information
 
-## Transfer Entropy
+Separable information (SI) was introduced in [[@Lizier2010]](#References) as a method
+for detecting information modification in distributed computations. Given a random
+variable $Y$ and a collection of potentially informative sources $V_Y$ (wherein
+$Y \not\in V_Y$), separable information quantifies the total information gained about
+$Y$ from seperate observations of histories of $Y$ and "transfer contributions"
+from each of the sources $X \in V_Y$. In other words, it is the sum of the
+[Active Information](#ActiveInformation) of $Y$ and the (apparent)
+[Transfer Entropy](#TransferEntropy) from each source to $Y$:
+$$
+s_{Y,i}(k) = a_{Y,i}(k) + \sum_{X \in V_Y} t_{X \rightarrow Y, i}(k),\\
+S_Y(k) = \langle s_{Y,i}(k) \rangle_i = A_Y(k) + \sum_{X \in V_Y} T_{X \rightarrow Y}(k).
+$$
+
+__Interface:__
+
+Compute the average or local separable information of `dest` given a set of sources `srcs`
+and history length `k`.
+```r
+separable_info(srcs, dest, k, local = FALSE)
+```
+
+__Examples:__
+
+Compute Separable Information for one initial condition and one source:
+```{r}
+dest <- c(0, 1, 1, 1, 1, 0, 0, 0, 0)
+srcs <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
+separable_info(srcs, dest, k = 2)
+```
+and local variant:
+```{r}
+si <- separable_info(srcs, dest, k = 2, local = TRUE)
+t(si)
+```
+
+Compute Separable Information for one initial condition and multiple sources:
+```{r}
+dest      <- c(0, 1, 1, 1, 1, 0, 0, 0, 0)
+srcs      <- matrix(0, nrow = 9, ncol = 2)
+srcs[, 1] <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
+srcs[, 2] <- c(1, 1, 1, 1, 0, 0, 0, 0, 0)
+separable_info(srcs, dest, k = 2)
+```
+and local variant:
+```{r}
+si <- separable_info(srcs, dest, k = 2, local = TRUE)
+t(si)
+```
+
+Compute Separable Information for multiple initial conditions and multiple sources:
+```{r}
+dest      <- matrix(0, nrow = 9, ncol = 2)
+dest[, 1] <- c(0, 1, 1, 1, 1, 0, 0, 0, 0)
+dest[, 2] <- c(1, 1, 0, 1, 1, 0, 1, 1, 0)
+srcs      <- matrix(0, nrow = 9, ncol = 4)
+srcs[, 1] <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
+srcs[, 2] <- c(1, 1, 1, 1, 1, 0, 1, 1, 0)
+srcs[, 3] <- c(1, 1, 1, 1, 0, 0, 0, 0, 0)
+srcs[, 4] <- c(0, 0, 0, 0, 1, 1, 1, 1, 0)
+separable_info(srcs, dest, k = 2)
+```
+and local variant:
+```{r}
+si <- separable_info(srcs, dest, k = 2, local = TRUE)
+t(si)
+```
+
+## Transfer Entropy {#TransferEntropy}
 
 [Transer entropy](https://en.wikipedia.org/wiki/Transfer_entropy) (TE) was introduced
 in [[@Schreiber2000]](#References) to quantify information transfer between an
