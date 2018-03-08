@@ -15,7 +15,7 @@ List giving the coalesced time series and its base.
 \description{
 Coalesce a timeseries into as few contiguous states as possible. The magic
 of information measures is that the actual values of a time series
-are irrelavent. For example, \code{[0, 1, 0, 1, 1]} has the same entropy as
+are irrelevant. For example, \code{[0, 1, 0, 1, 1]} has the same entropy as
 \code{[2, 9, 2, 9, 9} (possibly up to a rescaling). This give us the freedom
 to shift around the values of a time series as long as we do not change the
 relative number of states. This function thus provides a way of "compressing"

@@ -15,7 +15,7 @@ shannon_entropy(p, b = 2)
 Numeric giving the Shannon entropy of the distribution.
 }
 \description{
-Compute the base-\code{b} shannon entropy of the distribution \code{p}.
+Compute the base-\code{b} Shannon entropy of the distribution \code{p}.
 }
 \examples{
 d <- Dist(c(1, 1, 1, 1))

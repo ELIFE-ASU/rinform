@@ -19,7 +19,7 @@ Numeric giving the average active information or a vector giving the
         local active information.
 }
 \description{
-Compute the average or local active information of a timeseries with history
+Compute the average or local active information of a time series with history
 length \code{k}.
 }
 \examples{

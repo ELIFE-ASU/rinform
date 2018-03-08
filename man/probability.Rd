@@ -15,7 +15,7 @@ probability(d, event)
 Numerical giving the empirical probability of \code{event}.
 }
 \description{
-Generic function to compute the empiricial probability of an \code{event}.
+Generic function to compute the empirical probability of an \code{event}.
 }
 \examples{
 d <- Dist(c(0, 1, 2, 3, 4, 5))

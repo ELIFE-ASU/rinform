@@ -20,7 +20,7 @@ List giving the binned sequence, the number of bins and either the
         bin sizes or bin bounds.
 }
 \description{
-Bin a continously-valued times series. The binning can be performed in any
+Bin a continuously-valued times series. The binning can be performed in any
 one of three ways. The first is binning the time series into \code{b}
 uniform bins (with \code{b} an integer). The second type of binning produces
 bins of a specific size \code{step}. The third type of binning breaks the
