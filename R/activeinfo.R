@@ -9,7 +9,7 @@
 ################################################################################
 #' Active Information
 #'
-#' Compute the average or local active information of a timeseries with history
+#' Compute the average or local active information of a time series with history
 #' length \code{k}.
 #'
 #' @param series Vector or matrix specifying one or more time series.

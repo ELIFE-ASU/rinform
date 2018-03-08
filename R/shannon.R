@@ -9,7 +9,7 @@
 ################################################################################
 #' Shannon Entropy
 #'
-#' Compute the base-\code{b} shannon entropy of the distribution \code{p}.
+#' Compute the base-\code{b} Shannon entropy of the distribution \code{p}.
 #'
 #' @param p Dist specifying the distribution.
 #' @param b Numeric giving the base of the logarithm.
@@ -46,7 +46,7 @@ shannon_entropy <- function(p, b = 2.0) {
 ################################################################################
 #' Shannon Mutual Information
 #'
-#' Compute the base-\code{b} mututal information between two random variables.
+#' Compute the base-\code{b} mutual information between two random variables.
 #'
 #' @param p_xy Dist specifying the joint distribution.
 #' @param p_x Dist specifying the \code{x}-marginal distribution.
@@ -183,7 +183,7 @@ shannon_cond_mutual_info <- function(p_xyz, p_xz, p_yz, p_z, b = 2.0) {
 ################################################################################
 #' Shannon Relative Entropy
 #'
-#' Compute the base-\code{b} shannon relative entropy between posterior
+#' Compute the base-\code{b} Shannon relative entropy between posterior
 #' \code{p} and prior \code{q} distributions.
 #'
 #' @param p Dist specifying the posterior distribution.

@@ -5,7 +5,7 @@
 #' rinform: An R wrapper of the Inform C library. 
 #'
 #' As for the Inform library, rinform is structured around the concepts of:
-#' * discrete emperical probability distributions which form the basis for
+#' * discrete empirical probability distributions which form the basis for
 #'   all of the information-theoretic measures,
 #' * classic information-theoretic measures built upon empirical distributions,
 #' * measures of information dynamics for time series.

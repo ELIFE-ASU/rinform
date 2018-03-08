@@ -608,7 +608,7 @@ accumulate.Dist <- function(d, events) {
 ################################################################################
 #' Probability
 #'
-#' Generic function to compute the empiricial probability of an \code{event}.
+#' Generic function to compute the empirical probability of an \code{event}.
 #'
 #' @param d Dist object representing the distribution.
 #' @param event Numeric representing the observed event.
