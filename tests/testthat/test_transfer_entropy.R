@@ -95,8 +95,8 @@ test_that("transfer_entropy on ensemble of series", {
 test_that("transfer_entropy complete", {
   xs   <- c(0, 0, 1, 1, 1, 0, 1, 1, 0)
   ys   <- c(1, 0, 1, 1, 0, 1, 0, 1, 1)
-  back <- array(c(0, 0, 1, 1, 0, 0, 0, 1, 0,
-                  0, 1, 1, 0, 0, 1, 0, 0, 1), dim = c(2, 9, 1))
+  back <- matrix(c(0, 0, 1, 1, 0, 0, 0, 1, 0,
+                   0, 1, 1, 0, 0, 1, 0, 0, 1), ncol = 2)
   expect_equal(transfer_entropy(ys, xs, back, k = 2, local = !T),
                0.000000, tolerance = 1e-6)
   expect_equal(transfer_entropy(xs, ys, back, k = 2, local = !T),
@@ -104,7 +104,7 @@ test_that("transfer_entropy complete", {
 
   xs   <- c(0, 0, 0, 1, 1, 1, 0, 0, 0)
   ys   <- c(0, 0, 1, 1, 1, 0, 0, 0, 1)
-  back <- array(c(0, 0, 1, 0, 1, 1, 0, 1, 0), dim = c(1, 9, 1))
+  back <- c(0, 0, 1, 0, 1, 1, 0, 1, 0)
   expect_equal(transfer_entropy(ys, xs, back, k = 2, local = !T),
                0.571429, tolerance = 1e-6)
   expect_equal(transfer_entropy(xs, ys, back, k = 2, local = !T),
@@ -112,18 +112,17 @@ test_that("transfer_entropy complete", {
 
   xs   <- c(0, 0, 0, 1, 1, 1, 0, 0, 0)
   ys   <- c(0, 0, 1, 1, 1, 0, 0, 0, 1)
-  back <- array(c(0, 0, 1, 0, 1, 1, 0, 1, 0,
-                  0, 0, 0, 1, 1, 0, 1, 0, 0), dim = c(2, 9, 1))
+  back <- matrix(c(0, 0, 1, 0, 1, 1, 0, 1, 0,
+                   0, 0, 0, 1, 1, 0, 1, 0, 0), ncol = 2)
   expect_equal(transfer_entropy(ys, xs, back, k = 2, local = !T),
                0.285714, tolerance = 1e-6)
   expect_equal(transfer_entropy(xs, ys, back, k = 2, local = !T),
                0.000000, tolerance = 1e-6)
 
-  skip("transfer_entropy complete failing test")
   xs   <- c(0, 0, 0, 1, 1, 1, 0, 0, 0)
   ys   <- c(0, 0, 1, 1, 1, 0, 0, 0, 1)
-  back <- array(c(0, 0, 1, 0, 1, 1, 0, 1, 0,
-                  1, 1, 0, 1, 0, 0, 1, 0, 1), dim = c(2, 9, 1))
+  back <- matrix(c(0, 0, 1, 0, 1, 1, 0, 1, 0,
+                  1, 1, 0, 1, 0, 0, 1, 0, 1), ncol = 2)
   expect_equal(transfer_entropy(ys, xs, back, k = 2, local = !T),
                0.571429, tolerance = 1e-6)
   expect_equal(transfer_entropy(xs, ys, back, k = 2, local = !T),
@@ -202,8 +201,8 @@ test_that("transfer_entropy local on ensemble of series", {
 test_that("transfer_entropy local complete", {
   xs   <- c(0, 0, 1, 1, 1, 0, 1, 1, 0)
   ys   <- c(1, 0, 1, 1, 0, 1, 0, 1, 1)
-  back <- array(c(0, 0, 1, 1, 0, 0, 0, 1, 0,
-                  0, 1, 1, 0, 0, 1, 0, 0, 1), dim = c(2, 9, 1))
+  back <- matrix(c(0, 0, 1, 1, 0, 0, 0, 1, 0,
+                   0, 1, 1, 0, 0, 1, 0, 0, 1), ncol = 2)
   expect_equal(mean(transfer_entropy(ys, xs, back, k = 2, local = T)),
                0.000000, tolerance = 1e-6)
   expect_equal(mean(transfer_entropy(xs, ys, back, k = 2, local = T)),
@@ -211,7 +210,7 @@ test_that("transfer_entropy local complete", {
 
   xs   <- c(0, 0, 0, 1, 1, 1, 0, 0, 0)
   ys   <- c(0, 0, 1, 1, 1, 0, 0, 0, 1)
-  back <- array(c(0, 0, 1, 0, 1, 1, 0, 1, 0), dim = c(1, 9, 1))
+  back <- c(0, 0, 1, 0, 1, 1, 0, 1, 0)
   expect_equal(mean(transfer_entropy(ys, xs, back, k = 2, local = T)),
                0.571429, tolerance = 1e-6)
   expect_equal(mean(transfer_entropy(xs, ys, back, k = 2, local = T)),
@@ -219,18 +218,17 @@ test_that("transfer_entropy local complete", {
 
   xs   <- c(0, 0, 0, 1, 1, 1, 0, 0, 0)
   ys   <- c(0, 0, 1, 1, 1, 0, 0, 0, 1)
-  back <- array(c(0, 0, 1, 0, 1, 1, 0, 1, 0,
-                  0, 0, 0, 1, 1, 0, 1, 0, 0), dim = c(2, 9, 1))
+  back <- matrix(c(0, 0, 1, 0, 1, 1, 0, 1, 0,
+                  0, 0, 0, 1, 1, 0, 1, 0, 0), ncol = 2)
   expect_equal(mean(transfer_entropy(ys, xs, back, k = 2, local = T)),
                0.285714, tolerance = 1e-6)
   expect_equal(mean(transfer_entropy(xs, ys, back, k = 2, local = T)),
                0.000000, tolerance = 1e-6)
-
-  skip("transfer_entropy complete failing test")
+	       
   xs   <- c(0, 0, 0, 1, 1, 1, 0, 0, 0)
   ys   <- c(0, 0, 1, 1, 1, 0, 0, 0, 1)
-  back <- array(c(0, 0, 1, 0, 1, 1, 0, 1, 0,
-                  1, 1, 0, 1, 0, 0, 1, 0, 1), dim = c(2, 9, 1))
+  back <- matrix(c(0, 0, 1, 0, 1, 1, 0, 1, 0,
+                  1, 1, 0, 1, 0, 0, 1, 0, 1), ncol = 2)
   expect_equal(mean(transfer_entropy(ys, xs, back, k = 2, local = T)),
                0.571429, tolerance = 1e-6)
   expect_equal(mean(transfer_entropy(xs, ys, back, k = 2, local = T)),

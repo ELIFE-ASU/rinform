@@ -13,7 +13,10 @@ series_to_tpm(series)
 Matrix giving the corresponding transition probability matrix.
 }
 \description{
-Description..
+Estimate the one-time-step transition probability matrix `A` from a time
+series. The element `A_{ji}` is the probability of transitioning to state
+`j` in the next time step given the system is in state `i` (note the
+column-major convention).
 }
 \examples{
 # TPM from 2 base-2 time series

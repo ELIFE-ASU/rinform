@@ -41,20 +41,20 @@ transfer_entropy <- function(ys, xs, ws = NULL, k, local = FALSE) {
 
   .check_series(ys)
   .check_series(xs)
-  if(!is.null(ws)) .check_series_array(ws)
+  if(!is.null(ws)) .check_series(ws)
   .check_history(k)
   .check_local(local)
 
   # Extract number of series and length
   if (is.vector(xs) & is.vector(ys)) {
     if (length(xs) != length(ys)) {
-      stop("<xs> and <ys> differ in length")
+      stop("<xs> and <ys> differ in length!")
     }
     n <- 1
     m <- length(xs)
   } else if (is.matrix(xs) & is.matrix(ys)) {
     if (dim(xs)[1] != dim(ys)[1] | dim(xs)[2] != dim(ys)[2]) {
-      stop("<xs> and <ys> have different dimensions")
+      stop("<xs> and <ys> have different dimensions!")
     }
     n <- dim(xs)[2]
     m <- dim(xs)[1]
@@ -69,20 +69,26 @@ transfer_entropy <- function(ys, xs, ws = NULL, k, local = FALSE) {
 
   # Extract number of series and length of the background
   if (!is.null(ws)) {
-    if (dim(ws)[2] != m) {
-      stop("<ws> differ in number of time steps")
-    }
-    if (dim(ws)[3] != n) {
-      stop("<ws> differ in number of time series")
-    }
-    l <- dim(ws)[1]
+    if (is.vector(ws)) {
+      if (length(ws) != m) {
+        stop("<ws> differ in number of time steps!")
+      }
+      if (n != 1) {
+        stop("<ws> differ in number of time series!")
+      }
+      l <- 1
+    } else if (is.matrix(ws)) {
+      if (dim(ws)[1] != m) {
+        stop("<ws> differ in number of time steps!")
+      }
+      if (dim(ws)[2] %% n != 0) {
+        stop("<ws> differ in number of time series!")
+      }
+      l <- dim(ws)[2] / n
+    } else { stop("<ws> is not a vector or a matrix!") }
 
     # Convert to integer vector suitable for C
-    wst <- as.integer(rep(0, l * m * n))
-    for (i in 1:l) {
-      wst[((i - 1) * m * n + 1):((m * n) * i)] <- as.integer(ws[i, , ])
-    }
-    ws <- wst
+    ws <- as.integer(ws)
 
     # Compute the value of <b>
     b <- max(2, max(xs) + 1, max(ys) + 1, max(ws) + 1)
