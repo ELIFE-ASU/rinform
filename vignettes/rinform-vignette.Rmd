@@ -3,7 +3,6 @@ title: "The _rinform_ Package"
 author: "Gabriele Valentini"
 date: "`r Sys.Date()`"
 output:
-#  rmarkdown::html_vignette
   html_document:
     toc: true # table of content true
     toc_depth: 2  # upto three depths of headings (specified by #, ## and ###)
@@ -371,12 +370,14 @@ length(d)
 
 __Examples:__
 
+Size of a NULL distribution:
 ```{r}
-# NULL distribution
 d <- NULL
 length(d)
+```
 
-# Distribution with size 5
+Size of a distribution with 5 elements:
+```{r}
 d <- Dist(5)
 length(d)
 ```
@@ -393,11 +394,14 @@ counts(d)
 
 __Examples:__
 
+Counts of valid distribution:
 ```{r}
-# Counts of valid distribution
 dist <- Dist(c(5, 10))
 counts(dist) == 15
+```
 
+Let's modify the distribution and count again:
+```{r}
 dist <- set_item(dist, 2, 5)
 counts(dist) == 10
 ```
@@ -416,16 +420,20 @@ valid(d)
 
 __Examples:__
 
+Invalid distribution with 0 observations:
 ```{r}
-# Distribution with 0 observations
 dist <- Dist(3)
 valid(dist)
+```
 
-# Valid distribution
+A (valid) distribution with a support of 5 elements:
+```{r}
 dist <- Dist(c(1:5))
 valid(dist)
+```
 
-# Invalid distribution with 0 support
+Let's invalidate distribution by zeroing its support:
+```{r}
 dist$size <- as.integer(0)
 valid(dist)
 ```
@@ -442,8 +450,8 @@ get_item(d, event)
 
 __Examples:__
 
+Get all items in a sequence from a valid distribution:
 ```{r}
-# Get item from a valid distribution
 dist <- Dist(c(3, 2, 1, 0))
 get_item(dist, 1) == 3
 get_item(dist, 2) == 2
@@ -466,12 +474,14 @@ set_item(d, event, value)
 
 __Examples:__
 
+Let's initialize empty distribution
 ```{r}
-# Initialize empty distribution
 dist <- Dist(2)
 dist
+```
 
-# Set item into a valid distribution
+Now we can set items and make it a valid distribution:
+```{r}
 dist <- set_item(dist, 1, 3)
 dist <- set_item(dist, 2, 8)
 dist
@@ -492,11 +502,13 @@ tick(d, event)
 
 __Examples:__
 
+Let's creare an initial distribution:
 ```{r}
-# Initial distribution
 dist <- Dist(c(2, 4))
+```
 
-# Adding an observation for each event
+Now we can add an observation for each event:
+```{r}
 dist <- tick(dist, 1)
 get_item(dist, 1) == 3
 
@@ -519,21 +531,26 @@ accumulate(d, events)
 
 __Examples:__
 
+Let's create a valid distribution and dump it:
 ```{r}
-# Create a valid distribution
 d <- Dist(c(1, 2, 3))
 dump(d)
+```
 
-# Accumulate events
+We can now accumulate events:
+```{r}
 events <- c(0, 0, 1, 0, 1)
 d <- accumulate(d, events)
 dump(d)
+```
 
-# Accumulate invalid events
+If we try to accumulate invalid events, 
+```{r}
 events <- c(0, 1, 1, 3, 1)
 d <- accumulate(d, events)
 dump(d)
 ```
+only events up to the first invalid entry will be added.
 
 ## Probabilities
 
@@ -550,11 +567,13 @@ probability(d, event)
 
 __Example:__
 
+Let's initialize a distribution with a support of 3:
 ```{r}
-# Initialize distribution
 dist <- Dist(c(2, 2, 4))
+```
 
-# Compute probabilities
+We can compute probabilities as:
+```{r}
 probability(dist, 1) == 0.25
 probability(dist, 2) == 0.25
 probability(dist, 3) == 0.50
@@ -573,12 +592,14 @@ dump(d)
 
 __Example:__
 
+Let's initialize distribution and dump its probabilities:
 ```{r}
-# Initialize distribution and dump probabilities
 dist <- Dist(c(2, 2, 4))
 dump(dist)
+```
 
-# Modify and dump again
+Now we can modify the distribution and dump it again:
+```{r}
 dist <- set_item(dist, 1, 12)
 dump(dist)
 ```
@@ -852,15 +873,41 @@ In the *rinform* wrapper we deal with this by *always* using base-2 logarithms a
 computing the base of each time series internally to the wrapper. All of this ensures that
 the library is a simple as reasonably possible.
 
-### Multiple Initial Conditions
-You generally need *a lot* of data to infer a probability distribution.  An experimentalist
-or simulator might then collect data over multiple trials or initial conditions. Most of
-*rinform*'s time series measures allow the user to pass in a two-dimensional matrix
-with each column representing a time series from a different initial condition. From
-this the probability distributions are inferred, and the desired value is calculated. This
-has the downside of requiring that the user store all of the data in memory, but it has the
-advantage of being fast and simple.
+### Multiple Variables, Initial Conditions, and Time Steps
 
+You generally need *a lot* of data to infer a probability distribution.  An experimentalist
+or simulator might then collect data over multiple trials or _initial conditions_. Generally, this process also involves a large number of _variables_.  Most of
+_rinform_'s time series measures allow the user to pass in a two-dimensional matrix
+with each column representing a time series from a different initial condition and/or
+variable. From this the probability distributions are inferred, and the desired value
+is calculated. This has the downside of requiring that the user store all of the
+data in memory, but it has the advantage of being fast and simple.
+
+Time series measures provided by _rinform_ accept as arguments Vector and Matrix objects.
+A Vector, for example,
+```{r}
+xs <- c(1, 0, 0, 1, 0, 0, 1, 1)
+xs
+```
+defines one time series and its length defines the number of time steps, $m$. Specifically,
+it defines one initial condition or trial for one variable. The user can deal with
+multiple variables, $l$, and multiple initial conditions, $n$, using Matrix objects
+with $l*n$ columns and $m$ rows:
+```{r}
+l <- 2
+n <- 2
+m <- 5
+xs <- matrix(sample(0:1, m * l * n, TRUE), nrow = m, ncol = l * n)
+xs
+```
+where each column represents a different time series, possibly from different variables. 
+
+When possible, _rinform_'s functions infer the number of variables, $l$, the number
+of initial conditions, $n$, and the number of time steps $m$ from the provided data
+structures. This is possible in most cases due to the fact that all time series must
+have the same number of initial conditions and time steps. If this is not the case,
+the _rinform_'s API will explicity require the user to specify the number of
+variables $l$. 
 
 ## Active Information {#ActiveInformation}
 
@@ -1419,8 +1466,6 @@ and local variant:
 mi <- mutual_info(xs, local = T)
 t(mi)
 ```
-
-## Partial Information Decomposition
 
 ## Predictive Information {#PredictiveInformation}
 
