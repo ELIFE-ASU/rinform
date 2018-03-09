@@ -12,10 +12,6 @@ There were no ERRORs or WARNINGs. There was 1 NOTEs:
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: 'Gabriele Valentini <gvalent3@asu.edu>'
 New submission
-Possibly mis-spelled words in DESCRIPTION:
-  rinform (9:75, 13:81)
-
-Note: 'rinform' is the name of the package and is not mispelled
 
 ## Downstream dependencies
 There are no downstream dependencies.
