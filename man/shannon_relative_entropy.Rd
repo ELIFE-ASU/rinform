@@ -17,7 +17,7 @@ shannon_relative_entropy(p, q, b = 2)
 Numeric giving the Shannon relative entropy.
 }
 \description{
-Compute the base-\code{b} shannon relative entropy between posterior
+Compute the base-\code{b} Shannon relative entropy between posterior
 \code{p} and prior \code{q} distributions.
 }
 \examples{

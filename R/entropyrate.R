@@ -9,7 +9,7 @@
 ################################################################################
 #' Entropy Rate
 #'
-#' Compute the average or local entropy rate of a timeseries with history
+#' Compute the average or local entropy rate of a time series with history
 #' length \code{k}.
 #'
 #' @param series Vector or matrix specifying one or more time series.

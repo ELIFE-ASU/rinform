@@ -19,7 +19,7 @@ shannon_mutual_info(p_xy, p_x, p_y, b = 2)
 Numeric giving the Shannon mutual information.
 }
 \description{
-Compute the base-\code{b} mututal information between two random variables.
+Compute the base-\code{b} mutual information between two random variables.
 }
 \examples{
 xy <- Dist(c(10, 70, 15, 5))

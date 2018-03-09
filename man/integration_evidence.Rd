@@ -23,7 +23,7 @@ Given a sequence of `n` observed states of `l` random variables (\code{series}),
 compute the evidence of integration for each partitioning of the `l`
 variables, and return the minimum and maximum evidence for each observation.
 If the number of variables `l` is large, the user can test a small subset of
-the partitionings by providing a partitioning \code{parts} to increase
+the partitioning schemata by providing a partitioning \code{parts} to increase
 confidence that the system is integrated. In this case, the function computes
 and returns the evidence of integration for each observation with respect to
 the partitioning \code{parts}.
