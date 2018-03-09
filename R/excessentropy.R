@@ -9,7 +9,7 @@
 ################################################################################
 #' Excess Entropy
 #'
-#' Compute the average or local excess entropy of a timeseries with block
+#' Compute the average or local excess entropy of a time series with block
 #' size \code{k}.
 #'
 #' @param series Vector or matrix specifying one or more time series.

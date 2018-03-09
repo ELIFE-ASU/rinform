@@ -14,7 +14,7 @@
 #'
 #' @param n Numeric specifying the number of items of the set to partition.
 #'
-#' @return Matrix giving all possible partitionings.
+#' @return Matrix giving all possible partitioning schemata.
 #'
 #' @example inst/examples/ex_partitioning.R
 #'

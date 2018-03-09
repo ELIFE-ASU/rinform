@@ -1,5 +1,5 @@
 # rinform #
-[![Travis-CI Build Status](https://travis-ci.org/ELIFE-ASU/rinform.svg?branch=master)](https://travis-ci.org/ELIFE-ASU/rinform) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/ELIFE-ASU/rinform?branch=master&svg=true)](https://ci.appveyor.com/project/ELIFE-ASU/rinform) [![codecov](https://codecov.io/gh/ELIFE-ASU/rinform/branch/master/graph/badge.svg)](https://codecov.io/gh/ELIFE-ASU/rinform)
+[![Travis-CI Build Status](https://travis-ci.org/ELIFE-ASU/rinform.svg?branch=master)](https://travis-ci.org/ELIFE-ASU/rinform) [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/oanb720jqsyf8n8s?svg=true)](https://ci.appveyor.com/project/gvalentini85/rinform) [![codecov](https://codecov.io/gh/ELIFE-ASU/rinform/branch/master/graph/badge.svg)](https://codecov.io/gh/ELIFE-ASU/rinform)
 
 An R wrapper of the [Inform v1.0.0](https://elife-asu.github.io/Inform/) C library for performing information analysis of complex system. As for the Inform library, _rinform_ is structured around the concepts of:
 

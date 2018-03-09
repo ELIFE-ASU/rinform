@@ -10,7 +10,7 @@ partitioning(n)
 \item{n}{Numeric specifying the number of items of the set to partition.}
 }
 \value{
-Matrix giving all possible partitionings.
+Matrix giving all possible partitioning schemata.
 }
 \description{
 Partition a number \code{n} of items into all possible different subsets.

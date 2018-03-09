@@ -18,7 +18,7 @@ Numeric giving the average excess entropy or a vector giving the
         local excess entropy.
 }
 \description{
-Compute the average or local excess entropy of a timeseries with block
+Compute the average or local excess entropy of a time series with block
 size \code{k}.
 }
 \examples{
