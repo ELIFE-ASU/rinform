@@ -7,7 +7,12 @@
 * codecov 91% (using testthat)
 
 ## R CMD check results
-There were no ERRORs, WARNINGs, and NOTEs.
+There were no ERRORs and WARNINGs. There was one NOTEs:
+
+* checking CRAN incoming feasibility ... NOTE
+Maintainer: 'Gabriele Valentini <gvalent3@asu.edu>'
+
+Days since last update: 2
 
 ## Notes to previous comments from CRAN
 * The copyright is now assigned to G. Valentini and D.G. Moore
