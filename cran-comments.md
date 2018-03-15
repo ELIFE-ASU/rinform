@@ -19,7 +19,8 @@ New submission
   been updated to reflect the new copyright. LICENSE and
   DESCRIPTION have also been updated accordingly.
 
-* non-POSIX make sintax..
+* non-POSIX make sintax in src/inform-1.0.0/Makevars has been
+  converted to POSIX syntax
 
 ## Downstream dependencies
 There are no downstream dependencies.
