@@ -1,3 +1,8 @@
+/*******************************************************************************/
+// Copyright 2017-2018 Gabriele Valentini, Douglas G. Moore. All rights reserved.
+// Use of this source code is governed by a MIT license that can be found in the
+// LICENSE file.
+/*******************************************************************************/
 #include "inform/information_flow.h"
 
 void r_info_flow_(int *src, int *dst, int *lsrc, int *ldst, int *n, int *m, int *b,
