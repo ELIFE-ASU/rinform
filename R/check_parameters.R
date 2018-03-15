@@ -1,3 +1,9 @@
+################################################################################
+# Copyright 2017-2018 Gabriele Valentini, Douglas G. Moore. All rights reserved.
+# Use of this source code is governed by a MIT license that can be found in the
+# LICENSE file.
+################################################################################
+
 .check_series <- function (x) {
   if (!is.numeric(x)) {
     stop("<", deparse(substitute(x)), "> is not numeric!", call. = !T)
