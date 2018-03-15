@@ -13,5 +13,13 @@ There were no ERRORs or WARNINGs. There was 1 NOTEs:
 Maintainer: 'Gabriele Valentini <gvalent3@asu.edu>'
 New submission
 
+## Previous comments from CRAN
+* The copyright is now assigned to G. Valentini and D.G. Moore
+  instead of ELIFE@ASU. All files in R/ tests/ and src/ have
+  been updated to reflect the new copyright. LICENSE and
+  DESCRIPTION have also been updated accordingly.
+
+* non-POSIX make sintax..
+
 ## Downstream dependencies
 There are no downstream dependencies.
