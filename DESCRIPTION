@@ -2,9 +2,8 @@ Package: rinform
 Title: An R Wrapper of the 'Inform' C Library for Information Analysis of Complex Systems
 Version: 1.0.0
 Authors@R: c(
-      person("Gabriele", "Valentini", email = "gvalent3@asu.edu", role = c("aut", "cre")),
-      person("Douglas G.", "Moore", email = "douglas.g.moore@asu.edu", role = c("ctb")),
-      person("ELIFE", "@ASU", email = "", role = c("cph")))
+      person("Gabriele", "Valentini", email = "gvalent3@asu.edu", role = c("aut", "cre", "cph")),
+      person("Douglas G.", "Moore", email = "douglas.g.moore@asu.edu", role = c("ctb", "cph")))
 Description: An R wrapper of the 'Inform' v1.0.0 C library for performing
       information analysis of complex systems. As for the 'Inform' library, 'rinform' is
       structured around the concepts of: 1) discrete empirical probability distributions,
@@ -14,7 +13,6 @@ Description: An R wrapper of the 'Inform' v1.0.0 C library for performing
       also provides a collection of utilities to manipulate time series.
 Depends: R (>= 3.4.0)
 License: MIT + file LICENSE
-Copyright: ELIFE@ASU
 URL: https://elife-asu.github.io/rinform/
 BugReports: https://github.com/ELIFE-ASU/rinform/issues/
 Encoding: UTF-8
