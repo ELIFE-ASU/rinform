@@ -1,3 +1,8 @@
+/*******************************************************************************/
+// Copyright 2017-2018 Gabriele Valentini, Douglas G. Moore. All rights reserved.
+// Use of this source code is governed by a MIT license that can be found in the
+// LICENSE file.
+/*******************************************************************************/
 #include <inform/utilities/encoding.h>
 
 void r_encode_(int *state, int *n, int *b, int *encoded, int *err) {

@@ -24,7 +24,32 @@ inform_sources=src/active_info.c \
 	src/utilities/random.c \
 	src/utilities/tpm.c \
 	src/ginger/vector.c
-inform_objects=$(inform_sources:%.c=%.o)
+inform_objects=src/active_info.o \
+	src/block_entropy.o \
+	src/conditional_entropy.o \
+	src/cross_entropy.o \
+	src/dist.o \
+	src/effective_info.o \
+	src/entropy_rate.o \
+	src/error.o \
+	src/excess_entropy.o \
+	src/information_flow.o \
+	src/integration.o \
+	src/mutual_info.o \
+	src/pid.o \
+	src/predictive_info.o \
+	src/relative_entropy.o \
+	src/separable_info.o \
+	src/shannon.o \
+	src/transfer_entropy.o \
+	src/utilities/binning.o \
+	src/utilities/black_boxing.o \
+	src/utilities/coalesce.o \
+	src/utilities/encoding.o \
+	src/utilities/partitions.o \
+	src/utilities/random.o \
+	src/utilities/tpm.o \
+	src/ginger/vector.o
 
 CFLAGS=-Iinclude -O3 -fPIC -std=c11
 

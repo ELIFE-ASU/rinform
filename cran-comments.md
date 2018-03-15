@@ -7,11 +7,21 @@
 * codecov 91% (using testthat)
 
 ## R CMD check results
-There were no ERRORs or WARNINGs. There was 1 NOTEs:
+There were no ERRORs and WARNINGs. There was one NOTEs:
 
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: 'Gabriele Valentini <gvalent3@asu.edu>'
-New submission
+
+Days since last update: 2
+
+## Notes to previous comments from CRAN
+* The copyright is now assigned to G. Valentini and D.G. Moore
+  instead of ELIFE@ASU. All files in R/ tests/ and src/ have
+  been updated to reflect the new copyright. LICENSE and
+  DESCRIPTION have also been updated accordingly.
+
+* non-POSIX make sintax in src/inform-1.0.0/Makevars has been
+  converted to POSIX syntax
 
 ## Downstream dependencies
 There are no downstream dependencies.

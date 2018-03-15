@@ -69,8 +69,6 @@ to compile the _Inform_ source (e.g.,
 
 ### Installation from CRAN
 
-__Disclaimer: rinform is not yet on CRAN!__
-
 To install _rinform_ directly from the CRAN repository you will simply need to
 type:
 ```{r eval = FALSE}
@@ -157,8 +155,9 @@ try one of these:
 
 ## Copyright and Licensing
 
-Copyright © 2017-2018 ELIFE, Arizona State University. Free use of this software is granted
-under the terms of the MIT License. See the [LICENSE](https://github.com/elife-asu/rinform/blob/master/LICENSE) file for details.
+Copyright © 2017-2018 Gabriele Valentini and Douglas G. Moore, Arizona State University.
+Free use of this software is granted under the terms of the MIT License. See the
+[LICENSE](https://github.com/elife-asu/rinform/blob/master/LICENSE) file for details.
 
 # Empirical Distributions {#Distributions}
 
