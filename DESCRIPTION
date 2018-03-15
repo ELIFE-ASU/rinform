@@ -1,16 +1,18 @@
 Package: rinform
 Title: An R Wrapper of the 'Inform' C Library for Information Analysis of Complex Systems
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(
       person("Gabriele", "Valentini", email = "gvalent3@asu.edu", role = c("aut", "cre", "cph")),
       person("Douglas G.", "Moore", email = "douglas.g.moore@asu.edu", role = c("ctb", "cph")))
 Description: An R wrapper of the 'Inform' v1.0.0 C library for performing
       information analysis of complex systems. As for the 'Inform' library, 'rinform' is
-      structured around the concepts of: 1) discrete empirical probability distributions,
+      structured around the concepts of: 1) discrete empirical probability distributions
       which form the basis for all of the information-theoretic measures; 2) classic
-      information-theoretic measures built upon empirical distributions; and 3) measures of
-      information dynamics for time series. In addition to the core components, 'rinform'
-      also provides a collection of utilities to manipulate time series.
+      information-theoretic measures built upon empirical distributions (e.g., Shannon entropy,
+      mutual information, cross entropy); and 3) advanced measures of information dynamics
+      for time series (e.g., transfer entropy, active information, evidence of integration).
+      In addition to the core components, 'rinform' also provides a collection of utilities to
+      manipulate time series (e.g., binning of continuous values, black-boxing of time series).
 Depends: R (>= 3.4.0)
 License: MIT + file LICENSE
 URL: https://elife-asu.github.io/rinform/

@@ -5,14 +5,17 @@ An R wrapper of the [Inform v1.0.0](https://elife-asu.github.io/Inform/) C libra
 
 * discrete empirical probability distributions which form the basis for
   all of the information-theoretic measures,
-* classic information-theoretic measures built upon empirical distributions,
-* measures of information dynamics for time series.
-
-In addition to the core components, rinform also provides a small collection of utilities to deal with time series.
+* classic information-theoretic measures built upon empirical distributions (e.g.,
+  Shannon entropy, mutual information, cross entropy),
+* advanced measures of information dynamics for time series (e.g., transfer entropy,
+  active information, evidence of integration).
+  
+In addition to the core components, rinform also provides a small collection of utilities
+to deal with time series (e.g., binning of continuous values, black-boxing of time series).
 
 Installation instructions and documentation for the _rinform_ package as well as
-information about related projects can be found
-[here](https://elife-asu.github.io/rinform/).
+information about related projects can be found in the online
+[documentation](https://elife-asu.github.io/rinform/).
 
 If you are using _rinform_, consider citing the following articles:
 
@@ -29,10 +32,8 @@ collective decision making by the crevice-dwelling rock ant Temnothorax
 rugatulus_ provided by the National Science Foundation (NSF grant PHY-1505048).
 
 ## Copyright and Licensing ##
-Copyright © 2017-2018 ELIFE, Arizona State University. Free use of this
-software is granted under the terms of the MIT License.
-
-See the [LICENSE](https://github.com/elife-asu/rinform/blob/master/LICENSE)
-file for details.
+Copyright © 2017-2018 Gabriele Valentini and Douglas G. Moore, Arizona State University.
+Free use of this software is granted under the terms of the MIT License. See the
+[LICENSE](https://github.com/elife-asu/rinform/blob/master/LICENSE) file for details.
 
 

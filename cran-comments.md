@@ -7,13 +7,9 @@
 * codecov 91% (using testthat)
 
 ## R CMD check results
-There were no ERRORs or WARNINGs. There was 1 NOTEs:
+There were no ERRORs, WARNINGs, and NOTEs.
 
-* checking CRAN incoming feasibility ... NOTE
-Maintainer: 'Gabriele Valentini <gvalent3@asu.edu>'
-New submission
-
-## Previous comments from CRAN
+## Notes to previous comments from CRAN
 * The copyright is now assigned to G. Valentini and D.G. Moore
   instead of ELIFE@ASU. All files in R/ tests/ and src/ have
   been updated to reflect the new copyright. LICENSE and
