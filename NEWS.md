@@ -1,5 +1,8 @@
 # rinform 1.0.1
 
+* The `R/check_parameters.R` file is now compliant with noLD compilation
+  mode.
+
 * The `src/inform-1.0.0/Makevars` file is now fully POSIX compliant.
 
 * The copyright of all files contained in the folders `R/` `src/` and

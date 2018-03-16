@@ -23,5 +23,8 @@ Days since last update: 2
 * non-POSIX make sintax in src/inform-1.0.0/Makevars has been
   converted to POSIX syntax
 
+* issues resulting from the lack of long double values have been
+  resolved across the package. 
+
 ## Downstream dependencies
 There are no downstream dependencies.

@@ -4,6 +4,8 @@
 #include <inform/predictive_info.h>
 #include <inform/shannon.h>
 
+#include <stdio.h>
+
 static void accumulate_observations(int const* series, size_t n, size_t m,
     int b, size_t kpast, size_t kfuture, inform_dist *states,
     inform_dist *histories, inform_dist *futures)
@@ -24,6 +26,8 @@ static void accumulate_observations(int const* series, size_t n, size_t m,
             future *= b;
             future += series[j];
         }
+
+	printf("accumulate_observations: accumulating series %d..\n", i);
 
         size_t j = kpast + kfuture;
         do
@@ -133,6 +137,7 @@ double inform_predictive_info(int const *series, size_t n, size_t m, int b,
     size_t kpast, size_t kfuture, inform_error *err)
 {
     if (check_arguments(series, n, m, b, kpast, kfuture, err)) return NAN;
+    printf("inform_predictive_info: args checked\n");
 
     size_t const N = n * (m - kpast - kfuture + 1);
 
@@ -151,10 +156,16 @@ double inform_predictive_info(int const *series, size_t n, size_t m, int b,
     inform_dist histories = { data + states_size, histories_size, N };
     inform_dist futures   = { data + states_size + histories_size, futures_size, N };
 
+    printf("inform_predictive_info: memory allocated\n");    
+
     accumulate_observations(series, n, m, b, kpast, kfuture, &states,
         &histories, &futures);
 
+    printf("inform_predictive_info: observations accumulated\n");    
+
     double pi = inform_shannon_mi(&states, &histories, &futures, 2.0);
+
+    printf("inform_predictive_info: pi computed\n");    
 
     free(data);
 
