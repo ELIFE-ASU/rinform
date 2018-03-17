@@ -16,12 +16,17 @@ Days since last update: 2
 
 ## Notes to previous comments from CRAN
 * The copyright is now assigned to G. Valentini and D.G. Moore
-  instead of ELIFE@ASU. All files in R/ tests/ and src/ have
-  been updated to reflect the new copyright. LICENSE and
-  DESCRIPTION have also been updated accordingly.
+  instead of ELIFE@ASU. All files in `R/` `tests/` and `src/` have
+  been updated to reflect the new copyright. `LICENSE` and
+  `DESCRIPTION` have also been updated accordingly.
 
-* non-POSIX make sintax in src/inform-1.0.0/Makevars has been
+* non-POSIX make sintax in `src/inform-1.0.0/Makevars` has been
   converted to POSIX syntax
+
+* issues resulting from the lack of long double values have been
+  resolved across the package.
+
+* invalid reads detected from valgrind have been found and solved.
 
 ## Downstream dependencies
 There are no downstream dependencies.

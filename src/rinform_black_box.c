@@ -3,6 +3,7 @@
 // Use of this source code is governed by a MIT license that can be found in the
 // LICENSE file.
 /*******************************************************************************/
+#include <stdlib.h>
 #include "inform/utilities/black_boxing.h"
 
 void r_black_box_(int *series, int *l, int *n, int *m, int *b, int *r, int *rNull,
@@ -23,7 +24,7 @@ void r_black_box_(int *series, int *l, int *n, int *m, int *b, int *r, int *rNul
 void r_black_box_parts_(int *series, int *l, int *n, int *b, int *parts,
 			int *nparts, int *box, int *err) {    
   inform_error ierr = INFORM_SUCCESS;
-  size_t st_parts[*l];
+  size_t *st_parts = malloc((*l) * sizeof(size_t));
 
   for (size_t i = 0; i < *l; ++i) {
     st_parts[i] = parts[i];
@@ -31,4 +32,5 @@ void r_black_box_parts_(int *series, int *l, int *n, int *b, int *parts,
 
   inform_black_box_parts(series, *l, *n, b, st_parts, *nparts, box, &ierr);
   *err = ierr;
+  free(st_parts);
 }
