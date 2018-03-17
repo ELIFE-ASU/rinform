@@ -29,7 +29,7 @@ test_that("predictive_info checks parameters", {
   expect_error(predictive_info(xs, kpast = 1, kfuture = 1, local = NA))  
 })
 
-test_that("predictive_info on single series", {
+test_that("predictive_info on single series", {  
   expect_equal(predictive_info(c(1, 1, 0, 0, 1, 0, 0, 1),
                                kpast = 2, kfuture = 1, local = !T),
 	       0.918296, tolerance = 1e-6)
@@ -114,9 +114,10 @@ test_that("predictive_info on ensemble of series", {
                1.324292, tolerance = 1e-6)
   expect_equal(predictive_info(series, kpast = 2, kfuture = 3, local = !T),
                2.385475, tolerance = 1e-6)
+
 })
 
-test_that("predictive_info local on single series", {
+test_that("predictive_info local on single series", {  
   expect_equal(mean(predictive_info(c(1, 1, 0, 0, 1, 0, 0, 1),
                                kpast = 2, kfuture = 1, local = T)),
 	       0.918296, tolerance = 1e-6)
