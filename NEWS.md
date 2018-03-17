@@ -1,5 +1,11 @@
 # rinform 1.0.1
 
+* Bug solved in `inform_predictive_info` which was causing an invalid read of
+  4 bytes. Developers of 'Inform' have been made aware of this bug.
+
+* Bug solved in memory menagement for functions `r_integration_evidence_parts_`
+  and `r_black_box_parts_`.
+
 * The `R/check_parameters.R` file is now compliant with noLD compilation
   mode.
 
