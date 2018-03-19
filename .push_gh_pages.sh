@@ -15,7 +15,7 @@ cd out
 git init
 git config user.name "ELIFE-ASU-travis"
 git config user.email "travis"
-$ git pull origin gh-pages
+git pull origin gh-pages
 cp ../rinform/inst/doc/rinform-vignette.html index.html
 
 git add .
