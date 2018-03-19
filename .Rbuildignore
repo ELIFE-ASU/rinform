@@ -1,3 +1,4 @@
 ^\.travis\.yml$
 ^appveyor\.yml$
 cran-comments.md$
+^\.push_gh_pages\.sh$
