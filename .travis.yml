@@ -15,12 +15,7 @@ r_binary_packages:
 matrix:
   include:
   - os: osx
-    r:
-      - release
-      - devel  
   - os: linux
-    r:
-      - release
     r_packages:
       - covr
     after_success:
@@ -28,8 +23,6 @@ matrix:
   - os: linux
     env:
       - VALGRIND_OPTS='--leak-check=full --track-origins=yes'
-    r:
-      - devel
     r_check_args: '--as-cran --use-valgrind'      
     addons:
       apt:
