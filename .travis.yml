@@ -1,17 +1,9 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
-language: R
-r:
-  - oldrel
-  - release
-  - devel
-
-env:
-  - VALGRIND_OPTS='--leak-check=full --track-origins=yes'
-  
+language: R  
 sudo: required
 cache: packages
-r_check_args: '--as-cran --use-valgrind'
+r_check_args: '--as-cran'
 
 r_binary_packages:
   - testthat
@@ -20,12 +12,27 @@ r_binary_packages:
   - rmarkdown
   - roxygen2
 
-os:
-  - linux
-  - osx
-
-r_packages:
-  - covr
-
-after_success:
-  - Rscript -e 'library(covr); codecov()'
+matrix:
+  include:
+  - os: osx
+    r:
+      - release
+      - devel  
+  - os: linux
+    r:
+      - release
+    r_packages:
+      - covr
+    after_success:
+      - Rscript -e 'library(covr); codecov()'      
+  - os: linux
+    env:
+      - VALGRIND_OPTS='--leak-check=full --track-origins=yes'
+    r:
+      - devel
+    r_check_args: '--as-cran --use-valgrind'      
+    addons:
+      apt:
+        packages:
+          - valgrind
+      
