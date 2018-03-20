@@ -31,9 +31,7 @@ matrix:
       keep-history: true
       local-dir: out/
       on:
-        branch:
-	  - dev
-	  - master
+        all_branches: true
   
   - os: linux
     env:
