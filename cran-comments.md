@@ -12,7 +12,7 @@ There were no ERRORs and WARNINGs. There was one NOTEs:
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: 'Gabriele Valentini <gvalent3@asu.edu>'
 
-Days since last update: 2
+Days since last update: 4
 
 ## Notes to previous comments from CRAN
 * The copyright is now assigned to G. Valentini and D.G. Moore

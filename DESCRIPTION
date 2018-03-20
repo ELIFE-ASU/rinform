@@ -26,3 +26,4 @@ Suggests: knitr,
     testthat,
     roxygen2
 VignetteBuilder: knitr
+SystemRequirements: C++11

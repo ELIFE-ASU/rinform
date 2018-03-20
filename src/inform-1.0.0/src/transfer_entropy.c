@@ -25,7 +25,7 @@ static void accumulate_observations(int const *src, int const *dst,
             back_state = 0;
             for (size_t u = 0; u < l; ++u)
             {
-                back_state = b * back_state + back[j+n*(i+m*u)-1];
+                back_state = b * back_state + back[j+(i+u*n)*m-1];
             }
             history += back_state * q;
 
@@ -67,7 +67,7 @@ static void accumulate_local_observations(int const *src, int const *dst,
             int back_state = 0;
             for (size_t u = 0; u < l; ++u)
             {
-                back_state = b * back_state + back[j+n*(i+m*u)-1];
+                back_state = b * back_state + back[j+(i+u*n)*m-1];
             }
             history[z] += back_state * q;
             int src_state = src[j-1];
