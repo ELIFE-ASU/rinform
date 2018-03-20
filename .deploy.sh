@@ -8,4 +8,4 @@ for files in '*.tar.gz'; do
 done
 
 cd out
-cp ../rinform/inst/doc/rinfor-vignette.html index.html
+cp ../rinform/inst/doc/rinform-vignette.html index.html
