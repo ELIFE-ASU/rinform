@@ -9,6 +9,8 @@ for files in '*.tar.gz'; do
         tar xfz $files
 done
 
+echo $GH_TOKEN
+
 cd out
 git config --global user.email "travis@travis-ci.org"
 git config --global user.name "Travis CI"
