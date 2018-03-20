@@ -9,11 +9,9 @@ for files in '*.tar.gz'; do
         tar xfz $files
 done
 
-echo $GH_TOKEN
-
 cd out
-git config --global user.email "travis@travis-ci.org"
-git config --global user.name "Travis CI"
+git config --global user.email "gabriele.valentini.85@gmail.com"
+git config --global user.name "Gabriele Valentini"
 git checkout -b gh-pages
 cp ../rinform/inst/doc/rinform-vignette.html index.html
 git add .
