@@ -11,6 +11,7 @@ for files in '*.tar.gz'; do
         tar xfz $files
 done
 
+echo $GH_TOKEN
 cd out
 git init
 git config user.name "Gabriele Valentini"
