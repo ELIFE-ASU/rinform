@@ -1,6 +1,9 @@
 language: R
 sudo: required
-cache: packages
+cache:
+  - apt
+  - packages
+  
 r_check_args: "--as-cran"
 r_binary_packages:
 - testthat
@@ -8,14 +11,26 @@ r_binary_packages:
 - knitr
 - rmarkdown
 - roxygen2
+
 matrix:
   include:
   - os: osx
+  
   - os: linux
     r_packages:
     - covr
     after_success:
     - Rscript -e 'library(covr); codecov()'
+    before_deploy:
+      - chmod 755 ./.deploy.sh    
+      - ./.deploy.sh      
+    deploy:
+      provider: pages
+      skip-cleanup: true
+      github-token: $GITHUB_TOKEN
+      keep-history: true
+      local-dir: out/
+  
   - os: linux
     env:
     - VALGRIND_OPTS='--leak-check=full --track-origins=yes'
