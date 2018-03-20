@@ -30,6 +30,10 @@ matrix:
       github-token: $GITHUB_TOKEN
       keep-history: true
       local-dir: out/
+      on:
+        branch:
+	  - dev
+	  - master
   
   - os: linux
     env:
