@@ -15,9 +15,8 @@ cd out
 git init
 git config user.name "ELIFE-ASU-travis"
 git config user.email "travis"
-git pull origin gh-pages
 cp ../rinform/inst/doc/rinform-vignette.html index.html
 
 git add .
 git commit -m "deployed to github pages"
-git push --quiet $FULL_REPO master:gh-pages
+git push --force --quiet $FULL_REPO master:gh-pages
