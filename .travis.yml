@@ -14,13 +14,23 @@ r_binary_packages:
 
 matrix:
   include:
+  # Build & check in OS X
   - os: osx
-  
+
+  # Build & check in Ubuntu with valgrind and if successful update code
+  # coverage and deploy vignette to gh-pages
   - os: linux
+    env:
+      - VALGRIND_OPTS='--leak-check=full --track-origins=yes'
+    r_check_args: "--as-cran --use-valgrind"
+    addons:
+      apt:
+        packages:
+          - valgrind  
     r_packages:
-    - covr
+      - covr
     after_success:
-    - Rscript -e 'library(covr); codecov()'
+      - Rscript -e 'library(covr); codecov()'
     before_deploy:
       - chmod 755 ./.deploy.sh    
       - ./.deploy.sh      
@@ -32,12 +42,3 @@ matrix:
       local-dir: out/
       on:
         all_branches: true
-  
-  - os: linux
-    env:
-    - VALGRIND_OPTS='--leak-check=full --track-origins=yes'
-    r_check_args: "--as-cran --use-valgrind"
-    addons:
-      apt:
-        packages:
-        - valgrind
