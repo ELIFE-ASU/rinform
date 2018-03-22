@@ -53,6 +53,4 @@ matrix:
     script:
       - R CMD build .
     after_success:
-      - for files in '*.tar.gz'; do tar xfz $files; done
-      - cd rinform
-      - Rscript -e "library('rhub'); validate_email('gvalent3@asu.edu', Sys.getenv('RHUB_TOKEN')); check(platform = 'solaris-x86-patched', show_status = TRUE)"
+      - Rscript -e "library('rhub'); validate_email('gvalent3@asu.edu', Sys.getenv('RHUB_TOKEN')); check(path = 'rinform_1.0.1.tar.gz', platform = 'solaris-x86-patched', show_status = TRUE, check_args = '--as-cran')"
