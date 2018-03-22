@@ -42,3 +42,14 @@ matrix:
       local-dir: out/
       on:
         all_branches: true
+
+  # Build in Ubuntu and then use rhub to check in Solaris
+  # Oracle Solaris 10, x86, 32 bit, R-patched
+  - os: linux
+    install:
+      - R -e 'devtools::install_deps(dep = T)'
+    r_github_packages:
+      - r-hub/rhub
+    script:
+      - R CMD build .
+      - Rscript -e "library(rhub); validate_email('gvalent3@asu.edu', Sys.getenv('RHUB_TOKEN')); rhub:check(c('solaris-x86-patched'))"
