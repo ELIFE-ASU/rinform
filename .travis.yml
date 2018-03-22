@@ -53,4 +53,4 @@ matrix:
     script:
       - R CMD build .
     after_success:
-      - Rscript -e "library('rhub'); validate_email('gvalent3@asu.edu', Sys.getenv('RHUB_TOKEN')); rhub:check(c('solaris-x86-patched'))"
+      - Rscript -e "library('rhub'); validate_email('gvalent3@asu.edu', Sys.getenv('RHUB_TOKEN')); check(c('solaris-x86-patched'))"
