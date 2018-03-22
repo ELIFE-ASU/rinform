@@ -11,7 +11,7 @@
 
 <meta name="author" content="Gabriele Valentini" />
 
-<meta name="date" content="2018-03-21" />
+<meta name="date" content="2018-03-22" />
 
 <title>The rinform Package</title>
 
@@ -245,7 +245,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">The <em>rinform</em> Package</h1>
 <h4 class="author"><em>Gabriele Valentini</em></h4>
-<h4 class="date"><em>2018-03-21</em></h4>
+<h4 class="date"><em>2018-03-22</em></h4>
 
 </div>
 
@@ -896,11 +896,11 @@ m &lt;-<span class="st"> </span><span class="dv">5</span>
 xs &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">sample</span>(<span class="dv">0</span>:<span class="dv">1</span>, m *<span class="st"> </span>l *<span class="st"> </span>n, <span class="ot">TRUE</span>), <span class="dt">nrow =</span> m, <span class="dt">ncol =</span> l *<span class="st"> </span>n)
 xs
 <span class="co">#&gt;      [,1] [,2] [,3] [,4]</span>
-<span class="co">#&gt; [1,]    1    0    0    0</span>
-<span class="co">#&gt; [2,]    1    1    1    1</span>
-<span class="co">#&gt; [3,]    1    0    1    1</span>
-<span class="co">#&gt; [4,]    0    1    1    1</span>
-<span class="co">#&gt; [5,]    1    0    0    0</span></code></pre></div>
+<span class="co">#&gt; [1,]    1    0    1    0</span>
+<span class="co">#&gt; [2,]    1    0    0    1</span>
+<span class="co">#&gt; [3,]    0    1    1    0</span>
+<span class="co">#&gt; [4,]    0    1    0    1</span>
+<span class="co">#&gt; [5,]    0    1    0    0</span></code></pre></div>
 <p>where each column represents a different time series, possibly from different variables.</p>
 <p>When possible, <em>rinform</em>’s functions infer the number of variables, <span class="math inline">\(l\)</span>, the number of initial conditions, <span class="math inline">\(n\)</span>, and the number of time steps <span class="math inline">\(m\)</span> from the provided data structures. This is possible in most cases due to the fact that all time series must have the same number of initial conditions and time steps. If this is not the case, the <em>rinform</em>’s API will explicity require the user to specify the number of variables <span class="math inline">\(l\)</span>.</p>
 </div>
