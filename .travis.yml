@@ -14,13 +14,23 @@ r_binary_packages:
 
 matrix:
   include:
+  # Build & check in OS X
   - os: osx
-  
+
+  # Build & check in Ubuntu with valgrind and if successful update code
+  # coverage and deploy vignette to gh-pages
   - os: linux
+    env:
+      - VALGRIND_OPTS='--leak-check=full --track-origins=yes'
+    r_check_args: "--as-cran --use-valgrind"
+    addons:
+      apt:
+        packages:
+          - valgrind  
     r_packages:
-    - covr
+      - covr
     after_success:
-    - Rscript -e 'library(covr); codecov()'
+      - Rscript -e 'library(covr); codecov()'
     before_deploy:
       - chmod 755 ./.deploy.sh    
       - ./.deploy.sh      
@@ -31,15 +41,16 @@ matrix:
       keep-history: true
       local-dir: out/
       on:
-        branch:
-	  - dev
-	  - master
-  
+        all_branches: true
+
+  # Build in Ubuntu and then use rhub to check in
+  # Oracle Solaris 10, x86, 32 bit, R-patched
   - os: linux
     env:
-    - VALGRIND_OPTS='--leak-check=full --track-origins=yes'
-    r_check_args: "--as-cran --use-valgrind"
-    addons:
-      apt:
-        packages:
-        - valgrind
+      - RHUB_SOLARIS='solaris-x86-patched'
+    r_packages:
+      - rhub
+    script:
+      - R CMD build .
+    after_success:
+      - Rscript -e "library('rhub'); validate_email('gvalent3@asu.edu', Sys.getenv('RHUB_TOKEN')); check(path = 'rinform_1.0.1.tar.gz', platform = 'solaris-x86-patched', show_status = TRUE, check_args = '--as-cran')"
