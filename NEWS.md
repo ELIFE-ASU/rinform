@@ -1,5 +1,8 @@
 # rinform 1.0.2
 
+* Modified `src/inform-1.0.0/Makevars` to solve compilation issues on Solaris
+  on CRAN (NB: we are unable to reproduce this problem locally).
+
 * Bug solved in `src/inform-1.0.0/transfer_entropy.c` that was affecting
   the computation of complete transfer entropy.
 

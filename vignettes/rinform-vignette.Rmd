@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 library(rinform)
 ```
 
-[![Travis-CI Build Status](https://travis-ci.org/ELIFE-ASU/rinform.svg?branch=master)](https://travis-ci.org/ELIFE-ASU/rinform) [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/oanb720jqsyf8n8s?svg=true)](https://ci.appveyor.com/project/gvalentini85/rinform) [![codecov](https://codecov.io/gh/ELIFE-ASU/rinform/branch/master/graph/badge.svg)](https://codecov.io/gh/ELIFE-ASU/rinform)
+[![Travis-CI Build Status](https://travis-ci.org/ELIFE-ASU/rinform.svg?branch=master)](https://travis-ci.org/ELIFE-ASU/rinform) [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/oanb720jqsyf8n8s?svg=true)](https://ci.appveyor.com/project/gvalentini85/rinform) [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rinform)](https://cran.r-project.org/package=rinform) [![codecov](https://codecov.io/gh/ELIFE-ASU/rinform/branch/master/graph/badge.svg)](https://codecov.io/gh/ELIFE-ASU/rinform)
 
 
 An R wrapper for the [Inform v1.0.0](https://elife-asu.github.io/Inform/) C library
@@ -51,7 +51,7 @@ Information-Theoretic Analysis of Collective Behaviors". _Frontiers in Robotics 
 * D.G. Moore, G. Valentini, S.I. Walker, M. Levin. "Inform: A Toolkit for
 Information-Theoretic Analysis of Complex Systems". In: _Proceedings of the 
 2017 IEEE Symposium Series on Computational Intelligence, Symposium on 
-Artificial Life_, IEEE Press, 2017. (_in press_)
+Artificial Life_, 1-8, IEEE Press, 2017. [https://doi.org/10.1109/SSCI.2017.8285197](https://doi.org/10.1109/SSCI.2017.8285197)
 
 __Acknowledgement:__ This project was supported in part by the grant _Emergent computation in
 collective decision making by the crevice-dwelling rock ant Temnothorax
