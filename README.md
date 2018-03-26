@@ -1,5 +1,5 @@
 # rinform #
-[![Travis-CI Build Status](https://travis-ci.org/ELIFE-ASU/rinform.svg?branch=master)](https://travis-ci.org/ELIFE-ASU/rinform) [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/oanb720jqsyf8n8s?svg=true)](https://ci.appveyor.com/project/gvalentini85/rinform) [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rinform)](https://cran.r-project.org/package=rinform) [![codecov](https://codecov.io/gh/ELIFE-ASU/rinform/branch/master/graph/badge.svg)](https://codecov.io/gh/ELIFE-ASU/rinform)
+[![Travis-CI Build Status](https://travis-ci.org/ELIFE-ASU/rinform.svg?branch=master)](https://travis-ci.org/ELIFE-ASU/rinform) [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/oanb720jqsyf8n8s?svg=true)](https://ci.appveyor.com/project/gvalentini85/rinform) [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/rinform)](https://cran.r-project.org/package=rinform) [![codecov](https://codecov.io/gh/ELIFE-ASU/rinform/branch/master/graph/badge.svg)](https://codecov.io/gh/ELIFE-ASU/rinform)
 
 An R wrapper of the [Inform v1.0.0](https://elife-asu.github.io/Inform/) C library for performing information analysis of complex system. As for the Inform library, _rinform_ is structured around the concepts of:
 
@@ -20,12 +20,12 @@ information about related projects can be found in the online
 If you are using _rinform_, consider citing the following articles:
 
 * D.G. Moore, G. Valentini, S.I. Walker, M. Levin. "Inform: Efficient 
-Information-Theoretic Analysis of Collective Behaviors". _Frontiers in Robotics & AI.
+Information-Theoretic Analysis of Collective Behaviors". _Frontiers in Robotics & AI_.
 (_under review_)
 * D.G. Moore, G. Valentini, S.I. Walker, M. Levin. "Inform: A Toolkit for
 Information-Theoretic Analysis of Complex Systems". In: _Proceedings of the 
 2017 IEEE Symposium Series on Computational Intelligence, Symposium on 
-Artificial Life_, IEEE Press, 2017. (_in press_)
+Artificial Life_, 1-8, IEEE Press, 2017. [https://doi.org/10.1109/SSCI.2017.8285197](https://doi.org/10.1109/SSCI.2017.8285197)
 
 __Acknowledgement:__ This project was supported in part by the grant _Emergent computation in
 collective decision making by the crevice-dwelling rock ant Temnothorax
@@ -36,7 +36,7 @@ rugatulus_ provided by the National Science Foundation (NSF grant PHY-1505048).
 The _rinform_ package includes some C code, that is, the sources of the _Inform_
 library. You may need some extra tools to install _rinform_ as they are required
 to compile the _Inform_ source (e.g.,
-[Xcode](https://developer.apple.com/xcode/downloads/) for Mac users,
+[Xcode](https://developer.apple.com/xcode/) for Mac users,
 [Rtools](http://cran.us.r-project.org/bin/windows/Rtools/) for Windows users)
 
 ### Installation from CRAN ###
@@ -80,8 +80,8 @@ library(rinform)
 
 ## Example ##
 
-Compute the amount of directed information transfered from a process $X$ to a process
-$Y$ using transfer entropy:
+Compute the amount of directed information transfered from a process `X` to a process
+`Y` using transfer entropy:
 ```{r}
 library(rinform)
 
@@ -89,6 +89,10 @@ xs <- c(0, 1, 1, 1, 1, 0, 0, 0, 0)
 ys <- c(0, 0, 1, 1, 1, 1, 0, 0, 0)
 transfer_entropy(xs, ys, ws = NULL, k = 2)
 ```
+
+Examples of each function of the _rinform_ package can be found in the online
+[documentation](https://elife-asu.github.io/rinform/).
+
 
 ## Getting Help ##
 

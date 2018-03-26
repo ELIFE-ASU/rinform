@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 library(rinform)
 ```
 
-[![Travis-CI Build Status](https://travis-ci.org/ELIFE-ASU/rinform.svg?branch=master)](https://travis-ci.org/ELIFE-ASU/rinform) [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/oanb720jqsyf8n8s?svg=true)](https://ci.appveyor.com/project/gvalentini85/rinform) [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/rinform)](https://cran.r-project.org/package=rinform) [![codecov](https://codecov.io/gh/ELIFE-ASU/rinform/branch/master/graph/badge.svg)](https://codecov.io/gh/ELIFE-ASU/rinform)
+[![Travis-CI Build Status](https://travis-ci.org/ELIFE-ASU/rinform.svg?branch=master)](https://travis-ci.org/ELIFE-ASU/rinform) [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/oanb720jqsyf8n8s?svg=true)](https://ci.appveyor.com/project/gvalentini85/rinform) [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/rinform)](https://cran.r-project.org/package=rinform) [![codecov](https://codecov.io/gh/ELIFE-ASU/rinform/branch/master/graph/badge.svg)](https://codecov.io/gh/ELIFE-ASU/rinform)
 
 
 An R wrapper for the [Inform v1.0.0](https://elife-asu.github.io/Inform/) C library
@@ -46,7 +46,7 @@ In addition to the core components, rinform also provides a small collection of 
 If you are using _rinform_, consider citing the following articles:
 
 * D.G. Moore, G. Valentini, S.I. Walker, M. Levin. "Inform: Efficient 
-Information-Theoretic Analysis of Collective Behaviors". _Frontiers in Robotics & AI.
+Information-Theoretic Analysis of Collective Behaviors". _Frontiers in Robotics & AI_.
 (_under review_)
 * D.G. Moore, G. Valentini, S.I. Walker, M. Levin. "Inform: A Toolkit for
 Information-Theoretic Analysis of Complex Systems". In: _Proceedings of the 
@@ -64,7 +64,7 @@ rugatulus_ provided by the National Science Foundation (NSF grant PHY-1505048).
 The _rinform_ package includes some C code, that is, the sources of the _Inform_
 library. You may need some extra tools to install _rinform_ as they are required
 to compile the _Inform_ source (e.g.,
-[Xcode](https://developer.apple.com/xcode/downloads/) for Mac users,
+[Xcode](https://developer.apple.com/xcode/) for Mac users,
 [Rtools](http://cran.us.r-project.org/bin/windows/Rtools/) for Windows users)
 
 ### Installation from CRAN
