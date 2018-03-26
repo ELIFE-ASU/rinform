@@ -11,7 +11,7 @@
 
 <meta name="author" content="Gabriele Valentini" />
 
-<meta name="date" content="2018-03-22" />
+<meta name="date" content="2018-03-26" />
 
 <title>The rinform Package</title>
 
@@ -245,7 +245,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">The <em>rinform</em> Package</h1>
 <h4 class="author"><em>Gabriele Valentini</em></h4>
-<h4 class="date"><em>2018-03-22</em></h4>
+<h4 class="date"><em>2018-03-26</em></h4>
 
 </div>
 
@@ -260,15 +260,15 @@ div.tocify {
 <p>In addition to the core components, rinform also provides a small collection of utilities to deal with time series.</p>
 <p>If you are using <em>rinform</em>, consider citing the following articles:</p>
 <ul>
-<li>D.G. Moore, G. Valentini, S.I. Walker, M. Levin. “Inform: Efficient Information-Theoretic Analysis of Collective Behaviors”. _Frontiers in Robotics &amp; AI. (<em>under review</em>)</li>
-<li>D.G. Moore, G. Valentini, S.I. Walker, M. Levin. “Inform: A Toolkit for Information-Theoretic Analysis of Complex Systems”. In: <em>Proceedings of the 2017 IEEE Symposium Series on Computational Intelligence, Symposium on Artificial Life</em>, IEEE Press, 2017. (<em>in press</em>)</li>
+<li>D.G. Moore, G. Valentini, S.I. Walker, M. Levin. “Inform: Efficient Information-Theoretic Analysis of Collective Behaviors”. <em>Frontiers in Robotics &amp; AI</em>. (<em>under review</em>)</li>
+<li>D.G. Moore, G. Valentini, S.I. Walker, M. Levin. “Inform: A Toolkit for Information-Theoretic Analysis of Complex Systems”. In: <em>Proceedings of the 2017 IEEE Symposium Series on Computational Intelligence, Symposium on Artificial Life</em>, 1-8, IEEE Press, 2017. <a href="https://doi.org/10.1109/SSCI.2017.8285197" class="uri">https://doi.org/10.1109/SSCI.2017.8285197</a></li>
 </ul>
 <p><strong>Acknowledgement:</strong> This project was supported in part by the grant <em>Emergent computation in collective decision making by the crevice-dwelling rock ant Temnothorax rugatulus</em> provided by the National Science Foundation (NSF grant PHY-1505048).</p>
 <div id="getting-started" class="section level1">
 <h1><span class="header-section-number">1</span> Getting Started</h1>
 <div id="installation" class="section level2">
 <h2><span class="header-section-number">1.1</span> Installation</h2>
-<p>The <em>rinform</em> package includes some C code, that is, the sources of the <em>Inform</em> library. You may need some extra tools to install <em>rinform</em> as they are required to compile the <em>Inform</em> source (e.g., <a href="https://developer.apple.com/xcode/downloads/">Xcode</a> for Mac users, <a href="http://cran.us.r-project.org/bin/windows/Rtools/">Rtools</a> for Windows users)</p>
+<p>The <em>rinform</em> package includes some C code, that is, the sources of the <em>Inform</em> library. You may need some extra tools to install <em>rinform</em> as they are required to compile the <em>Inform</em> source (e.g., <a href="https://developer.apple.com/xcode/">Xcode</a> for Mac users, <a href="http://cran.us.r-project.org/bin/windows/Rtools/">Rtools</a> for Windows users)</p>
 <div id="installation-from-cran" class="section level3">
 <h3><span class="header-section-number">1.1.1</span> Installation from CRAN</h3>
 <p>To install <em>rinform</em> directly from the CRAN repository you will simply need to type:</p>
@@ -896,12 +896,12 @@ m &lt;-<span class="st"> </span><span class="dv">5</span>
 xs &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">sample</span>(<span class="dv">0</span>:<span class="dv">1</span>, m *<span class="st"> </span>l *<span class="st"> </span>n, <span class="ot">TRUE</span>), <span class="dt">nrow =</span> m, <span class="dt">ncol =</span> l *<span class="st"> </span>n)
 xs
 <span class="co">#&gt;      [,1] [,2] [,3] [,4]</span>
-<span class="co">#&gt; [1,]    0    1    0    0</span>
-<span class="co">#&gt; [2,]    0    0    1    0</span>
-<span class="co">#&gt; [3,]    0    1    0    1</span>
-<span class="co">#&gt; [4,]    0    0    0    1</span>
-<span class="co">#&gt; [5,]    1    1    1    1</span></code></pre></div>
-<p>where each column represents a different time series, possibly from different variables.</p>
+<span class="co">#&gt; [1,]    1    0    1    0</span>
+<span class="co">#&gt; [2,]    1    1    1    1</span>
+<span class="co">#&gt; [3,]    1    0    1    1</span>
+<span class="co">#&gt; [4,]    1    0    0    0</span>
+<span class="co">#&gt; [5,]    0    1    0    1</span></code></pre></div>
+<p>where each column represents a different time series, possibly from different variables. In the previous example we have <span class="math inline">\(l = 2\)</span> variables, respectively, <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span>, with <span class="math inline">\(n = 2\)</span> trials each, where each series has <span class="math inline">\(m = 5\)</span> time steps. Columns <code>[, 1]</code> and <code>[, 2]</code> represent trial 1 and 2 of variable <span class="math inline">\(X_1\)</span> while columns <code>[, 3]</code> and <code>[, 4]</code> represent trial 1 and 2 of variable <span class="math inline">\(X_2\)</span>.</p>
 <p>When possible, <em>rinform</em>’s functions infer the number of variables, <span class="math inline">\(l\)</span>, the number of initial conditions, <span class="math inline">\(n\)</span>, and the number of time steps <span class="math inline">\(m\)</span> from the provided data structures. This is possible in most cases due to the fact that all time series must have the same number of initial conditions and time steps. If this is not the case, the <em>rinform</em>’s API will explicity require the user to specify the number of variables <span class="math inline">\(l\)</span>.</p>
 </div>
 </div>
