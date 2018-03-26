@@ -896,11 +896,11 @@ m &lt;-<span class="st"> </span><span class="dv">5</span>
 xs &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">sample</span>(<span class="dv">0</span>:<span class="dv">1</span>, m *<span class="st"> </span>l *<span class="st"> </span>n, <span class="ot">TRUE</span>), <span class="dt">nrow =</span> m, <span class="dt">ncol =</span> l *<span class="st"> </span>n)
 xs
 <span class="co">#&gt;      [,1] [,2] [,3] [,4]</span>
-<span class="co">#&gt; [1,]    1    1    0    1</span>
-<span class="co">#&gt; [2,]    0    1    1    1</span>
-<span class="co">#&gt; [3,]    0    0    1    0</span>
-<span class="co">#&gt; [4,]    0    0    0    0</span>
-<span class="co">#&gt; [5,]    0    1    0    1</span></code></pre></div>
+<span class="co">#&gt; [1,]    1    1    1    0</span>
+<span class="co">#&gt; [2,]    0    0    1    1</span>
+<span class="co">#&gt; [3,]    0    0    1    1</span>
+<span class="co">#&gt; [4,]    1    0    0    1</span>
+<span class="co">#&gt; [5,]    0    1    0    0</span></code></pre></div>
 <p>where each column represents a different time series, possibly from different variables. In the previous example we have <span class="math inline">\(l = 2\)</span> variables, respectively, <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span>, with <span class="math inline">\(n = 2\)</span> trials each, where each series has <span class="math inline">\(m = 5\)</span> time steps. Columns <code>[, 1]</code> and <code>[, 2]</code> represent trial 1 and 2 of variable <span class="math inline">\(X_1\)</span> while columns <code>[, 3]</code> and <code>[, 4]</code> represent trial 1 and 2 of variable <span class="math inline">\(X_2\)</span>.</p>
 <p>When possible, <em>rinform</em>’s functions infer the number of variables, <span class="math inline">\(l\)</span>, the number of initial conditions, <span class="math inline">\(n\)</span>, and the number of time steps <span class="math inline">\(m\)</span> from the provided data structures. This is possible in most cases due to the fact that all time series must have the same number of initial conditions and time steps. If this is not the case, the <em>rinform</em>’s API will explicity require the user to specify the number of variables <span class="math inline">\(l\)</span>.</p>
 </div>
