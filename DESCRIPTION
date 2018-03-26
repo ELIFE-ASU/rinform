@@ -1,6 +1,6 @@
 Package: rinform
 Title: An R Wrapper of the 'Inform' C Library for Information Analysis of Complex Systems
-Version: 1.0.1
+Version: 1.0.2
 Authors@R: c(
       person("Gabriele", "Valentini", email = "gvalent3@asu.edu", role = c("aut", "cre", "cph")),
       person("Douglas G.", "Moore", email = "douglas.g.moore@asu.edu", role = c("ctb", "cph")))
@@ -26,3 +26,4 @@ Suggests: knitr,
     testthat,
     roxygen2
 VignetteBuilder: knitr
+SystemRequirements: C++11

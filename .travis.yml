@@ -1,23 +1,56 @@
-# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
-
 language: R
 sudo: required
-cache: packages
-r_check_args: --as-cran
-
+cache:
+  - apt
+  - packages
+  
+r_check_args: "--as-cran"
 r_binary_packages:
-  - testthat
-  - devtools
-  - knitr
-  - rmarkdown
-  - roxygen2
+- testthat
+- devtools
+- knitr
+- rmarkdown
+- roxygen2
 
-os:
-  - linux
-  - osx
+matrix:
+  include:
+  # Build & check in OS X
+  - os: osx
 
-r_packages:
-  - covr
+  # Build & check in Ubuntu with valgrind and if successful update code
+  # coverage and deploy vignette to gh-pages
+  - os: linux
+    env:
+      - VALGRIND_OPTS='--leak-check=full --track-origins=yes'
+    r_check_args: "--as-cran --use-valgrind"
+    addons:
+      apt:
+        packages:
+          - valgrind  
+    r_packages:
+      - covr
+    after_success:
+      - Rscript -e 'library(covr); codecov()'
+    before_deploy:
+      - chmod 755 ./.deploy.sh    
+      - ./.deploy.sh      
+    deploy:
+      provider: pages
+      skip-cleanup: true
+      github-token: $GITHUB_TOKEN
+      keep-history: true
+      local-dir: out/
+      on:
+        all_branches: true
 
-after_success:
-  - Rscript -e 'library(covr); codecov()'
+  # Build in Ubuntu and then use rhub to check in
+  # Oracle Solaris 10, x86, 32 bit, R-patched
+  - os: linux
+    env:
+      - RHUB_SOLARIS='solaris-x86-patched'
+    r_packages:
+      - rhub
+    script:
+      - R CMD build .
+    after_success:
+      - Rscript -e "library('rhub'); validate_email('gvalent3@asu.edu', Sys.getenv('RHUB_TOKEN')); check(path = 'rinform_1.0.2.tar.gz', platform = 'solaris-x86-patched', show_status = TRUE, check_args = '--as-cran')"

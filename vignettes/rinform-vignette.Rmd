@@ -46,12 +46,12 @@ In addition to the core components, rinform also provides a small collection of 
 If you are using _rinform_, consider citing the following articles:
 
 * D.G. Moore, G. Valentini, S.I. Walker, M. Levin. "Inform: Efficient 
-Information-Theoretic Analysis of Collective Behaviors". _Frontiers in Robotics & AI.
+Information-Theoretic Analysis of Collective Behaviors". _Frontiers in Robotics & AI_.
 (_under review_)
 * D.G. Moore, G. Valentini, S.I. Walker, M. Levin. "Inform: A Toolkit for
 Information-Theoretic Analysis of Complex Systems". In: _Proceedings of the 
 2017 IEEE Symposium Series on Computational Intelligence, Symposium on 
-Artificial Life_, IEEE Press, 2017. (_in press_)
+Artificial Life_, 1-8, IEEE Press, 2017. [https://doi.org/10.1109/SSCI.2017.8285197](https://doi.org/10.1109/SSCI.2017.8285197)
 
 __Acknowledgement:__ This project was supported in part by the grant _Emergent computation in
 collective decision making by the crevice-dwelling rock ant Temnothorax
@@ -64,7 +64,7 @@ rugatulus_ provided by the National Science Foundation (NSF grant PHY-1505048).
 The _rinform_ package includes some C code, that is, the sources of the _Inform_
 library. You may need some extra tools to install _rinform_ as they are required
 to compile the _Inform_ source (e.g.,
-[Xcode](https://developer.apple.com/xcode/downloads/) for Mac users,
+[Xcode](https://developer.apple.com/xcode/) for Mac users,
 [Rtools](http://cran.us.r-project.org/bin/windows/Rtools/) for Windows users)
 
 ### Installation from CRAN
@@ -902,7 +902,11 @@ m <- 5
 xs <- matrix(sample(0:1, m * l * n, TRUE), nrow = m, ncol = l * n)
 xs
 ```
-where each column represents a different time series, possibly from different variables. 
+where each column represents a different time series, possibly from different variables.
+In the previous example we have $l = 2$ variables, respectively, $X_1$ and $X_2$, with
+$n = 2$ trials each, where each series has $m = 5$ time steps. Columns `[, 1]` and `[, 2]`
+represent trial 1 and 2 of variable $X_1$ while columns `[, 3]` and `[, 4]` represent
+trial 1 and 2 of variable $X_2$.
 
 When possible, _rinform_'s functions infer the number of variables, $l$, the number
 of initial conditions, $n$, and the number of time steps $m$ from the provided data

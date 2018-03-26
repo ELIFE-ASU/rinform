@@ -1,9 +1,24 @@
+# rinform 1.0.2
+
+* Modified `src/inform-1.0.0/Makevars` to solve compilation issues on Solaris
+  on CRAN (NB: we are unable to reproduce this problem locally).
+
+* Bug solved in `src/inform-1.0.0/transfer_entropy.c` that was affecting
+  the computation of complete transfer entropy.
+
+* Improved Travis configuration (automatic deploy of gh-pages, check with
+  valgrind, check with Solaris through rhub).
+
+* Memory management for functions `r_integration_evidence_parts_`
+  and `r_black_box_parts_` has been converted from using malloc to R_alloc,
+  which was still causing an invalid read of 4 bytes on CRAN.
+
 # rinform 1.0.1
 
 * Bug solved in `inform_predictive_info` which was causing an invalid read of
   4 bytes. Developers of 'Inform' have been made aware of this bug.
 
-* Bug solved in memory menagement for functions `r_integration_evidence_parts_`
+* Bug solved in memory management for functions `r_integration_evidence_parts_`
   and `r_black_box_parts_`.
 
 * The `R/check_parameters.R` file is now compliant with noLD compilation
